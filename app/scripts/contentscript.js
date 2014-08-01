@@ -1,7 +1,5 @@
 'use strict';
 
-console.log('Dmitlichess loaded');
-
 // @TODO: Detect castling
 // @TODO: Play sound based on notation
 // @TODO: ????
@@ -92,12 +90,16 @@ var komarov = function(mutation) {
 var handleMutation = function(mutations) {
   mutations.forEach(function(mutation) {
     if (isPieceMovement(mutation)) {
+      $("#lichess").trigger("move", [mutation]);
+
       komarov(mutation);
     }
 
     if (isPieceCapture(mutation)) {
       pieceCaptured = true;
       pieceCaptured = getOrigin();
+
+      $("#lichess").trigger("capture", [pieceCaptured]);
 
       return;
     }
