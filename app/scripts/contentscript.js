@@ -71,9 +71,10 @@ var getPieceAbbr = function(name) {
 };
 
 var getNotation = function(square, pieceName, capture) {
-  var captureNotation = (capture ? capture.id.charAt(0) + 'x' : '');
+  var abbr = getPieceAbbr(pieceName);
+  var captureNotation = capture ? (abbr === '' ? capture.id.charAt(0) : '') + 'x' : '';
 
-  return getPieceAbbr(pieceName) + captureNotation + square;
+  return abbr + captureNotation + square;
 };
 
 var isCheck = function() {
