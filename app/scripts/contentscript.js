@@ -2,56 +2,62 @@
 
 console.log('Dmitlichess loaded');
 
+var PIECES = {
+  pawn:   '',
+  knight: 'N',
+  bishop: 'B',
+  rook:   'R',
+  queen:  'Q',
+  king:   'K'
+};
+var PIECE_NAMES = Object.keys(PIECES);
+
 var targets = document.querySelectorAll('#lichess .lichess_board .lcs');
 var targetsArray = Array.prototype.slice.call(targets);
 var observers = [];
 
 var isPieceMovement = function(mutation) {
-  var movement = true;
-
-  movement = movement && mutation.type === 'attributes';
-  movement = movement && mutation.attributeName === 'class';
-
-  movement = movement && mutation.target.classList.contains('moved');
-  movement = movement && !mutation.target.classList.contains('droppable-hover');
-  // movement = movement && mutation.target.querySelector('.piece');
-  // if (movement) { console.log(mutation.target); }
-  // if (movement) { console.log(mutation.target.children.length); }
-
-  return movement;
+  return mutation.addedNodes.length > 0 && mutation.addedNodes[0].classList.contains('piece');
 };
 
 var getDestination = function(mutation) { return mutation.target.id; };
-var getPieceType = function(mutation) {
-  var types = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
+
+var getPieceName = function(mutation) {
   var piece = mutation.target.querySelector('.piece');
-  var i, type;
+  var i, name;
 
   if (piece) {
-    for (i=0; i<types.length; i++) {
-      type = piece.classList.contains(types[i]) ? types[i] : type;
+    for (i=0; i<PIECE_NAMES.length; i++) {
+      name = PIECE_NAMES[i];
+
+      if (piece.classList.contains(name)) {
+        return name;
+      }
     }
   }
+};
 
-  return type;
+var getPieceAbbr = function(name) { return PIECES[name]; };
+
+var getNotation = function(square, pieceName) {
+  return getPieceAbbr(pieceName) + square;
 };
 
 var handleMutation = function(mutations) {
   mutations.forEach(function(mutation) {
     if (!isPieceMovement(mutation)) { return; }
 
-    var destination = getDestination(mutation);
-    var type = getPieceType(mutation);
+    var square = getDestination(mutation);
+    var pieceName = getPieceName(mutation);
+    var notation = getNotation(square, pieceName);
 
-    console.log('type: ' + type);
-    console.log(destination);
+    console.log(notation);
   });
 };
 
 var createObserver = function(target) {
   var observer = new MutationObserver(handleMutation);
-  var config = { attributeFilter: ['class'] };
-  // var config = { childList: true };
+  var config = { childList: true };
 
   observer.observe(target, config);
 
