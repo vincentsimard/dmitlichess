@@ -1,9 +1,6 @@
 'use strict';
 
 // @TODO: Detect castling
-// @TODO: Play sound based on notation
-// @TODO: ????
-// @TODO: Profit
 
 function MoveEmitter(targets) {
   var PIECES = {
