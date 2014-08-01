@@ -1,33 +1,33 @@
 {
-  "name": "dmitlichess",
-  "version": "0.0.1",
-  "manifest_version": 2,
-  "description": "Updates lichess.org sounds with the soothing voice of Dmitry Komarov",
-  "icons": {
-    "16": "images/icon-16.png",
-    "128": "images/icon-128.png"
-  },
-  "default_locale": "en",
-  "background": {
-    "scripts": [
-      "scripts/chromereload.js",
-      "scripts/background.js"
+    "name": "dmitlichess",
+    "version": "0.0.2",
+    "manifest_version": 2,
+    "description": "Updates lichess.org sounds with the soothing voice of Dmitry Komarov",
+    "icons": {
+        "16": "images/icon-16.png",
+        "128": "images/icon-128.png"
+    },
+    "default_locale": "en",
+    "background": {
+        "scripts": [
+            "scripts/chromereload.js",
+            "scripts/background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*.lichess.org/*",
+                "https://*.lichess.org/*"
+            ],
+            "css": [
+                "styles/main.css"
+            ],
+            "js": [
+                "scripts/contentscript.js"
+            ],
+            "run_at": "document_end",
+            "all_frames": false
+        }
     ]
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "http://*.lichess.org/*",
-        "https://*.lichess.org/*"
-      ],
-      "css": [
-        "styles/main.css"
-      ],
-      "js": [
-        "scripts/contentscript.js"
-      ],
-      "run_at": "document_end",
-      "all_frames": false
-    }
-  ]
 }
