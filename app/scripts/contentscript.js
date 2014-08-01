@@ -20,7 +20,9 @@ var isPieceMovement = function(mutation) {
   return mutation.addedNodes.length > 0 && mutation.addedNodes[0].classList.contains('piece');
 };
 
-var getDestination = function(mutation) { return mutation.target.id; };
+var getDestination = function(mutation) {
+  return mutation.target.id;
+};
 
 var getPieceName = function(mutation) {
   var piece = mutation.target.querySelector('.piece');
@@ -37,10 +39,16 @@ var getPieceName = function(mutation) {
   }
 };
 
-var getPieceAbbr = function(name) { return PIECES[name]; };
+var getPieceAbbr = function(name) {
+  return PIECES[name];
+};
 
 var getNotation = function(square, pieceName) {
   return getPieceAbbr(pieceName) + square;
+};
+
+var isCheck = function() {
+  return document.querySelectorAll('#lichess .lichess_board .lcs.check').length > 0;
 };
 
 var handleMutation = function(mutations) {
@@ -52,6 +60,7 @@ var handleMutation = function(mutations) {
     var notation = getNotation(square, pieceName);
 
     console.log(notation);
+    console.log(mutation);
   });
 };
 
