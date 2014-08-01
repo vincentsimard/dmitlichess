@@ -91,14 +91,16 @@ function MoveEmitter(targets) {
       var capture = isPieceCapture(mutation);
       var notation;
 
-      if (capture) { wasCaptured = true; }
-
       if (!move && !capture) { return; }
       if (move && wasCaptured) { return; }
+
+      // Remember the "capture" mutation to silence the next "move" mutation
+      // (prevents move and capture events from triggering simultaneously)
+      if (capture) { wasCaptured = true; }
       
       notation = getNotationFromMutation(mutation, capture);
 
-      $('#lichess').trigger(capture ? 'capture' : 'move', [mutation, notation]);
+      $('#lichess').trigger(capture ? 'capture' : 'move', [notation]);
     });
 
     wasCaptured = false;
