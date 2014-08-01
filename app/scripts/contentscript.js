@@ -12,16 +12,38 @@ var PIECES = {
 };
 var PIECE_NAMES = Object.keys(PIECES);
 
+var pieceCaptured = false;
+
 var targets = document.querySelectorAll('#lichess .lichess_board .lcs');
 var targetsArray = Array.prototype.slice.call(targets);
 var observers = [];
+
+var getBoard = function() {
+  return document.querySelector('#lichess .lichess_board');
+};
 
 var isPieceMovement = function(mutation) {
   return mutation.addedNodes.length > 0 && mutation.addedNodes[0].classList.contains('piece');
 };
 
+var isPieceCapture = function(mutation) {
+  return mutation.removedNodes &&
+    mutation.removedNodes.length > 0 &&
+    mutation.removedNodes[0].parentNode.classList.contains('lichess_tomb');
+};
+
 var getDestination = function(mutation) {
   return mutation.target.id;
+};
+
+var getOrigin = function() {
+  var board = getBoard();
+  var moved = board.querySelectorAll('.moved');
+  var movedArray = Array.prototype.slice.call(moved);
+
+  return movedArray.filter(function(el) {
+    return el.childElementCount < 2;
+  })[0];
 };
 
 var getPieceName = function(mutation) {
@@ -43,25 +65,39 @@ var getPieceAbbr = function(name) {
   return PIECES[name];
 };
 
-var getNotation = function(square, pieceName) {
-  return getPieceAbbr(pieceName) + square;
+var getNotation = function(square, pieceName, capture) {
+  var captureNotation = (capture ? capture.id.charAt(0) + 'x' : '');
+
+  return getPieceAbbr(pieceName) + captureNotation + square;
 };
 
 var isCheck = function() {
   return document.querySelectorAll('#lichess .lichess_board .lcs.check').length > 0;
 };
 
+var komarov = function(mutation) {
+  var square = getDestination(mutation);
+  var pieceName = getPieceName(mutation);
+  var notation = getNotation(square, pieceName, pieceCaptured);
+
+  console.log(notation);
+};
+
 var handleMutation = function(mutations) {
   mutations.forEach(function(mutation) {
-    if (!isPieceMovement(mutation)) { return; }
+    if (isPieceMovement(mutation)) {
+      komarov(mutation);
+    }
 
-    var square = getDestination(mutation);
-    var pieceName = getPieceName(mutation);
-    var notation = getNotation(square, pieceName);
+    if (isPieceCapture(mutation)) {
+      pieceCaptured = true;
+      pieceCaptured = getOrigin();
 
-    console.log(notation);
-    console.log(mutation);
+      return;
+    }
   });
+
+  pieceCaptured = false;
 };
 
 var createObserver = function(target) {
@@ -74,5 +110,3 @@ var createObserver = function(target) {
 };
 
 observers = targetsArray.map(createObserver);
-
-// observer.disconnect();
