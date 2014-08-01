@@ -2,6 +2,11 @@
 
 console.log('Dmitlichess loaded');
 
+// @TODO: Detect castling
+// @TODO: Play sound based on notation
+// @TODO: ????
+// @TODO: Profit
+
 var PIECES = {
   pawn:   '',
   knight: 'N',
