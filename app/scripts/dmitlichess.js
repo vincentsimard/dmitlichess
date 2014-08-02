@@ -17,8 +17,6 @@ var moveEmitter = new MoveEmitter(squares);
 var sounds = {};
 
 var makeAudio = function(file, volume) {
-  console.log(chrome.extension.getURL('ogg/' + file));
-
   var audio = new Audio(chrome.extension.getURL('ogg/' + file));
   audio.volume = volume;
 
@@ -82,22 +80,21 @@ var disableDefaultSounds = function() {
 
 var unleashDmitry = function() {
   $('#lichess').on('move capture', function(event, notation) {
-    // if (!sounds[notation]) {
-    //   sounds[notation] = makeAudio(notation + '.ogg', 1);
-    // }
+    console.log(notation);
+
+    if (!sounds[notation]) {
+      sounds[notation] = makeAudio(notation + '.ogg', 1);
+    }
 
     if (sounds[notation]) {
       sounds[notation].play();
     }
   });
-
-  $('#lichess').on('move', function(event, notation) {
-    console.log(notation);
-  });
 };
 
 var init = function() {
-  preloadSounds();
+  // Preloading is unecessary for now... it makes the game freeze at its start
+  // preloadSounds();
   disableDefaultSounds();
 
   unleashDmitry();
