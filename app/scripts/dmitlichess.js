@@ -69,9 +69,6 @@ var preloadSounds = function() {
 
   sounds[notation] = makeAudio('0-0.ogg', 1);
   sounds[notation] = makeAudio('0-0-0.ogg', 1);
-  
-  console.log(Object.keys(sounds));
-  console.log(Object.keys(sounds).length);
 };
 
 // @TODO: Doesn't work
