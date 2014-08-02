@@ -3,6 +3,8 @@
 // @TODO: Queue sounds so Dmitry doesn't talk over himself
 //        see http://blogs.msdn.com/b/ie/archive/2011/05/13/unlocking-the-power-of-html5-lt-audio-gt.aspx
 
+// @TODO: Handle checks
+
 // @TODO: Play random bits of Komarov at times ("yes", "unbelievable", etc.)
 
 // @TODO: Change the default yeoman logo to Komarov

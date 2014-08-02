@@ -1,6 +1,8 @@
 'use strict';
 
 // @TODO: Detect castling
+// @TODO: Detect check
+// @TODO: Detect checkmate
 
 function MoveEmitter(targets) {
   var PIECES = {
