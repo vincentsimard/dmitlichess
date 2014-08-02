@@ -40,10 +40,12 @@ function MoveEmitter(targets) {
     var moved = board.querySelectorAll('.moved');
     var movedArray = Array.prototype.slice.call(moved);
 
-    return movedArray.filter(function(el) {
+    var origin = movedArray.filter(function(el) {
       // @TODO: Rewrite this, `< 2` means there's no .piece child element...
       return el.childElementCount < 2;
     })[0];
+
+    if (origin) { return origin.id; }
   };
 
   var getPieceName = function(mutation) {
@@ -67,9 +69,15 @@ function MoveEmitter(targets) {
 
   var getNotation = function(origin, destination, pieceName, capture) {
     var abbr = getPieceAbbr(pieceName);
-    var captureNotation = (abbr === '' ? origin.id.charAt(0) : '') + 'x';
+    var captureNotation = (abbr === '' ? origin.charAt(0) : '') + 'x';
+    var notation = abbr + (capture ? captureNotation : '') + destination;
 
-    return abbr + (capture ? captureNotation : '') + destination;
+    if (abbr === 'K') {
+      if (isCastleKingside(origin, destination)) { notation = '0-0'; }
+      if (isCastleQueenside(origin, destination)) { notation = '0-0-0'; }
+    }
+
+    return notation;
   };
 
   var getNotationFromMutation = function(mutation) {
@@ -82,6 +90,20 @@ function MoveEmitter(targets) {
 
   var isCheck = function() {
     return document.querySelectorAll('#lichess .lichess_board .lcs.check').length > 0;
+  };
+
+  var isCastleKingside = function(origin, destination) {
+    var defaultOrigin = origin === 'e1' || origin === 'e8';
+    var expectedDestination = destination === 'g1' || destination === 'g81';
+
+    return defaultOrigin && expectedDestination;
+  };
+
+  var isCastleQueenside = function(origin, destination) {
+    var defaultOrigin = origin === 'e1' || origin === 'e8';
+    var expectedDestination = destination === 'c1' || destination === 'c8';
+
+    return defaultOrigin && expectedDestination;
   };
 
   var handleMutation = function(mutations) {
@@ -97,7 +119,7 @@ function MoveEmitter(targets) {
       // (prevents move and capture events from triggering simultaneously)
       if (capture) { wasCaptured = true; }
       
-      notation = getNotationFromMutation(mutation, capture);
+      notation = getNotationFromMutation(mutation);
 
       $('#lichess').trigger(capture ? 'capture' : 'move', [notation]);
     });

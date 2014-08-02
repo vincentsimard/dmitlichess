@@ -90,6 +90,10 @@ var unleashDmitry = function() {
       sounds[notation].play();
     }
   });
+
+  $('#lichess').on('move', function(event, notation) {
+    console.log(notation);
+  });
 };
 
 var init = function() {
