@@ -7,8 +7,6 @@
 
 // @TODO: Play random bits of Komarov at times ("yes", "unbelievable", etc.)
 
-// @TODO: Change the default yeoman logo to Komarov
-
 // @TODO: Preload sounds
 
 
