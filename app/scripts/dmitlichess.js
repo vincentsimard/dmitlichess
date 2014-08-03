@@ -85,13 +85,12 @@ var unleashDmitry = function() {
 };
 
 var init = function() {
-  var board = document.querySelector('#lichess .lichess_board');
   var moveEmitter, checkEmitter, gameStateEmitter;
 
   if (!board) { return; }
 
-  moveEmitter = new MoveEmitter(board);
-  checkEmitter = new CheckEmitter(board);
+  moveEmitter = new MoveEmitter(lichess.elBoard);
+  checkEmitter = new CheckEmitter(lichess.elBoard);
   gameStateEmitter = new GameStateEmitter();
 
   // preloadSounds();
