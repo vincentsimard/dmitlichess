@@ -11,10 +11,11 @@
 
 
 
-var squares = document.querySelectorAll('#lichess .lichess_board .lcs');
-var moveEmitter = new MoveEmitter(squares);
-
 var sounds = {};
+var board = document.querySelector('#lichess .lichess_board');
+
+var moveEmitter = new MoveEmitter(board);
+var checkEmitter = new CheckEmitter(board);
 
 var makeAudio = function(file, volume) {
   var audio = new Audio(chrome.extension.getURL('ogg/' + file));
@@ -88,6 +89,18 @@ var unleashDmitry = function() {
 
     if (sounds[notation]) {
       sounds[notation].play();
+    }
+  });
+
+  $('#lichess').on('check', function(event) {
+    console.log('check');
+
+    if (!sounds['check']) {
+      sounds['check'] = makeAudio('check/check.ogg', 1);
+    }
+
+    if (sounds['check']) {
+      sounds['check'].play();
     }
   });
 };

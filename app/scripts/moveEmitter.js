@@ -4,7 +4,7 @@
 // @TODO: Detect check
 // @TODO: Detect checkmate, resign, draw
 
-function MoveEmitter(targets) {
+function MoveEmitter(board) {
   var PIECES = {
     pawn:   '',
     knight: 'N',
@@ -17,10 +17,6 @@ function MoveEmitter(targets) {
 
   // Used to prevent triggering mutation handlers after castling/capturing
   var mutationSkips = 0;
-
-  var getBoard = function() {
-    return document.querySelector('#lichess .lichess_board');
-  };
 
   var isMovement = function(mutation) {
     return mutation.addedNodes.length > 0 && mutation.addedNodes[0].classList.contains('piece');
@@ -35,12 +31,25 @@ function MoveEmitter(targets) {
   var isCaptureFromNotation = function(notation) { return notation.indexOf('x') >= 0; };
   var isCastleFromNotation = function(notation) { return notation.indexOf('0-0') >= 0; };
 
+  var isCastleKingside = function(origin, destination) {
+    var defaultOrigin = origin === 'e1' || origin === 'e8';
+    var expectedDestination = destination === 'g1' || destination === 'g8';
+
+    return defaultOrigin && expectedDestination;
+  };
+
+  var isCastleQueenside = function(origin, destination) {
+    var defaultOrigin = origin === 'e1' || origin === 'e8';
+    var expectedDestination = destination === 'c1' || destination === 'c8';
+
+    return defaultOrigin && expectedDestination;
+  };
+
   var getDestination = function(mutation) {
     return mutation.target.id;
   };
 
   var getOrigin = function() {
-    var board = getBoard();
     var moved = board.querySelectorAll('.moved');
     var movedArray = Array.prototype.slice.call(moved);
 
@@ -93,24 +102,6 @@ function MoveEmitter(targets) {
     return getNotation(origin, destination, pieceName, capture);
   };
 
-  var isCheck = function() {
-    return document.querySelectorAll('#lichess .lichess_board .lcs.check').length > 0;
-  };
-
-  var isCastleKingside = function(origin, destination) {
-    var defaultOrigin = origin === 'e1' || origin === 'e8';
-    var expectedDestination = destination === 'g1' || destination === 'g8';
-
-    return defaultOrigin && expectedDestination;
-  };
-
-  var isCastleQueenside = function(origin, destination) {
-    var defaultOrigin = origin === 'e1' || origin === 'e8';
-    var expectedDestination = destination === 'c1' || destination === 'c8';
-
-    return defaultOrigin && expectedDestination;
-  };
-
   var handleMutation = function(mutations) {
     mutations.forEach(function(mutation) {
       if (mutationSkips > 0) { return; }
@@ -134,11 +125,11 @@ function MoveEmitter(targets) {
 
 
 
-  this.createObserver = function(target) {
+  this.createObserver = function(square) {
     var observer = new MutationObserver(handleMutation);
     var config = { childList: true };
 
-    observer.observe(target, config);
+    observer.observe(square, config);
 
     return observer;
   };
@@ -149,6 +140,6 @@ function MoveEmitter(targets) {
     });
   };
 
-  this.targets = Array.prototype.slice.call(targets);
-  this.observers = this.targets.map(this.createObserver);
+  this.squares = Array.prototype.slice.call(board.querySelectorAll('.lcs'));
+  this.observers = this.squares.map(this.createObserver);
 }

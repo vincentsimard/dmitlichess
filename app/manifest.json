@@ -20,6 +20,7 @@
             "js": [
                 "bower_components/jquery/dist/jquery.min.js",
                 "scripts/moveEmitter.js",
+                "scripts/checkEmitter.js",
                 "scripts/dmitlichess.js"
             ],
             "run_at": "document_end",
