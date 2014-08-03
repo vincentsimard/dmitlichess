@@ -129,7 +129,7 @@ function MoveEmitter(board) {
     var observer = new MutationObserver(handleMutation);
     var config = { childList: true };
 
-    observer.observe(square, config);
+    if (square) { observer.observe(square, config); }
 
     return observer;
   };

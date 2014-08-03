@@ -19,7 +19,7 @@ function CheckEmitter(board) {
     var observer = new MutationObserver(handleMutation);
     var config = { attributeFilter: ['class'], subtree: true };
 
-    observer.observe(board, config);
+    if (board) { observer.observe(board, config); }
 
     return observer;
   };

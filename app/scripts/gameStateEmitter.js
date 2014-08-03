@@ -12,11 +12,15 @@ function GameStateEmitter() {
   var handleMutation = function(mutations) {
     if (!isGameOver()) { return; }
 
-    var state;
     var tableText = getTable().innerText.toLowerCase();
+    var states = ['checkmate', 'draw', 'time out', 'white resigned', 'black resigned'];
+    var state, i;
 
     // @TODO: Doesn't work because the text is updated after the class
-    if (tableText.indexOf('checkmate') > -1) { state = 'checkmate'; }
+    for (i=0; i<states.length; i++) {
+      if (tableText.indexOf(states[i]) > -1) { state = states[i]; }
+    }
+
 
     $('#lichess').trigger('state', [state]);
   };
@@ -24,8 +28,9 @@ function GameStateEmitter() {
   this.createObserver = function() {
     var observer = new MutationObserver(handleMutation);
     var config = { attributes: true };
+    var table = getTable();
 
-    observer.observe(getTable(), config);
+    if (table) { observer.observe(getTable(), config); }
 
     return observer;
   };
