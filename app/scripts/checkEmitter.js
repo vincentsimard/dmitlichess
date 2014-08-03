@@ -1,7 +1,13 @@
 'use strict';
 
 function CheckEmitter(board) {
+  var isGameOver = function() {
+    return !!document.querySelector('#lichess .lichess_table.finished');
+  };
+
   var handleMutation = function(mutations) {
+    if (isGameOver()) { return; }
+
     mutations.forEach(function(mutation) {
       if (!mutation.target.classList.contains('check')) { return; }
 

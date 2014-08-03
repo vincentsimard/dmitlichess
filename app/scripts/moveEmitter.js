@@ -28,8 +28,8 @@ function MoveEmitter(board) {
       mutation.removedNodes[0].parentNode.classList.contains('lichess_tomb');
   };
 
-  var isCaptureFromNotation = function(notation) { return notation.indexOf('x') >= 0; };
-  var isCastleFromNotation = function(notation) { return notation.indexOf('0-0') >= 0; };
+  var isCaptureFromNotation = function(notation) { return notation.indexOf('x') > -1; };
+  var isCastleFromNotation = function(notation) { return notation.indexOf('0-0') > -1; };
 
   var isCastleKingside = function(origin, destination) {
     var defaultOrigin = origin === 'e1' || origin === 'e8';

@@ -12,10 +12,6 @@
 
 
 var sounds = {};
-var board = document.querySelector('#lichess .lichess_board');
-
-var moveEmitter = new MoveEmitter(board);
-var checkEmitter = new CheckEmitter(board);
 
 var makeAudio = function(file, volume) {
   var audio = new Audio(chrome.extension.getURL('ogg/' + file));
@@ -24,6 +20,14 @@ var makeAudio = function(file, volume) {
   return audio;
 };
 
+var playSound = function(key) {
+  console.log(key);
+
+  if (!sounds[key]) { sounds[key] = makeAudio(key + '.ogg', 1); }
+  if (sounds[key]) { sounds[key].play(); }
+};
+
+// Preloading is unecessary for now... it makes the game freeze at its start
 // @TODO: Is there a way to read file list in ./ogg instead of looping?
 // @TODO: Refactor this. No point in looping a brazilian times
 // @TODO: Handle error when trying to load a file that does not exist
@@ -81,34 +85,30 @@ var disableDefaultSounds = function() {
 
 var unleashDmitry = function() {
   $('#lichess').on('move capture', function(event, notation) {
-    console.log(notation);
-
-    if (!sounds[notation]) {
-      sounds[notation] = makeAudio(notation + '.ogg', 1);
-    }
-
-    if (sounds[notation]) {
-      sounds[notation].play();
-    }
+    playSound(notation);
+  });
+  
+  $('#lichess').on('check', function(event) {
+    playSound('check/check');
   });
 
-  $('#lichess').on('check', function(event) {
-    console.log('check');
-
-    if (!sounds['check']) {
-      sounds['check'] = makeAudio('check/check.ogg', 1);
-    }
-
-    if (sounds['check']) {
-      sounds['check'].play();
-    }
+  $('#lichess').on('state', function(event, state) {
+    console.log('Game Over');
   });
 };
 
 var init = function() {
-  // Preloading is unecessary for now... it makes the game freeze at its start
+  var board = document.querySelector('#lichess .lichess_board');
+  var moveEmitter, checkEmitter, gameStateEmitter;
+
+  if (!board) { return; }
+
+  moveEmitter = new MoveEmitter(board);
+  checkEmitter = new CheckEmitter(board);
+  gameStateEmitter = new GameStateEmitter();
+
   // preloadSounds();
-  disableDefaultSounds();
+  // disableDefaultSounds();
 
   unleashDmitry();
 };

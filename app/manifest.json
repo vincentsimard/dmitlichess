@@ -21,6 +21,7 @@
                 "bower_components/jquery/dist/jquery.min.js",
                 "scripts/moveEmitter.js",
                 "scripts/checkEmitter.js",
+                "scripts/gameStateEmitter.js",
                 "scripts/dmitlichess.js"
             ],
             "run_at": "document_end",
