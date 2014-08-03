@@ -19,6 +19,7 @@
             ],
             "js": [
                 "bower_components/jquery/dist/jquery.min.js",
+                "scripts/lichess.js",
                 "scripts/moveEmitter.js",
                 "scripts/checkEmitter.js",
                 "scripts/gameStateEmitter.js",

@@ -3,13 +3,9 @@
 // @TODO: Queue sounds so Dmitry doesn't talk over himself
 //        see http://blogs.msdn.com/b/ie/archive/2011/05/13/unlocking-the-power-of-html5-lt-audio-gt.aspx
 
-// @TODO: Handle checks
-
 // @TODO: Play random bits of Komarov at times ("yes", "unbelievable", etc.)
 
-// @TODO: Preload sounds
-
-
+// @TODO: Fix gameStateEmitter
 
 var sounds = {};
 
@@ -74,25 +70,16 @@ var preloadSounds = function() {
   sounds[notation] = makeAudio('0-0-0.ogg', 1);
 };
 
-// @TODO: Doesn't work
-var disableDefaultSounds = function() {
-  for (var prop in $.sound) {
-    if ($.sound.hasOwnProperty(prop)) {
-      $.sound[prop] = function() {};
-    }
-  }
-};
-
 var unleashDmitry = function() {
-  $('#lichess').on('move capture', function(event, notation) {
+  lichess.$el.on('move capture', function(event, notation) {
     playSound(notation);
   });
   
-  $('#lichess').on('check', function(event) {
+  lichess.$el.on('check', function(event) {
     playSound('check/check');
   });
 
-  $('#lichess').on('state', function(event, state) {
+  lichess.$el.on('state', function(event, state) {
     console.log('Game Over');
   });
 };
@@ -108,7 +95,7 @@ var init = function() {
   gameStateEmitter = new GameStateEmitter();
 
   // preloadSounds();
-  // disableDefaultSounds();
+  // lichess.disableDefaultSounds();
 
   unleashDmitry();
 };

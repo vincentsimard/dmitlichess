@@ -117,7 +117,7 @@ function MoveEmitter(board) {
       if (isCaptured) { mutationSkips = mutationSkips + 1; }
       if (isCastled) { mutationSkips = mutationSkips + 2; }
 
-      $('#lichess').trigger(isCaptured ? 'capture' : 'move', [notation]);
+      lichess.$el.trigger(isCaptured ? 'capture' : 'move', [notation]);
     });
 
     if (mutationSkips > 0) { mutationSkips--; }

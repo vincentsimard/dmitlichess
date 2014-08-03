@@ -1,18 +1,10 @@
 'use strict';
 
 function GameStateEmitter() {
-  var getTable = function() {
-    return document.querySelector('#lichess .lichess_table');
-  };
-
-  var isGameOver = function() {
-    return getTable().classList.contains('finished');
-  };
-
   var handleMutation = function(mutations) {
-    if (!isGameOver()) { return; }
+    if (!lichess.isGameOver()) { return; }
 
-    var tableText = getTable().innerText.toLowerCase();
+    var tableText = lichess.elTable.innerText.toLowerCase();
     var states = ['checkmate', 'draw', 'time out', 'white resigned', 'black resigned'];
     var state, i;
 
@@ -21,16 +13,14 @@ function GameStateEmitter() {
       if (tableText.indexOf(states[i]) > -1) { state = states[i]; }
     }
 
-
-    $('#lichess').trigger('state', [state]);
+    lichess.$el.trigger('state', [state]);
   };
 
   this.createObserver = function() {
     var observer = new MutationObserver(handleMutation);
     var config = { attributes: true };
-    var table = getTable();
 
-    if (table) { observer.observe(getTable(), config); }
+    if (lichess.elTable) { observer.observe(lichess.elTable, config); }
 
     return observer;
   };
