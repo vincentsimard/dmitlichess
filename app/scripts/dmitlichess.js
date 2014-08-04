@@ -7,8 +7,6 @@
 
 // @TODO: Fix gameStateEmitter
 
-var sounds = {};
-
 var makeAudio = function(file, volume) {
   var audio = new Audio(chrome.extension.getURL('ogg/' + file));
   audio.volume = volume;
@@ -17,57 +15,16 @@ var makeAudio = function(file, volume) {
 };
 
 var playSound = function(key) {
-  console.log(key);
+  console.log(key, sounds[key]);
+  var files = sounds[key];
+  var file;
 
-  if (!sounds[key]) { sounds[key] = makeAudio(key + '.ogg', 1); }
-  if (sounds[key]) { sounds[key].play(); }
-};
+  // :(
+  if (!files) { return; }
 
-// Preloading is unecessary for now... it makes the game freeze at its start
-// @TODO: Is there a way to read file list in ./ogg instead of looping?
-// @TODO: Refactor this. No point in looping a brazilian times
-// @TODO: Handle error when trying to load a file that does not exist
-var preloadSounds = function() {
-  var pieces = ['', 'N', 'B', 'R', 'Q', 'K'];
-  var files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-  var ranks = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  file = files[Math.floor(Math.random()*files.length)];
 
-  var i, j, k, notation, captureNotation;
-
-  // Moves
-  for (i=0; i<pieces.length; i++) {
-    for (j=0; j<files.length; j++) {
-      for (k=0; k<ranks.length; k++) {
-        notation = pieces[i] + files[j] + ranks[k];
-        sounds[notation] = makeAudio(notation + '.ogg', 1);
-      }
-    }
-  }
-
-  // Captures (pieces)
-  for (i=1; i<pieces.length; i++) {
-    for (j=0; j<files.length; j++) {
-      for (k=0; k<ranks.length; k++) {
-        notation = pieces[i] + 'x' + files[j] + ranks[k];
-        sounds[notation] = makeAudio(notation + '.ogg', 1);
-      }
-    }
-  }
-
-  // Captures (pawns)
-  for (i=0; i<files.length; i++) {
-    for (j=0; j<files.length; j++) {
-      for (k=0; k<ranks.length; k++) {
-        if (Math.abs(i-j) === 1) {
-          notation = files[i] + pieces[0] + 'x' + files[j] + ranks[k];
-          sounds[notation] = makeAudio(notation + '.ogg', 1);
-        }
-      }
-    }
-  }
-
-  sounds[notation] = makeAudio('0-0.ogg', 1);
-  sounds[notation] = makeAudio('0-0-0.ogg', 1);
+  makeAudio(file, 1).play();
 };
 
 var unleashDmitry = function() {
@@ -76,7 +33,7 @@ var unleashDmitry = function() {
   });
   
   lichess.$el.on('check', function(event) {
-    playSound('check/check');
+    playSound('check');
   });
 
   lichess.$el.on('state', function(event, state) {
@@ -87,13 +44,13 @@ var unleashDmitry = function() {
 var init = function() {
   var moveEmitter, checkEmitter, gameStateEmitter;
 
-  if (!board) { return; }
+  if (!sounds) { return; }
+  if (!lichess.elBoard) { return; }
 
   moveEmitter = new MoveEmitter(lichess.elBoard);
   checkEmitter = new CheckEmitter(lichess.elBoard);
   gameStateEmitter = new GameStateEmitter();
 
-  // preloadSounds();
   // lichess.disableDefaultSounds();
 
   unleashDmitry();

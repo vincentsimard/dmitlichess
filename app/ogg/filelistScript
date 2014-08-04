@@ -1,1 +1,0 @@
-rm filelist.log && find ./ -printf "%p\n"

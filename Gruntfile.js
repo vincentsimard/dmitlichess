@@ -295,6 +295,23 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.registerTask('createSoundList', 'Lists all sound files and saves them in ogg/filelist', function() {
+        var list = {};
+        var content;
+
+        grunt.file.expand(config.app + '/ogg/**/*.ogg').forEach(function(path) {
+            var fileName = path.replace('app/ogg/', '');
+            var key = fileName.split('_')[0].replace('.ogg', '');
+
+            if (!list[key]) { list[key] = []; }
+            list[key].push(fileName);
+        });
+
+        content = 'var sounds = ' + JSON.stringify(list) + ';';
+
+        grunt.file.write(config.app + '/scripts/sounds.js', content);
+    });
+
     grunt.registerTask('debug', function () {
         grunt.task.run([
             'jshint',
@@ -319,7 +336,8 @@ module.exports = function (grunt) {
         'uglify',
         'copy',
         'usemin',
-        'compress'
+        'compress',
+        'createSoundList'
     ]);
 
     grunt.registerTask('default', [
