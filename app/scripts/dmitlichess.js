@@ -1,11 +1,9 @@
 'use strict';
 
-// @TODO: Queue sounds so Dmitry doesn't talk over himself
-//        see http://blogs.msdn.com/b/ie/archive/2011/05/13/unlocking-the-power-of-html5-lt-audio-gt.aspx
-
 // @TODO: Play random bits of Komarov at times ("yes", "unbelievable", etc.)
-
 // @TODO: Fix gameStateEmitter
+
+var audioQueue = [];
 
 var makeAudio = function(file, volume) {
   var audio = new Audio(chrome.extension.getURL('ogg/' + file));
@@ -14,30 +12,43 @@ var makeAudio = function(file, volume) {
   return audio;
 };
 
-var playSound = function(key) {
-  console.log(key, sounds[key]);
+var getRandomSound = function(key) {
   var files = sounds[key];
-  var file;
 
-  // :(
-  if (!files) { return; }
+  return files && files[Math.floor(Math.random()*files.length)];
+};
 
-  file = files[Math.floor(Math.random()*files.length)];
+var playNextSound = function() {
+  if (audioQueue.length > 0) {
+    audioQueue[0].play();
+  }
+};
 
-  makeAudio(file, 1).play();
+var queueSound = function(key) {
+  var file = getRandomSound(key);
+  var audio;
+
+  // No sound for notation :(
+  if (!file) { return; }
+
+  audio = makeAudio(file, 1);
+
+  audio.addEventListener('ended', function() {
+    audioQueue.shift();
+    playNextSound();
+  }, false);
+
+  audioQueue.push(audio);
+
+  if (audioQueue.length === 1) { playNextSound(); }
 };
 
 var unleashDmitry = function() {
-  lichess.$el.on('move capture', function(event, notation) {
-    playSound(notation);
-  });
-  
-  lichess.$el.on('check', function(event) {
-    playSound('check');
-  });
-
-  lichess.$el.on('state', function(event, state) {
-    console.log('Game Over');
+  // Attach event handlers
+  lichess.$el.on({
+    'move capture': function(event, notation) { queueSound(notation); },
+    'check': function(event) { queueSound('check'); },
+    'state': function(event, state) { console.log('Game Over'); }
   });
 };
 
