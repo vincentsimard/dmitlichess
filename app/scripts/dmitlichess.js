@@ -18,6 +18,13 @@ var getRandomSound = function(key) {
   return files && files[Math.floor(Math.random()*files.length)];
 };
 
+var getGenericSound = function(key) {
+  // Generic capture sounds
+  if (key.indexOf('x') === 1) {
+    return getRandomSound(key.substring(1));
+  }
+};
+
 var playNextSound = function() {
   if (audioQueue.length > 0) {
     audioQueue[0].play();
@@ -25,7 +32,9 @@ var playNextSound = function() {
 };
 
 var queueSound = function(key) {
-  var file = getRandomSound(key);
+  console.log(key);
+
+  var file = getRandomSound(key) || getGenericSound(key);
   var audio;
 
   // No sound for notation :(
