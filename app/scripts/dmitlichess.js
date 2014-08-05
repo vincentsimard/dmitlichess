@@ -55,7 +55,7 @@ var queueSound = function(key) {
 
   // Clear the queue if there are too many sounds queued
   // so Dmitry is not too behind the game with his commentary?
-  if (audioQueue.length > 4) { audioQueue = []; }
+  if (audioQueue.length > 3) { audioQueue = []; }
 };
 
 var unleashDmitry = function() {
