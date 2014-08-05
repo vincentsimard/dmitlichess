@@ -4,6 +4,7 @@
 // @TODO: Fix gameStateEmitter
 
 var audioQueue = [];
+var soundsPlayed = 0;
 
 var makeAudio = function(file, volume) {
   var audio = new Audio(chrome.extension.getURL('ogg/' + file));
@@ -60,6 +61,9 @@ var unleashDmitry = function() {
     'check': function(event) { queueSound('check'); },
     'state': function(event, state) { console.log('Game Over'); }
   });
+
+  // setInterval(function() { queueSound('yes'); }, 17000);
+  // setInterval(function() { queueSound('misc'); }, 24000);
 };
 
 var init = function() {
