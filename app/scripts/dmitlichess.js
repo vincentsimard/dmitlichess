@@ -40,6 +40,7 @@ var queueSound = function(key) {
 
   // No sound for notation :(
   if (!file) { return; }
+  // if (!file) { file = getRandomSound('yes'); }
 
   audio = makeAudio(file, 1);
 
@@ -51,7 +52,10 @@ var queueSound = function(key) {
   audioQueue.push(audio);
 
   if (audioQueue.length === 1) { playNextSound(); }
-  // if (audioQueue.length > 4) { audioQueue = []; } // @TODO: Clear the queue if there are too many sounds so Dmitry is not too behind the game with his commentary?
+
+  // Clear the queue if there are too many sounds queued
+  // so Dmitry is not too behind the game with his commentary?
+  if (audioQueue.length > 4) { audioQueue = []; }
 };
 
 var unleashDmitry = function() {
