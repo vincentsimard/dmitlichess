@@ -94,6 +94,8 @@ function MoveEmitter(board) {
   };
 
   var getNotationFromMutation = function(mutation) {
+    if (!isMovement(mutation) && !isCapture(mutation)) { return; }
+
     var origin = getOrigin();
     var destination = getDestination(mutation);
     var pieceName = getPieceName(mutation);
@@ -104,18 +106,21 @@ function MoveEmitter(board) {
 
   var handleMutation = function(mutations) {
     mutations.forEach(function(mutation) {
-      if (mutationSkips > 0) { return; }
-      if (!isMovement(mutation) && !isCapture(mutation)) { return; }
+      var notation, isCaptured, isCastled;
+      
+      notation = getNotationFromMutation(mutation);
 
-      var notation = getNotationFromMutation(mutation);
-      var isCaptured = isCaptureFromNotation(notation);
-      var isCastled = isCastleFromNotation(notation);
+      if (mutationSkips > 0) { return; }
+      if (!notation) { return; }
+
+      isCaptured = isCaptureFromNotation(notation);
+      isCastled = isCastleFromNotation(notation);
 
       // When piece captures or castling moves occur,
       // more mutations are triggerd.
       // mutationSkips is used to prevent additional triggering of events
       if (isCaptured) { mutationSkips = mutationSkips + 1; }
-      if (isCastled) { mutationSkips = mutationSkips + 2; }
+      if (isCastled) { mutationSkips = mutationSkips + 3; } // @TODO: This isn't working properly
 
       lichess.$el.trigger(isCaptured ? 'capture' : 'move', [notation]);
     });

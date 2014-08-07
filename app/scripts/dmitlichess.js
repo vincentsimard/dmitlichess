@@ -3,13 +3,14 @@
 // @TODO: Play random bits of Komarov at times ("yes", "unbelievable", etc.)
 // @TODO: Fix gameStateEmitter
 
+// Misc every 15 seconds, yes every 13 seconds, long one time before 25 minutes
 var config = {
   miscIntervalValue: 15000,
-  yesIntervalValue: 13000
+  yesIntervalValue: 13000,
+  longTimeoutValue: (Math.floor(Math.random() * 1500) + 1) * 1000
 };
 
-var miscInterval;
-var yesInterval;
+var miscInterval, yesInterval, longTimeout;
 
 var audioQueue = [];
 var soundsPlayed = 0;
@@ -106,8 +107,11 @@ var unleashDmitry = function() {
     }
   });
 
+  // Play random sound bits
+  // @TODO: Add an interval for Super GM names shoutouts (Levon Aronian, Magnus Carrrlsen, yessss)
   yesInterval = setInterval(function() { queueSound('yes'); }, config.yesIntervalValue);
   miscInterval = setInterval(function() { queueSound('misc'); }, config.miscIntervalValue);
+  longTimeout = setTimeout(function() { queueSound('long'); }, config.longTimeoutValue);
 };
 
 var init = function() {
