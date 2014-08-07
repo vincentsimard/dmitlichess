@@ -3,6 +3,14 @@
 // @TODO: Play random bits of Komarov at times ("yes", "unbelievable", etc.)
 // @TODO: Fix gameStateEmitter
 
+var config = {
+  miscIntervalValue: 15000,
+  yesIntervalValue: 13000
+};
+
+var miscInterval;
+var yesInterval;
+
 var audioQueue = [];
 var soundsPlayed = 0;
 
@@ -32,30 +40,57 @@ var playNextSound = function() {
   }
 };
 
-var queueSound = function(key) {
-  console.log(key);
+var resetMiscInterval = function() {
+  if (!miscInterval) { return; }
 
+  clearInterval(miscInterval);
+  miscInterval = setInterval(queueSound('misc'), config.miscIntervalValue);
+};
+
+var queueSound = function(key, notAuto) {
   var file = getRandomSound(key) || getGenericSound(key);
   var audio;
 
-  // No sound for notation :(
-  if (!file) { return; }
-  // if (!file) { file = getRandomSound('yes'); }
+  var trueFiveOutOfSix = function() {
+    return !!(Math.floor(Math.random() * 6));
+  };
 
-  audio = makeAudio(file, 1);
-
-  audio.addEventListener('ended', function() {
+  var playNext = function() {
     audioQueue.shift();
     playNextSound();
-  }, false);
+  };
+
+  var resetQueue = function() {
+    audioQueue = [];
+    resetMiscInterval();
+  };
+
+  var doEnded = function() {
+    // Clear the queue if there are too many sounds queued
+    // so Dmitry is not too behind the game with his commentary?
+    if (audioQueue.length > 3) {
+      resetQueue();
+    } else {
+      playNext();
+    }
+  };
+
+  console.log(key, file);
+
+  // No sound for notation :(
+  if (!file) {
+    // Random chance (1/6) to play a 'yes' sound instead of nothing
+    // when the sound doesn't exist
+    if (trueFiveOutOfSix()) { return; }
+    file = getRandomSound('yes');
+  }
+
+  audio = makeAudio(file, 1);
+  audio.addEventListener('ended', doEnded, false);
 
   audioQueue.push(audio);
 
   if (audioQueue.length === 1) { playNextSound(); }
-
-  // Clear the queue if there are too many sounds queued
-  // so Dmitry is not too behind the game with his commentary?
-  if (audioQueue.length > 3) { audioQueue = []; }
 };
 
 var unleashDmitry = function() {
@@ -63,11 +98,16 @@ var unleashDmitry = function() {
   lichess.$el.on({
     'move capture': function(event, notation) { queueSound(notation); },
     'check': function(event) { queueSound('check'); },
-    'state': function(event, state) { console.log('Game Over'); }
+    'state': function(event, state) {
+      console.log('Game Over');
+
+      if (miscInterval) { clearInterval(miscInterval); }
+      if (yesInterval) { clearInterval(yesInterval); }
+    }
   });
 
-  // setInterval(function() { queueSound('yes'); }, 17000);
-  // setInterval(function() { queueSound('misc'); }, 24000);
+  yesInterval = setInterval(function() { queueSound('yes'); }, config.yesIntervalValue);
+  miscInterval = setInterval(function() { queueSound('misc'); }, config.miscIntervalValue);
 };
 
 var init = function() {
