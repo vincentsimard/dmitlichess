@@ -1,6 +1,5 @@
 'use strict';
 
-// @TODO: Play random bits of Komarov at times ("yes", "unbelievable", etc.)
 // @TODO: Fix gameStateEmitter
 
 // Misc every 15 seconds, yes every 13 seconds, long one time before 25 minutes
