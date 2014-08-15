@@ -75,7 +75,7 @@ var queueSound = function(key, notAuto) {
     }
   };
 
-  console.log(key, file);
+  // console.log(key, file);
 
   // No sound for notation :(
   if (!file) {
@@ -99,11 +99,11 @@ var unleashDmitry = function() {
     'move capture': function(event, notation) { queueSound(notation); },
     'check': function(event) { queueSound('check'); },
     'state': function(event, state) {
-      console.log('Game Over');
+      console.log('Game Over', state);
 
       if (miscInterval) { clearInterval(miscInterval); }
       if (yesInterval) { clearInterval(yesInterval); }
-      if (longTimeoutValue) { clearTimeout(longTimeoutValue); }
+      if (longTimeout) { clearTimeout(longTimeout); }
     }
   });
 
