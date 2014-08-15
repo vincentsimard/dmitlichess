@@ -2,7 +2,7 @@
 
 // @TODO: Fix gameStateEmitter
 
-// Misc every 15 seconds, yes every 13 seconds, long one time before 25 minutes
+// Misc: every 15 seconds, yes: every 13 seconds, long: one time before 25 minutes
 var config = {
   miscIntervalValue: 15000,
   yesIntervalValue: 13000,
@@ -103,6 +103,7 @@ var unleashDmitry = function() {
 
       if (miscInterval) { clearInterval(miscInterval); }
       if (yesInterval) { clearInterval(yesInterval); }
+      if (longTimeoutValue) { clearTimeout(longTimeoutValue); }
     }
   });
 
