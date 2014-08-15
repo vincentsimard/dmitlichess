@@ -29,9 +29,13 @@ var getRandomSound = function(key) {
 
 var getGenericSound = function(key) {
   // Generic capture sounds
-  if (key.indexOf('x') === 1) {
-    return getRandomSound(key.substring(1));
-  }
+  if (key.indexOf('x') === 1) { return getRandomSound(key.substring(1)); }
+
+  // Translate some game end states
+  // @TODO: Individual sounds for white/black resigned?
+  if (key.indexOf('white resigned') >= 0) { return getRandomSound('resign'); }
+  if (key.indexOf('black resigned') >= 0) { return getRandomSound('resign'); }
+  if (key.indexOf('time out') >= 0) { return getRandomSound('flag'); }
 };
 
 var playNextSound = function() {
@@ -75,7 +79,7 @@ var queueSound = function(key, notAuto) {
     }
   };
 
-  // console.log(key, file);
+  console.log(key, file);
 
   // No sound for notation :(
   if (!file) {
@@ -100,6 +104,8 @@ var unleashDmitry = function() {
     'check': function(event) { queueSound('check'); },
     'state': function(event, state) {
       console.log('Game Over', state);
+
+      queueSound(state);
 
       if (miscInterval) { clearInterval(miscInterval); }
       if (yesInterval) { clearInterval(yesInterval); }

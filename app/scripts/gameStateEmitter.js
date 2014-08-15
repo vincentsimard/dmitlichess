@@ -1,5 +1,7 @@
 'use strict';
 
+// @TODO: State is triggered again when a rematch is offered
+
 function GameStateEmitter() {
   var handleMutation = function(mutations) {
     if (!lichess.isGameOver()) { return; }
@@ -18,7 +20,8 @@ function GameStateEmitter() {
 
   this.createObserver = function() {
     var observer = new MutationObserver(handleMutation);
-    var config = { attributes: true };
+    // var config = { attributes: true };
+    var config = { childList: true, subtree: true };
 
     if (lichess.elTable) { observer.observe(lichess.elTable, config); }
 
