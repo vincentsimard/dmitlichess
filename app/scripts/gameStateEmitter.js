@@ -10,7 +10,6 @@ function GameStateEmitter() {
     var states = ['checkmate', 'draw', 'time out', 'white resigned', 'black resigned'];
     var state, i;
 
-    // @TODO: Doesn't work because the text is updated after the class
     for (i=0; i<states.length; i++) {
       if (tableText.indexOf(states[i]) > -1) { state = states[i]; }
     }
@@ -20,7 +19,6 @@ function GameStateEmitter() {
 
   this.createObserver = function() {
     var observer = new MutationObserver(handleMutation);
-    // var config = { attributes: true };
     var config = { childList: true, subtree: true };
 
     if (lichess.elTable) { observer.observe(lichess.elTable, config); }

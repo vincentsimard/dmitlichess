@@ -1,7 +1,5 @@
 'use strict';
 
-// @TODO: Fix gameStateEmitter
-
 // Misc: every 15 seconds, yes: every 13 seconds, long: one time before 25 minutes
 var config = {
   miscIntervalValue: 15000,

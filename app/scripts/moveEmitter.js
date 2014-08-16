@@ -1,9 +1,5 @@
 'use strict';
 
-// @TODO: Detect castling
-// @TODO: Detect check
-// @TODO: Detect checkmate, resign, draw
-
 function MoveEmitter(board) {
   var PIECES = {
     pawn:   '',
