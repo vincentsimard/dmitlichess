@@ -1,13 +1,13 @@
 'use strict';
 
-function CheckEmitter(board) {
+function CheckEmitter(board, triggerEl) {
   var handleMutation = function(mutations) {
-    if (lichess.isGameOver()) { return; }
+    if (lichess && lichess.isGameOver()) { return; }
 
     mutations.forEach(function(mutation) {
       if (!mutation.target.classList.contains('check')) { return; }
 
-      lichess.$el.trigger('check');
+      triggerEl.trigger('check');
     });
   };
 

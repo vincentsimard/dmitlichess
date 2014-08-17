@@ -1,5 +1,11 @@
 'use strict';
 
+// @TODO: Soundboard
+// @TODO: Options/config:
+//          - Sound level
+//          - Frenquency of misc/yes/long
+// @TODO: Game start sounds
+
 // Misc: every 15 seconds, yes: every 13 seconds, long: one time before 25 minutes
 var config = {
   miscIntervalValue: 15000,
@@ -125,10 +131,8 @@ var init = function() {
   if (!lichess.elBoard) { return; }
 
   moveEmitter = new MoveEmitter(lichess.elBoard);
-  checkEmitter = new CheckEmitter(lichess.elBoard);
+  checkEmitter = new CheckEmitter(lichess.elBoard, lichess.$el);
   gameStateEmitter = new GameStateEmitter();
-
-  // lichess.disableDefaultSounds();
 
   unleashDmitry();
 };

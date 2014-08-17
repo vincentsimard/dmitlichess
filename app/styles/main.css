@@ -1,3 +1,27 @@
 body {
-    padding: 20px;
+  padding: 20px;
 }
+
+#board {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  width: 200px;
+  height: 200px;
+  background-color: red;
+  font: 10px 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
+  line-height: 25px;
+  overflow: hidden;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#board .square {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  float: left;
+}
+
+#board .square.light { background-color: #f3f3f3; color: black; }
+#board .square.dark  { background-color: #0e0e0e; color: white; }
