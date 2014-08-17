@@ -101,9 +101,9 @@ var queueSound = function(key, notAuto) {
   if (audioQueue.length === 1) { playNextSound(); }
 };
 
-var unleashDmitry = function() {
+var unleashDmitry = function(elTrigger) {
   // Attach event handlers
-  lichess.$el.on({
+  elTrigger.on({
     'move capture': function(event, notation) { queueSound(notation); },
     'check': function(event) { queueSound('check'); },
     'state': function(event, state) {
@@ -130,11 +130,11 @@ var init = function() {
   if (!sounds) { return; }
   if (!lichess.elBoard) { return; }
 
-  moveEmitter = new MoveEmitter(lichess.elBoard);
+  moveEmitter = new MoveEmitter(lichess.elBoard, lichess.$el);
   checkEmitter = new CheckEmitter(lichess.elBoard, lichess.$el);
-  gameStateEmitter = new GameStateEmitter();
+  gameStateEmitter = new GameStateEmitter(lichess.elTable, lichess.$el);
 
-  unleashDmitry();
+  unleashDmitry(lichess.$el);
 };
 
 init();

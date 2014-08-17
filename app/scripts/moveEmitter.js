@@ -1,6 +1,6 @@
 'use strict';
 
-function MoveEmitter(board) {
+function MoveEmitter(board, elTrigger) {
   var PIECES = {
     pawn:   '',
     knight: 'N',
@@ -118,7 +118,7 @@ function MoveEmitter(board) {
       if (isCaptured) { mutationSkips = mutationSkips + 1; }
       if (isCastled) { mutationSkips = mutationSkips + 3; } // @TODO: This isn't working properly
 
-      lichess.$el.trigger(isCaptured ? 'capture' : 'move', [notation]);
+      elTrigger.trigger(isCaptured ? 'capture' : 'move', [notation]);
     });
 
     if (mutationSkips > 0) { mutationSkips--; }
