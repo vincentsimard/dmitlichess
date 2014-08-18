@@ -1,5 +1,6 @@
 'use strict';
 
+var soundboard = document.querySelector('#soundboard');
 var board = document.querySelector('#board');
 var squares = document.querySelectorAll('.square');
 var squaresArray = Array.prototype.slice.call(squares);
@@ -19,9 +20,11 @@ var getRandomSound = function(key) {
   return files && files[Math.floor(Math.random()*files.length)];
 };
 
-var playSound = function(key) {
-  var file = getRandomSound(key);
+var playSound = function(key, isMisc) {
+  var file = isMisc ? key : getRandomSound(key);
   var audio;
+
+  console.log(file);
 
   // No sound for notation :(
   if (!file) { return; }
@@ -30,10 +33,7 @@ var playSound = function(key) {
   audio.play();
 };
 
-var init = function() {
-  if (!sounds) { return; }
-  if (!board) { return; }
-
+var initBoard = function() {
   var createSquareListener = function(square) {
     square.addEventListener('click', function(event) {
       var keys = ['N', 'B', 'R', 'Q', 'K'];
@@ -54,11 +54,55 @@ var init = function() {
     keyModifier = '';
   });
 
-  document.querySelector('#misc').addEventListener('click', function(event) {
+  squaresArray.map(createSquareListener);
+};
+
+var initMiscRandom = function() {
+  document.querySelector('#randomMisc').addEventListener('click', function(event) {
     playSound('misc');
   });
+};
 
-  squaresArray.map(createSquareListener);
+var initMiscList = function() {
+  var misc = sounds['misc'];
+  var trimmed = misc.map(function(item) {
+    var name = item;
+
+    name = name.replace('misc_', '');
+    name = name.replace('.ogg', '');
+
+    return name;
+  });
+
+  var createOption = function(value, text) {
+    var option = document.createElement('option');
+    option.value = value;
+    option.text = text;
+    return option;
+  }
+
+  var selectList = document.createElement('select');
+  selectList.id = 'miscList';
+
+  selectList.appendChild(createOption('', ''));
+  for (var i = 0; i < trimmed.length; i++) {
+    selectList.appendChild(createOption(misc[i], trimmed[i]));
+  }
+  
+  soundboard.appendChild(selectList);
+
+  selectList.addEventListener('change', function(event) {
+    playSound(this.value, true);
+  });
+};
+
+var init = function() {
+  if (!sounds) { return; }
+  if (!board) { return; }
+
+  initMiscRandom();
+  initMiscList();
+  initBoard();
 };
 
 init();

@@ -26,6 +26,7 @@ kbd {
   -ms-user-select: none;
   user-select: none;
   cursor: pointer;
+  border: 1px solid black;
 }
 
 #board:after {
@@ -40,5 +41,5 @@ kbd {
   float: left;
 }
 
-#board .square.light { background-color: #f3f3f3; color: black; }
-#board .square.dark  { background-color: #0e0e0e; color: white; }
+#board .square.light { background-color: #f9f9f9; color: black; }
+#board .square.dark  { background-color: #3a3a3a; color: white; }
