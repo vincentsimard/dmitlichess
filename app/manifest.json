@@ -1,6 +1,6 @@
 {
     "name": "dmitlichess",
-    "version": "0.2.48",
+    "version": "0.2.49",
     "manifest_version": 2,
     "description": "Updates lichess.org sounds with the soothing voice of Dmitry Komarov",
     "icons": {

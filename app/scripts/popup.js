@@ -7,6 +7,9 @@ var squaresArray = Array.prototype.slice.call(squares);
 
 var keyModifier = '';
 
+var options = { volume: 100 };
+
+
 var makeAudio = function(file, volume) {
   var audio = new Audio(chrome.extension.getURL('ogg/' + file));
   audio.volume = volume;
@@ -27,7 +30,7 @@ var playSound = function(key, isMisc) {
   // No sound for notation :(
   if (!file) { return; }
 
-  audio = makeAudio(file, 1);
+  audio = makeAudio(file, options.volume / 100);
   audio.play();
 };
 
@@ -110,9 +113,12 @@ var init = function() {
   if (!sounds) { return; }
   if (!board) { return; }
 
-  initMiscRandom();
-  initMiscList();
-  initBoard();
+  chrome.storage.sync.get(options, function(items) {
+    options = items;
+    initMiscRandom();
+    initMiscList();
+    initBoard();
+  });
 };
 
 init();
