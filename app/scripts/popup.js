@@ -64,11 +64,23 @@ var initMiscRandom = function() {
 };
 
 var initMiscList = function() {
-  var misc = sounds['misc'];
-  var trimmed = misc.map(function(item) {
+  var list = []
+    .concat(sounds['misc'])
+    .concat(sounds['check'])
+    .concat(sounds['checkmate'])
+    .concat(sounds['draw'])
+    .concat(sounds['resign'])
+    .concat(sounds['start'])
+    .concat(sounds['name'])
+    .concat(sounds['check'])
+    .concat(sounds['yes'])
+    .concat(sounds['long']);
+
+  var trimmed = list.map(function(item) {
     var name = item;
 
     name = name.replace('misc_', '');
+    name = name.replace('long_', '');
     name = name.replace('.ogg', '');
 
     return name;
@@ -86,7 +98,7 @@ var initMiscList = function() {
 
   selectList.appendChild(createOption('', ''));
   for (var i = 0; i < trimmed.length; i++) {
-    selectList.appendChild(createOption(misc[i], trimmed[i]));
+    selectList.appendChild(createOption(list[i], trimmed[i]));
   }
   
   soundboard.appendChild(selectList);
