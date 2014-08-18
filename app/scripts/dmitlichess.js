@@ -1,15 +1,20 @@
 'use strict';
 
-// @TODO: Options/config:
+// @TODO: Options:
 //          - Sound level
 //          - Frenquency of misc/yes/long
 // @TODO: Game start sounds
 
-// Misc: every 15 seconds, yes: every 13 seconds, long: one time before 25 minutes
-var config = {
-  miscIntervalValue: 15000,
-  yesIntervalValue: 13000,
-  longTimeoutValue: (Math.floor(Math.random() * 1500) + 1) * 1000
+// Default options:
+//   Volume: 100%
+//   Misc sound: every 15 seconds
+//   Yes sound: every 13 seconds
+//   Long sound: once before the 1 hour mark (random time during the game)
+var options = {
+  volume: 100,
+  miscInterval: 15000,
+  yesInterval: 13000,
+  longTimeout: 3600
 };
 
 var miscInterval, yesInterval, longTimeout;
@@ -51,7 +56,7 @@ var resetMiscInterval = function() {
   if (!miscInterval) { return; }
 
   clearInterval(miscInterval);
-  miscInterval = setInterval(queueSound('misc'), config.miscIntervalValue);
+  miscInterval = setInterval(queueSound('misc'), options.miscInterval);
 };
 
 var queueSound = function(key, notAuto) {
@@ -92,7 +97,7 @@ var queueSound = function(key, notAuto) {
     file = getRandomSound('yes');
   }
 
-  audio = makeAudio(file, 1);
+  audio = makeAudio(file, options.volume / 100);
   audio.addEventListener('ended', doEnded, false);
 
   audioQueue.push(audio);
@@ -116,11 +121,13 @@ var unleashDmitry = function(elTrigger) {
     }
   });
 
+  console.log(options);
+
   // Play random sound bits
   // @TODO: Add an interval for Super GM names shoutouts (Levon Aronian, Magnus Carrrlsen, yessss)
-  yesInterval = setInterval(function() { queueSound('yes'); }, config.yesIntervalValue);
-  miscInterval = setInterval(function() { queueSound('misc'); }, config.miscIntervalValue);
-  longTimeout = setTimeout(function() { queueSound('long'); }, config.longTimeoutValue);
+  yesInterval = setInterval(function() { queueSound('yes'); }, options.yesInterval);
+  miscInterval = setInterval(function() { queueSound('misc'); }, options.miscInterval);
+  longTimeout = setTimeout(function() { queueSound('long'); }, (Math.floor(Math.random() * options.longTimeout) + 1) * 1000);
 };
 
 var init = function() {
@@ -133,7 +140,10 @@ var init = function() {
   checkEmitter = new CheckEmitter(lichess.elBoard, lichess.$el);
   gameStateEmitter = new GameStateEmitter(lichess.elTable, lichess.$el);
 
-  unleashDmitry(lichess.$el);
+  chrome.storage.sync.get(options, function(items) {
+    options = items;
+    unleashDmitry(lichess.$el);
+  });
 };
 
 init();

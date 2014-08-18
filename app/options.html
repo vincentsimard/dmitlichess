@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>dmitlichess options</title>
+  </head>
+  <body>
+    <p>
+      <input id="volume" type="range" min="0" max="100" step="1" />
+      <label for="volume">Volume </label>
+    </p>
+
+    <p>
+      <input id="miscInterval" type="range" min="1000" max="100000" step="1000" />
+      <label for="miscInterval">Misc sound interval (lower means 'misc' sounds are played more frequently)</label>
+    </p>
+
+    <p>
+      <input id="yesInterval" type="range" min="1000" max="100000" step="1000" />
+      <label for="yesInterval">Yes sound interval (lower means 'yes' sounds are played more frequently)</label>
+    </p>
+
+    <p>
+      <input id="longTimeout" type="range" min="10" max="10000" step="1" />
+      <label for="longTimeout">Long sound sample time (lower means higher chance to play earlier in the game)</label>
+    </p>
+
+    <button id="save">Save</button>
+    <button id="default">Restore defaults</button>
+    <div id="status"></div>
+
+    <script src="scripts/options.js"></script>
+  </body>
+</html>
