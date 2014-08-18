@@ -7,7 +7,6 @@
         <!-- endbuild -->
         <!-- build:css styles/main.css -->
         <link href="styles/main.css" rel="stylesheet">
-        <link href="styles/main.css" rel="stylesheet">
         <!-- endbuild -->
     </head>
     <body>
@@ -78,6 +77,8 @@
                 <div class="square dark " id="g1">g1</div>
                 <div class="square light" id="h1">h1</div>
             </div>
+            <p id="instructions">Hold <kbd>N</kbd>, <kbd>B</kbd>, <kbd>R</kbd>, <kbd>Q</kbd>, or <kbd>K</kbd> when clicking squares to play respective piece moves. Hold <kbd>shift</kbd> for captures.</p>
+            <p><a href="#" id="misc">Play a misc sound</a></p>
         </div>
 
         <!-- build:js scripts/vendor.js -->
@@ -86,6 +87,7 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/popup.js -->
+        <script src="scripts/sounds.js"></script>
         <script src="scripts/popup.js"></script>
         <!-- endbuild -->
     </body>

@@ -1,5 +1,10 @@
 body {
+  font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
   padding: 20px;
+}
+
+kbd {
+  font-family: monospace;
 }
 
 #board {
@@ -9,15 +14,27 @@ body {
   width: 200px;
   height: 200px;
   background-color: red;
-  font: 10px 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
+  font-size: 10px;
   line-height: 25px;
   overflow: hidden;
   text-align: center;
   text-transform: uppercase;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+#board:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 #board .square {
-  position: relative;
   width: 25px;
   height: 25px;
   float: left;
