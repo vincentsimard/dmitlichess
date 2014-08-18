@@ -1,6 +1,5 @@
 'use strict';
 
-// @TODO: Soundboard
 // @TODO: Options/config:
 //          - Sound level
 //          - Frenquency of misc/yes/long
