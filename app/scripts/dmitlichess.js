@@ -56,7 +56,7 @@ var resetMiscInterval = function() {
   if (!miscInterval) { return; }
 
   clearInterval(miscInterval);
-  miscInterval = setInterval(queueSound('misc'), options.miscInterval);
+  miscInterval = setInterval(function() { queueSound('misc'); }, options.miscInterval);
 };
 
 var queueSound = function(key, notAuto) {
