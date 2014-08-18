@@ -87,7 +87,7 @@ var queueSound = function(key, notAuto) {
     }
   };
 
-  console.log(key, file);
+  // console.log(key, file);
 
   // No sound for notation :(
   if (!file) {
@@ -111,7 +111,7 @@ var unleashDmitry = function(elTrigger) {
     'move capture': function(event, notation) { queueSound(notation); },
     'check': function(event) { queueSound('check'); },
     'state': function(event, state) {
-      console.log('Game Over', state);
+      // console.log('Game Over', state);
 
       queueSound(state);
 
@@ -120,8 +120,6 @@ var unleashDmitry = function(elTrigger) {
       if (longTimeout) { clearTimeout(longTimeout); }
     }
   });
-
-  console.log(options);
 
   // Play random sound bits
   // @TODO: Add an interval for Super GM names shoutouts (Levon Aronian, Magnus Carrrlsen, yessss)

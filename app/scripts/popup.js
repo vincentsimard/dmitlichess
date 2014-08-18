@@ -24,8 +24,6 @@ var playSound = function(key, isMisc) {
   var file = isMisc ? key : getRandomSound(key);
   var audio;
 
-  console.log(file);
-
   // No sound for notation :(
   if (!file) { return; }
 
