@@ -1,8 +1,6 @@
 'use strict';
 
-// @TODO: Options:
-//          - Sound level
-//          - Frenquency of misc/yes/long
+// @TODO: Increase volume of audio files and normalize/replaygain
 // @TODO: Game start sounds
 
 // Default options:
@@ -87,7 +85,7 @@ var queueSound = function(key, notAuto) {
     }
   };
 
-  // console.log(key, file);
+  console.log(key, file);
 
   // No sound for notation :(
   if (!file) {
