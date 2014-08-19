@@ -336,8 +336,8 @@ module.exports = function (grunt) {
         'uglify',
         'copy',
         'usemin',
-        'compress',
-        'createSoundList'
+        'createSoundList',
+        'compress'
     ]);
 
     grunt.registerTask('default', [
