@@ -1,7 +1,5 @@
 'use strict';
 
-// @TODO: State is triggered again when a rematch is offered
-
 function GameStateEmitter(table, elTrigger) {
   var handleMutation = function(mutations) {
     if (!(lichess && lichess.isGameOver())) { return; }
@@ -15,6 +13,11 @@ function GameStateEmitter(table, elTrigger) {
     }
 
     elTrigger.trigger('state', [state]);
+
+    // Automatically disconnect after the game ends
+    // to prevent triggering again on rematch
+    // @TODO: Figure out a better solution
+    this.disconnect();
   };
 
   this.createObserver = function() {
