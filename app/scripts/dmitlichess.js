@@ -2,6 +2,11 @@
 
 // @TODO: Increase volume of audio files and normalize/replaygain
 // @TODO: Game start sounds
+// @TODO: Add option to enable/disable extension for when:
+//   - playing
+//   - observing
+//   - analyzing (needs additional work...)
+// @TODO: Handle notation like Nbd7, Rae1, etc.
 
 // Default options:
 //   Volume: 100%
