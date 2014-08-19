@@ -85,7 +85,7 @@ var queueSound = function(key, notAuto) {
     }
   };
 
-  console.log(key, file);
+  // console.log(key, file);
 
   // No sound for notation :(
   if (!file) {
