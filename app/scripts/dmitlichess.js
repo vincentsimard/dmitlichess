@@ -7,6 +7,7 @@
 //   - observing
 //   - analyzing (needs additional work...)
 // @TODO: Handle notation like Nbd7, Rae1, etc.
+// @TODO: Running grunt build doesn't copy scripts/options.js to the dist folder
 
 // Default options:
 //   Volume: 100%
@@ -63,6 +64,8 @@ var resetMiscInterval = function() {
 };
 
 var queueSound = function(key, notAuto) {
+  // console.log(key);
+
   var file = getRandomSound(key) || getGenericSound(key);
   var audio;
 

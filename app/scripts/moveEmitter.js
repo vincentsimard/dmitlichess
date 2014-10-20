@@ -15,10 +15,14 @@ function MoveEmitter(board, elTrigger) {
   var mutationSkips = 0;
 
   var isMovement = function(mutation) {
-    return mutation.addedNodes.length > 0 && mutation.addedNodes[0].classList.contains('piece');
+    return mutation.addedNodes.length > 0 && mutation.addedNodes[0].classList.contains('cg-piece');
   };
 
   var isCapture = function(mutation) {
+    console.log(mutation);
+
+    return false;
+
     return mutation.removedNodes &&
       mutation.removedNodes.length > 0 &&
       mutation.removedNodes[0].parentNode.classList.contains('lichess_tomb');
@@ -41,24 +45,27 @@ function MoveEmitter(board, elTrigger) {
     return defaultOrigin && expectedDestination;
   };
 
+  var getNotationFromSquare = function(square) {
+    // @TODO: Use class that has length = 2 instead of [1]
+    if (square) {
+      return square.classList[1];
+    }
+  };
+
   var getDestination = function(mutation) {
-    return mutation.target.id;
+    var square = board.querySelector('.last-move.occupied');
+
+    return getNotationFromSquare(square) || '';
   };
 
   var getOrigin = function() {
-    var moved = board.querySelectorAll('.moved');
-    var movedArray = Array.prototype.slice.call(moved);
+    var square = board.querySelector('.last-move:not(.occupied)');
 
-    var origin = movedArray.filter(function(el) {
-      // @TODO: Rewrite this, `< 2` means there's no .piece child element...
-      return el.childElementCount < 2;
-    })[0];
-
-    if (origin) { return origin.id; }
+    return getNotationFromSquare(square) || '';
   };
 
   var getPieceName = function(mutation) {
-    var piece = mutation.target.querySelector('.piece');
+    var piece = mutation.target.querySelector('.cg-piece');
     var i, name;
 
     if (piece) {
@@ -141,6 +148,6 @@ function MoveEmitter(board, elTrigger) {
     });
   };
 
-  this.squares = Array.prototype.slice.call(board.querySelectorAll('.lcs'));
+  this.squares = Array.prototype.slice.call(board.querySelectorAll('.cg-square'));
   this.observers = this.squares.map(this.createObserver);
 }

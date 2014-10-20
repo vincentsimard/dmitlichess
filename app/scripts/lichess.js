@@ -4,7 +4,7 @@ var lichess = {};
 
 lichess.el = document.querySelector('#lichess');
 lichess.$el = $(lichess.el);
-lichess.elTable = lichess.el.querySelector('.lichess_table');
+lichess.elTable = lichess.el.querySelector('.lichess_ground');
 lichess.elBoard = lichess.el.querySelector('.lichess_board');
 
 lichess.isGameOver = function() {
