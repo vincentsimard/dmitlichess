@@ -19,7 +19,7 @@ function MoveEmitter(board, elTrigger) {
   };
 
   var isCapture = function(mutation) {
-    console.log(mutation);
+    // console.log(mutation);
 
     return false;
 
@@ -98,6 +98,7 @@ function MoveEmitter(board, elTrigger) {
 
   var getNotationFromMutation = function(mutation) {
     if (!isMovement(mutation) && !isCapture(mutation)) { return; }
+    if (!mutation.target.classList.contains('last-move')) { return; }
 
     var origin = getOrigin();
     var destination = getDestination(mutation);
@@ -115,6 +116,8 @@ function MoveEmitter(board, elTrigger) {
 
       if (mutationSkips > 0) { return; }
       if (!notation) { return; }
+
+      console.log(notation);
 
       isCaptured = isCaptureFromNotation(notation);
       isCastled = isCastleFromNotation(notation);
