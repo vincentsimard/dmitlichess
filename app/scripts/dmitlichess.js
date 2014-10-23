@@ -91,7 +91,7 @@ var queueSound = function(key, notAuto) {
     }
   };
 
-  console.log(key, file);
+  // console.log(key, file);
 
   // No sound for notation :(
   if (!file) {
@@ -115,8 +115,6 @@ var unleashDmitry = function(elTrigger) {
     'move capture': function(event, notation) { queueSound(notation); },
     'check': function(event) { queueSound('check'); },
     'state': function(event, state) {
-      // console.log('Game Over', state);
-
       queueSound(state);
 
       if (miscInterval) { clearInterval(miscInterval); }
@@ -139,7 +137,7 @@ var init = function() {
   if (!lichess.elBoard) { return; }
 
   moveEmitter = new MoveEmitter(lichess.elMoves, lichess.$el);
-  gameStateEmitter = new GameStateEmitter(lichess.elTable, lichess.$el);
+  gameStateEmitter = new GameStateEmitter(lichess.elSiteHeader, lichess.$el);
 
   chrome.storage.sync.get(options, function(items) {
     options = items;

@@ -1,15 +1,15 @@
 'use strict';
 
-function GameStateEmitter(table, elTrigger) {
+function GameStateEmitter(header, elTrigger) {
   var handleMutation = function(mutations) {
     if (!(lichess && lichess.isGameOver())) { return; }
 
-    var tableText = table.innerText.toLowerCase();
+    var text = header.innerText.toLowerCase();
     var states = ['checkmate', 'draw', 'time out', 'white resigned', 'black resigned'];
     var state, i;
 
     for (i=0; i<states.length; i++) {
-      if (tableText.indexOf(states[i]) > -1) { state = states[i]; }
+      if (text.indexOf(states[i]) > -1) { state = states[i]; }
     }
 
     elTrigger.trigger('state', [state]);
@@ -22,9 +22,9 @@ function GameStateEmitter(table, elTrigger) {
 
   this.createObserver = function() {
     var observer = new MutationObserver(handleMutation);
-    var config = { childList: true };
+    var config = { childList: true, subtree: true };
 
-    if (table) { observer.observe(table, config); }
+    if (header) { observer.observe(header, config); }
 
     return observer;
   };

@@ -5,6 +5,10 @@ function MoveEmitter(moves, elTrigger) {
   var isCastle = function(notation) { return notation.indexOf('0-0') > -1; };
   var isCheck = function(notation) { return notation.indexOf('+') > -1; };
 
+  var trimSymbols = function(notation) {
+    return notation.replace('+', '').replace('#', '');
+  };
+
   var handleMutation = function(mutations) {
     var added, notation;
 
@@ -21,7 +25,7 @@ function MoveEmitter(moves, elTrigger) {
 
       if (!notation) { return; }
 
-      elTrigger.trigger(isCapture(notation) ? 'capture' : 'move', [notation]);
+      elTrigger.trigger(isCapture(notation) ? 'capture' : 'move', [trimSymbols(notation)]);
       if (isCheck(notation)) { elTrigger.trigger('check'); }
     });
   };
