@@ -1,6 +1,8 @@
 'use strict';
 
 function MoveEmitter(board, elTrigger) {
+  var theBoard;
+
   var PIECES = {
     pawn:   '',
     knight: 'N',
@@ -19,7 +21,9 @@ function MoveEmitter(board, elTrigger) {
   };
 
   var isCapture = function(mutation) {
-    // console.log(mutation);
+    if (mutation.removedNodes && mutation.removedNodes.length > 0) {
+      // console.log(mutation.removedNodes[0]);
+    }
 
     return false;
 
@@ -97,13 +101,22 @@ function MoveEmitter(board, elTrigger) {
   };
 
   var getNotationFromMutation = function(mutation) {
-    if (!isMovement(mutation) && !isCapture(mutation)) { return; }
+    var capture = isCapture(mutation);
+
+    // if (!isMovement(mutation)) {
+    //   console.log(theBoard.querySelector('.c6.cg-square .cg-piece').classList, mutation);
+    // }
+
+    if (mutation.target.classList.contains('last-move')) {
+      console.log('yup', mutation);
+    }
+
+    if (!isMovement(mutation) && !capture) { return; }
     if (!mutation.target.classList.contains('last-move')) { return; }
 
     var origin = getOrigin();
     var destination = getDestination(mutation);
     var pieceName = getPieceName(mutation);
-    var capture = isCapture(mutation);
 
     return getNotation(origin, destination, pieceName, capture);
   };
@@ -117,7 +130,7 @@ function MoveEmitter(board, elTrigger) {
       if (mutationSkips > 0) { return; }
       if (!notation) { return; }
 
-      console.log(notation);
+      // console.log(notation);
 
       isCaptured = isCaptureFromNotation(notation);
       isCastled = isCastleFromNotation(notation);
@@ -132,13 +145,15 @@ function MoveEmitter(board, elTrigger) {
     });
 
     if (mutationSkips > 0) { mutationSkips--; }
+
+    theBoard = lichess.elBoard;
   };
 
 
 
   this.createObserver = function(square) {
     var observer = new MutationObserver(handleMutation);
-    var config = { childList: true };
+    var config = { childList: true, subtree: true, attributeOldValue: true, attributeFilter: ['class'] };
 
     if (square) { observer.observe(square, config); }
 
@@ -150,6 +165,8 @@ function MoveEmitter(board, elTrigger) {
       return o.disconnect();
     });
   };
+
+  theBoard = lichess.elBoard;
 
   this.squares = Array.prototype.slice.call(board.querySelectorAll('.cg-square'));
   this.observers = this.squares.map(this.createObserver);

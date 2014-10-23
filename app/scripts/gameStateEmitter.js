@@ -22,7 +22,7 @@ function GameStateEmitter(table, elTrigger) {
 
   this.createObserver = function() {
     var observer = new MutationObserver(handleMutation);
-    var config = { childList: true, subtree: true };
+    var config = { childList: true };
 
     if (table) { observer.observe(table, config); }
 
