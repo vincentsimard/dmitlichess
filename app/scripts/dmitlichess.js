@@ -64,8 +64,6 @@ var resetMiscInterval = function() {
 };
 
 var queueSound = function(key, notAuto) {
-  // console.log(key);
-
   var file = getRandomSound(key) || getGenericSound(key);
   var audio;
 
@@ -93,7 +91,7 @@ var queueSound = function(key, notAuto) {
     }
   };
 
-  // console.log(key, file);
+  console.log(key, file);
 
   // No sound for notation :(
   if (!file) {
@@ -135,13 +133,12 @@ var unleashDmitry = function(elTrigger) {
 };
 
 var init = function() {
-  var moveEmitter, checkEmitter, gameStateEmitter;
+  var moveEmitter, gameStateEmitter;
 
   if (!sounds) { return; }
   if (!lichess.elBoard) { return; }
 
-  moveEmitter = new MoveEmitter(lichess.elBoard, lichess.$el);
-  checkEmitter = new CheckEmitter(lichess.elBoard, lichess.$el);
+  moveEmitter = new MoveEmitter(lichess.elMoves, lichess.$el);
   gameStateEmitter = new GameStateEmitter(lichess.elTable, lichess.$el);
 
   chrome.storage.sync.get(options, function(items) {

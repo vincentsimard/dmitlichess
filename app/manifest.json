@@ -30,7 +30,6 @@
                 "scripts/lichess.js",
                 "scripts/sounds.js",
                 "scripts/moveEmitter.js",
-                "scripts/checkEmitter.js",
                 "scripts/gameStateEmitter.js",
                 "scripts/dmitlichess.js"
             ],
