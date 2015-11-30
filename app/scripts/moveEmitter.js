@@ -17,13 +17,14 @@ function MoveEmitter(moves, elTrigger) {
 
       added = mutation.addedNodes[0];
 
-      if (added.nodeName === 'TR') {
-        added = added.querySelector('td:last-child');
+      if (added.nodeName === 'TURN') {
+        added = added.querySelector('MOVE:last-child');
       }
 
       notation = added.textContent;
 
       if (!notation) { return; }
+      if (!added.classList.contains('active')) { return; }
 
       elTrigger.trigger(isCapture(notation) ? 'capture' : 'move', [trimSymbols(notation)]);
       if (isCheck(notation)) { elTrigger.trigger('check'); }
