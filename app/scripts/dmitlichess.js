@@ -64,6 +64,8 @@ var resetMiscInterval = function() {
 };
 
 var queueSound = function(key, notAuto) {
+  if (typeof key === 'undefined') { return; }
+
   var file = getRandomSound(key) || getGenericSound(key);
   var audio;
 
@@ -90,8 +92,6 @@ var queueSound = function(key, notAuto) {
       playNext();
     }
   };
-
-  // console.log(key, file);
 
   // No sound for notation :(
   if (!file) {
