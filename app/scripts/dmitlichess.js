@@ -69,6 +69,8 @@ var queueSound = function(key, notAuto) {
   var file = getRandomSound(key) || getGenericSound(key);
   var audio;
 
+  // console.log(file);
+
   var trueFiveOutOfSix = function() {
     return !!(Math.floor(Math.random() * 6));
   };

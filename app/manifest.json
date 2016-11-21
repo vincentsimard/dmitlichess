@@ -1,6 +1,6 @@
 {
     "name": "dmitlichess",
-    "version": "0.2.63",
+    "version": "0.2.67",
     "manifest_version": 2,
     "description": "Updates lichess.org sounds with the soothing voice of Dmitry Komarov",
     "icons": {
@@ -31,10 +31,9 @@
                 "scripts/sounds.js",
                 "scripts/moveEmitter.js",
                 "scripts/gameStateEmitter.js",
-                "scripts/dmitlichess.js",
-                "scripts/options.js"
+                "scripts/dmitlichess.js"
             ],
-            "run_at": "document_end",
+            "run_at": "document_idle",
             "all_frames": false
         }
     ],

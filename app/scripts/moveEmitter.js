@@ -18,7 +18,7 @@ function MoveEmitter(moves, elTrigger) {
       added = mutation.addedNodes[0];
 
       if (added.nodeName === 'TURN') {
-        added = added.querySelector('MOVE:last-child');
+        added = added.querySelector('MOVE.active');
       }
 
       notation = added.textContent;
