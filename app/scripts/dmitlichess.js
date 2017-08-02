@@ -18,7 +18,8 @@ var options = {
   volume: 100,
   miscInterval: 15000,
   yesInterval: 13000,
-  longTimeout: 3600
+  longTimeout: 3600,
+  commentator: 'dmitri'
 };
 
 var miscInterval, yesInterval, longTimeout;
@@ -27,7 +28,7 @@ var audioQueue = [];
 var soundsPlayed = 0;
 
 var makeAudio = function(file, volume) {
-  var audio = new Audio(chrome.extension.getURL('ogg/dmitri/' + file));
+  var audio = new Audio(chrome.extension.getURL('ogg/' + options.commentator + '/' + file));
   audio.volume = volume;
 
   return audio;
