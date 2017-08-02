@@ -10,12 +10,12 @@
 // @TODO: Running grunt build doesn't copy scripts/options.js to the dist folder
 
 // Default options:
-//   Volume: 100%
+//   Volume: 50%
 //   Misc sound: every 15 seconds
 //   Yes sound: every 13 seconds
 //   Long sound: once before the 1 hour mark (random time during the game)
 var options = {
-  volume: 100,
+  volume: 50,
   miscInterval: 15000,
   yesInterval: 13000,
   longTimeout: 3600
