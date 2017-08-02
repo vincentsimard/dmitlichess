@@ -27,7 +27,7 @@ var audioQueue = [];
 var soundsPlayed = 0;
 
 var makeAudio = function(file, volume) {
-  var audio = new Audio(chrome.extension.getURL('ogg/' + file));
+  var audio = new Audio(chrome.extension.getURL('ogg/dmitri/' + file));
   audio.volume = volume;
 
   return audio;
