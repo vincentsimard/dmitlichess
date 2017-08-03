@@ -3,19 +3,21 @@
 // Saves options to chrome.storage
 function saveOptions() {
   var volume = document.getElementById('volume').value;
+  var commentator = document.getElementById('commentator').value;
   var miscInterval = document.getElementById('miscInterval').value;
   var yesInterval = document.getElementById('yesInterval').value;
   var longTimeout = document.getElementById('longTimeout').value;
 
   chrome.storage.sync.set({
     volume: volume,
+    commentator: commentator,
     miscInterval: miscInterval,
     yesInterval: yesInterval,
     longTimeout: longTimeout
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
-    status.textContent = 'Options saved. Changes will be applied the next time lichess is loaded.';
+    status.textContent = 'Options saved. Please refresh your lichess page.';
     setTimeout(function() { status.textContent = ''; }, 5000);
   });
 }
@@ -26,11 +28,13 @@ function restoreOptions() {
   // Use default value color = 'red' and likesColor = true.
   chrome.storage.sync.get({
     volume: 100,
+    commentator: 'dmitri',
     miscInterval: 15000,
     yesInterval: 13000,
     longTimeout: 3600
   }, function(items) {
     document.getElementById('volume').value = items.volume;
+    document.getElementById('commentator').value = items.commentator;
     document.getElementById('miscInterval').value = items.miscInterval;
     document.getElementById('yesInterval').value = items.yesInterval;
     document.getElementById('longTimeout').value = items.longTimeout;
@@ -38,6 +42,7 @@ function restoreOptions() {
 }
 
 function resetOptions() {
+  document.getElementById('commentator').value = 'dmitri';
   document.getElementById('miscInterval').value = 15000;
   document.getElementById('yesInterval').value = 13000;
   document.getElementById('longTimeout').value = 3600;
@@ -45,6 +50,9 @@ function resetOptions() {
   saveOptions();
 }
 
+var saveButton = document.getElementById('save');
+var defaultButton = document.getElementById('default')
+
 document.addEventListener('DOMContentLoaded', restoreOptions);
-document.getElementById('save').addEventListener('click', saveOptions);
-document.getElementById('default').addEventListener('click', resetOptions);
+if (saveButton) { saveButton.addEventListener('click', saveOptions); }
+if (defaultButton) { defaultButton.addEventListener('click', resetOptions); }

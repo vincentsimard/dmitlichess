@@ -53,7 +53,15 @@ var getGenericSound = function(key) {
 
 var playNextSound = function() {
   if (audioQueue.length > 0) {
-    audioQueue[0].play();
+    var playPromise = audioQueue[0].play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(function() {
+        // Playback started!
+      }).catch(function(error) {
+        // Automatic playback failed.
+      });
+    }
   }
 };
 
@@ -104,6 +112,9 @@ var queueSound = function(key, notAuto) {
     file = getRandomSound('yes');
   }
 
+  // If still no file to play, abort audio queue process
+  if (!file) { return; }
+
   audio = makeAudio(file, options.volume / 100);
   audio.addEventListener('ended', doEnded, false);
 
@@ -144,6 +155,7 @@ var init = function() {
 
   chrome.storage.sync.get(options, function(items) {
     options = items;
+    sounds = sounds[options.commentator];
     unleashDmitry(lichess.$el);
   });
 };
