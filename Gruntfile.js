@@ -301,10 +301,13 @@ module.exports = function (grunt) {
 
         grunt.file.expand(config.app + '/ogg/**/*.ogg').forEach(function(path) {
             var fileName = path.replace('app/ogg/', '');
+            var commentator = fileName.split('/')[0];
+            fileName = fileName.replace(commentator + '/', '');
             var key = fileName.split('_')[0].replace('.ogg', '');
 
-            if (!list[key]) { list[key] = []; }
-            list[key].push(fileName);
+            if (!list[commentator]) { list[commentator] = {}; }
+            if (!list[commentator][key]) { list[commentator][key] = []; }
+            list[commentator][key].push(fileName);
         });
 
         content = 'var sounds = ' + JSON.stringify(list) + ';';
