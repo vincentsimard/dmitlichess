@@ -39,7 +39,7 @@ var initBoard = function() {
     square.addEventListener('click', function(event) {
       var keys = ['N', 'B', 'R', 'Q', 'K'];
       var notation = this.id;
-      
+
       if (event.shiftKey) { notation = 'x' + notation; }
       if (keys.indexOf(keyModifier.toUpperCase()) >= 0) { notation = keyModifier + notation; }
 
@@ -74,7 +74,7 @@ var initMiscList = function() {
     .concat(sounds['start'])
     .concat(sounds['name'])
     .concat(sounds['check'])
-    .concat(sounds['yes'])
+    .concat(sounds['fill'])
     .concat(sounds['long']);
 
   var trimmed = list.map(function(item) {
@@ -101,7 +101,7 @@ var initMiscList = function() {
   for (var i = 0; i < trimmed.length; i++) {
     selectList.appendChild(createOption(list[i], trimmed[i]));
   }
-  
+
   soundboard.appendChild(selectList);
 
   selectList.addEventListener('change', function(event) {

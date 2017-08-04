@@ -12,17 +12,17 @@
 // Default options:
 //   Volume: 100%
 //   Misc sound: every 15 seconds
-//   Yes sound: every 13 seconds
+//   Fill sound: every 13 seconds
 //   Long sound: once before the 1 hour mark (random time during the game)
 var options = {
   volume: 100,
   miscInterval: 15000,
-  yesInterval: 13000,
+  fillInterval: 13000,
   longTimeout: 3600,
   commentator: 'dmitri'
 };
 
-var miscInterval, yesInterval, longTimeout;
+var miscInterval, fillInterval, longTimeout;
 
 var audioQueue = [];
 var soundsPlayed = 0;
@@ -78,7 +78,7 @@ var queueSound = function(key, notAuto) {
   var file = getRandomSound(key) || getGenericSound(key);
   var audio;
 
-  // console.log(file);
+  console.log(file);
 
   var trueFiveOutOfSix = function() {
     return !!(Math.floor(Math.random() * 6));
@@ -106,13 +106,14 @@ var queueSound = function(key, notAuto) {
 
   // No sound for notation :(
   if (!file) {
-    // Random chance (1/6) to play a 'yes' sound instead of nothing
+    // Random chance (1/6) to play a 'fill' sound instead of nothing
     // when the sound doesn't exist
+    // (e.g.: dmitri's 'yes', maurice's 'uh'/'and', etc.)
     if (trueFiveOutOfSix()) { return; }
-    file = getRandomSound('yes');
+    file = getRandomSound('fill');
   }
 
-  // If still no file to play, abort audio queue process
+  // If still no file to play, abort audio queue process (should not happen)
   if (!file) { return; }
 
   audio = makeAudio(file, options.volume / 100);
@@ -132,15 +133,15 @@ var unleashDmitry = function(elTrigger) {
       queueSound(state);
 
       if (miscInterval) { clearInterval(miscInterval); }
-      if (yesInterval) { clearInterval(yesInterval); }
+      if (fillInterval) { clearInterval(fillInterval); }
       if (longTimeout) { clearTimeout(longTimeout); }
     }
   });
 
   // Play random sound bits
   // @TODO: Add an interval for Super GM names shoutouts (Levon Aronian, Magnus Carrrlsen, yessss)
-  yesInterval = setInterval(function() { queueSound('yes'); }, options.yesInterval);
   miscInterval = setInterval(function() { queueSound('misc'); }, options.miscInterval);
+  fillInterval = setInterval(function() { queueSound('fill'); }, options.fillInterval);
   longTimeout = setTimeout(function() { queueSound('long'); }, (Math.floor(Math.random() * options.longTimeout) + 1) * 1000);
 };
 

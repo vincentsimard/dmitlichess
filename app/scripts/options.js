@@ -5,14 +5,14 @@ function saveOptions() {
   var volume = document.getElementById('volume').value;
   var commentator = document.getElementById('commentator').value;
   var miscInterval = document.getElementById('miscInterval').value;
-  var yesInterval = document.getElementById('yesInterval').value;
+  var fillInterval = document.getElementById('fillInterval').value;
   var longTimeout = document.getElementById('longTimeout').value;
 
   chrome.storage.sync.set({
     volume: volume,
     commentator: commentator,
     miscInterval: miscInterval,
-    yesInterval: yesInterval,
+    fillInterval: fillInterval,
     longTimeout: longTimeout
   }, function() {
     // Update status to let user know options were saved.
@@ -25,18 +25,18 @@ function saveOptions() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restoreOptions() {
-  // Use default value color = 'red' and likesColor = true.
+  // Default values
   chrome.storage.sync.get({
     volume: 100,
     commentator: 'dmitri',
     miscInterval: 15000,
-    yesInterval: 13000,
+    fillInterval: 13000,
     longTimeout: 3600
   }, function(items) {
     document.getElementById('volume').value = items.volume;
     document.getElementById('commentator').value = items.commentator;
     document.getElementById('miscInterval').value = items.miscInterval;
-    document.getElementById('yesInterval').value = items.yesInterval;
+    document.getElementById('fillInterval').value = items.fillInterval;
     document.getElementById('longTimeout').value = items.longTimeout;
   });
 }
@@ -44,7 +44,7 @@ function restoreOptions() {
 function resetOptions() {
   document.getElementById('commentator').value = 'dmitri';
   document.getElementById('miscInterval').value = 15000;
-  document.getElementById('yesInterval').value = 13000;
+  document.getElementById('fillInterval').value = 13000;
   document.getElementById('longTimeout').value = 3600;
 
   saveOptions();
