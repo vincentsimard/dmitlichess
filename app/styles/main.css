@@ -91,7 +91,7 @@ body {
 }
 a,a:visited { color: #747474; }
 a,a:visited,button { cursor: pointer; }
-a,a:hover,a:visited { text-decoration: none; }
+a,a:hover,a:visited { color: #3893E8; text-decoration: none; }
 strong {
     font-weight: bold;
 }
@@ -127,10 +127,18 @@ body ::-webkit-scrollbar-thumb:active {
     background: rgba(200,200,200,0.4);
 }
 
+body {
+  min-width: 350px;
+}
+
 body.wide {
   width: 1005px;
   margin: 0 auto;
   padding: 20px;
+}
+
+h1, h2 {
+  text-transform: lowercase;
 }
 
 h1 {
@@ -154,3 +162,7 @@ label, button {
   margin-top: 2em;
   line-height: 2em;
 }
+
+.overflow_nav { float: right; font-size: 0; }
+.overflow_nav.options:after { content: '\2699'; font-size: 30px; }
+.overflow_nav.soundboard:after { content: '\266A'; font-size: 30px; }

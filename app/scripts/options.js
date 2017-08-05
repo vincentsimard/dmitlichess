@@ -17,7 +17,8 @@ function saveOptions() {
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
-    status.textContent = 'Options saved. Please refresh your lichess page.';
+    status.textContent = 'Options saved. Please refresh your lichess.org window/tab';
+
     setTimeout(function() { status.textContent = ''; }, 5000);
   });
 }
@@ -33,7 +34,6 @@ function restoreOptions() {
     fillInterval: 13000,
     longTimeout: 3600
   }, function(items) {
-    // sounds = sounds[items.commentator];
     document.getElementById('volume').value = items.volume;
     document.getElementById('commentator').value = items.commentator;
     document.getElementById('miscInterval').value = items.miscInterval;
