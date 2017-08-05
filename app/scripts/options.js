@@ -21,7 +21,8 @@ function saveOptions() {
 
     setTimeout(function() { status.textContent = ''; }, 5000);
 
-    chrome.browserAction.setIcon({ path : '/images/' + commentator + '.png' });
+    // @TODO: Would be nice but icon reverts back when reloading browser
+    // chrome.browserAction.setIcon({ path : '/images/' + commentator + '.png' });
   });
 }
 
