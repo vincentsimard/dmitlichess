@@ -11,7 +11,7 @@ var options = { volume: 100 };
 
 
 var makeAudio = function(file, volume) {
-  var audio = new Audio(chrome.extension.getURL('ogg/' + file));
+  var audio = new Audio(chrome.extension.getURL('ogg/' + options.commentator + '/' + file));
   audio.volume = volume;
 
   return audio;
@@ -78,13 +78,13 @@ var initMiscList = function() {
     .concat(sounds['long']);
 
   var trimmed = list.map(function(item) {
-    var name = item;
+    if (!item) { return; }
 
-    name = name.replace('misc_', '');
-    name = name.replace('long_', '');
-    name = name.replace('.ogg', '');
+    item = item.replace('misc_', '');
+    item = item.replace('long_', '');
+    item = item.replace('.ogg', '');
 
-    return name;
+    return item;
   });
 
   var createOption = function(value, text) {
@@ -113,9 +113,16 @@ var init = function() {
   if (!sounds) { return; }
   if (!board) { return; }
   if (!chrome.storage) { return; }
-  
-  chrome.storage.sync.get(options, function(items) {
+
+  chrome.storage.sync.get({
+    volume: 100,
+    commentator: 'dmitri',
+    miscInterval: 15000,
+    fillInterval: 13000,
+    longTimeout: 3600
+  }, function(items) {
     options = items;
+    sounds = sounds[options.commentator];
     initMiscRandom();
     initMiscList();
     initBoard();

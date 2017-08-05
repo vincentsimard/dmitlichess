@@ -13,6 +13,13 @@
         <h1>dmit<span class="extension">lichess</span></h1>
         <h2>Soundboard</h2>
         <div id="soundboard">
+            <p id="instructions">Click the squares on the board to play move sounds:
+              <ul>
+                <li>Hold <kbd>N</kbd>, <kbd>B</kbd>, <kbd>R</kbd>, <kbd>Q</kbd>, or <kbd>K</kbd> when clicking to play respective piece move sounds
+                <li>Hold <kbd>shift</kbd> for capture sounds</li>
+                <li>Combine both for piece captures.</li>
+              </ul>
+            </p>
             <div id="board">
                 <div class="square light" id="a8"></div>
                 <div class="square dark " id="b8"></div>
@@ -79,8 +86,7 @@
                 <div class="square dark " id="g1"></div>
                 <div class="square light" id="h1"></div>
             </div>
-            <p id="instructions">Hold <kbd>N</kbd>, <kbd>B</kbd>, <kbd>R</kbd>, <kbd>Q</kbd>, or <kbd>K</kbd> when clicking squares to play respective piece move sounds. Hold <kbd>shift</kbd> for capture sounds.</p>
-            <p><a href="#" id="randomMisc">Play a misc sound</a></p>
+            <p><a href="#" id="randomMisc">Play a random commentary</a></p>
         </div>
 
         <!-- build:js scripts/vendor.js -->

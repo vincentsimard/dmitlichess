@@ -1,6 +1,6 @@
 body {
   font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 kbd {
@@ -130,6 +130,7 @@ body ::-webkit-scrollbar-thumb:active {
 body.wide {
   width: 1005px;
   margin: 0 auto;
+  padding: 20px;
 }
 
 h1 {

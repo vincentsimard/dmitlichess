@@ -33,6 +33,7 @@ function restoreOptions() {
     fillInterval: 13000,
     longTimeout: 3600
   }, function(items) {
+    // sounds = sounds[items.commentator];
     document.getElementById('volume').value = items.volume;
     document.getElementById('commentator').value = items.commentator;
     document.getElementById('miscInterval').value = items.miscInterval;
