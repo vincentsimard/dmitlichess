@@ -22,9 +22,7 @@
                 "http://*.lichess.org/*",
                 "https://*.lichess.org/*"
             ],
-            "css": [
-                "styles/main.css"
-            ],
+            "css": [],
             "js": [
                 "bower_components/jquery/dist/jquery.min.js",
                 "scripts/lichess.js",

@@ -112,7 +112,8 @@ var initMiscList = function() {
 var init = function() {
   if (!sounds) { return; }
   if (!board) { return; }
-
+  if (!chrome.storage) { return; }
+  
   chrome.storage.sync.get(options, function(items) {
     options = items;
     initMiscRandom();

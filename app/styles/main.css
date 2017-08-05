@@ -13,7 +13,7 @@ kbd {
   margin: 0;
   width: 200px;
   height: 200px;
-  background-color: red;
+  background-color: transparent;
   font-size: 10px;
   line-height: 25px;
   overflow: hidden;
@@ -43,3 +43,113 @@ kbd {
 
 #board .square.light { background-color: #f9f9f9; color: black; }
 #board .square.dark  { background-color: #3a3a3a; color: white; }
+
+
+label, input, small { display: block; }
+input, button { margin-bottom: 1em; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+img {
+  border: 0;
+}
+em,strong,th {
+  font-style: normal;
+  font-weight: normal;
+}
+li {
+  list-style: none;
+}
+th {
+  text-align: left;
+}
+h1,h2,h3 {
+  font-size: 100%;
+  font-weight: normal;
+}
+input,textarea,select,button {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+time {
+  display: inline-block;
+  white-space: nowrap;
+}
+html {
+  min-height: 100%;
+}
+body {
+  font: 12px 'Noto Sans','Lucida Grande','Lucida Sans Unicode',Geneva,Verdana,Sans-Serif;
+  color: #707070;
+  background: #eee;
+  background-image: linear-gradient(to bottom,#d7d7d7 0%,#eeeeee 116px);
+  overflow-x: hidden;
+  cursor: default;
+}
+a,a:visited { color: #747474; }
+a,a:visited,button { cursor: pointer; }
+a,a:hover,a:visited { text-decoration: none; }
+strong {
+    font-weight: bold;
+}
+
+body {
+    background-color: #1a1a1a;
+    background-image: linear-gradient(to bottom,#2c2c2c,#1a1a1a 116px);
+    color: #929292;
+}
+
+body a,body a:visited,body group.radio label,body .button {
+    color: #8f8f8f;
+}
+
+body input,body textarea, {
+    background: #1a1a1a;
+    color: #8f8f8f;
+}
+
+body ::-webkit-scrollbar,body ::-webkit-scrollbar-corner {
+    background: #262626;
+}
+
+body ::-webkit-scrollbar-thumb {
+    background: rgba(200,200,200,0.15);
+}
+
+body ::-webkit-scrollbar-thumb:hover {
+    background: rgba(200,200,200,0.3);
+}
+
+body ::-webkit-scrollbar-thumb:active {
+    background: rgba(200,200,200,0.4);
+}
+
+body.wide {
+  width: 1005px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 30px;
+  display: block;
+  color: #acacac;
+  opacity: 0.7;
+  transition: opacity 0.13s;
+  white-space: nowrap;
+}
+
+h1 span.extension {
+  opacity: 0.7;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+label, button {
+  margin-top: 2em;
+  line-height: 2em;
+}
