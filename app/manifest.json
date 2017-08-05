@@ -2,17 +2,14 @@
     "name": "dmitlichess",
     "version": "0.3.78",
     "manifest_version": 2,
-    "description": "Updates lichess.org sounds with the soothing voice of Dmitry Komarov",
+    "description": "Adds top-level grandmaster commentary to lichess.org (audio)",
     "icons": {
         "16": "images/icon-16.png",
         "128": "images/icon-128.png"
     },
     "default_locale": "en",
     "browser_action": {
-        "default_icon": {
-            "19": "images/icon-19.png",
-            "38": "images/icon-38.png"
-        },
+        "default_icon": "images/dmitri.png",
         "default_title": "dmitlichess",
         "default_popup": "popup.html"
     },

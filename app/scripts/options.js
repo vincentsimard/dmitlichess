@@ -20,6 +20,8 @@ function saveOptions() {
     status.textContent = 'Options saved. Please refresh your lichess.org window/tab';
 
     setTimeout(function() { status.textContent = ''; }, 5000);
+
+    chrome.browserAction.setIcon({ path : '/images/' + commentator + '.png' });
   });
 }
 
