@@ -90,7 +90,7 @@ var initMiscList = function() {
   var createOption = function(value, text) {
     var option = document.createElement('option');
     option.value = value;
-    option.text = text;
+    option.text = text ? text.replace(/_/g, ' ') : '';
     return option;
   }
 
