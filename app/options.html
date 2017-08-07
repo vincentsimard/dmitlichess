@@ -13,10 +13,13 @@
     <input id="volume" type="range" min="0" max="100" step="1" />
 
     <label for="volume">Commentator </label>
-    <select id="commentator">
-      <option value="dmitri">Dmitri Komarov</option>
-      <option value="maurice">Maurice Ashley</option>
-    </select>
+    <div class="commentator_radio">
+      <input type="radio" value="dmitri" name="commentator" id="commentator_dmitri">
+      <label for="commentator_dmitri"><img src="images/dmitri.png"> </label>
+
+      <input type="radio" value="maurice" name="commentator" id="commentator_maurice">
+      <label for="commentator_maurice"><img src="images/maurice.png"> </label>
+    </div>
 
     <details>
       <summary>Advanced</summary>

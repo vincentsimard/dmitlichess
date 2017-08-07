@@ -167,4 +167,14 @@ label, button, details {
 .overflow_nav.options:after { content: '\2699'; font-size: 30px; }
 .overflow_nav.soundboard:after { content: '\266A'; font-size: 30px; }
 
-.advanced  { margin-left: 2em; }
+.advanced { margin-left: 2em; }
+
+.commentator_radio img { width: 64px; height: 64px; }
+.commentator_radio input { display: none !important; }
+.commentator_radio input:checked + label { opacity: 1; }
+.commentator_radio label {
+  opacity: 0.1;
+  cursor: pointer;
+  display: inline-block;
+  margin: 1em 0 0;
+}

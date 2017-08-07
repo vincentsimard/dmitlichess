@@ -3,7 +3,7 @@
 // Saves options to chrome.storage
 function saveOptions() {
   var volume = document.getElementById('volume').value;
-  var commentator = document.getElementById('commentator').value;
+  var commentator = document.querySelector('input[name="commentator"]:checked').value;
   var miscInterval = document.getElementById('miscInterval').value;
   var fillInterval = document.getElementById('fillInterval').value;
   var longTimeout = document.getElementById('longTimeout').value;
@@ -38,7 +38,7 @@ function restoreOptions() {
     longTimeout: 3600
   }, function(items) {
     document.getElementById('volume').value = items.volume;
-    document.getElementById('commentator').value = items.commentator;
+    document.getElementById('commentator_' + items.commentator).checked = true;
     document.getElementById('miscInterval').value = items.miscInterval;
     document.getElementById('fillInterval').value = items.fillInterval;
     document.getElementById('longTimeout').value = items.longTimeout;
@@ -46,7 +46,7 @@ function restoreOptions() {
 }
 
 function resetOptions() {
-  document.getElementById('commentator').value = 'dmitri';
+  document.getElementById('commentator_dmitri').checked = true;
   document.getElementById('miscInterval').value = 15000;
   document.getElementById('fillInterval').value = 13000;
   document.getElementById('longTimeout').value = 3600;
