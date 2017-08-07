@@ -33,8 +33,8 @@ function restoreOptions() {
   chrome.storage.sync.get({
     volume: 100,
     commentator: 'dmitri',
-    miscInterval: 15000,
-    fillInterval: 13000,
+    miscInterval: 10000,
+    fillInterval: 17000,
     longTimeout: 3600
   }, function(items) {
     document.getElementById('volume').value = items.volume;
@@ -47,8 +47,8 @@ function restoreOptions() {
 
 function resetOptions() {
   document.getElementById('commentator_dmitri').checked = true;
-  document.getElementById('miscInterval').value = 15000;
-  document.getElementById('fillInterval').value = 13000;
+  document.getElementById('miscInterval').value = 10000;
+  document.getElementById('fillInterval').value = 17000;
   document.getElementById('longTimeout').value = 3600;
 
   saveOptions();

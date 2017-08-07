@@ -117,8 +117,8 @@ var init = function() {
   chrome.storage.sync.get({
     volume: 100,
     commentator: 'dmitri',
-    miscInterval: 15000,
-    fillInterval: 13000,
+    miscInterval: 10000,
+    fillInterval: 17000,
     longTimeout: 3600
   }, function(items) {
     options = items;

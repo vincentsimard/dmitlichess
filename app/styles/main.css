@@ -178,3 +178,6 @@ label, button, details {
   display: inline-block;
   margin: 1em 0 0;
 }
+
+input[type=range] { width: 100%; }
+input[type=range]:focus { outline: none; }
