@@ -21,7 +21,6 @@
             ],
             "css": [],
             "js": [
-                "bower_components/jquery/dist/jquery.min.js",
                 "scripts/lichess.js",
                 "scripts/sounds.js",
                 "scripts/moveEmitter.js",

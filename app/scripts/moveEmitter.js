@@ -1,7 +1,7 @@
 var MoveEmitter = (function() {
   'use strict';
 
-  function MoveEmitter(moves, elTrigger) {
+  function MoveEmitter(moves, el) {
     var isCapture = function(notation) { return notation.indexOf('x') > -1; };
     var isCastle = function(notation) { return notation.indexOf('0-0') > -1; };
     var isCheck = function(notation) { return notation.indexOf('+') > -1; };
@@ -27,8 +27,15 @@ var MoveEmitter = (function() {
         if (!notation) { return; }
         if (!added.classList.contains('active')) { return; }
 
-        elTrigger.trigger(isCapture(notation) ? 'capture' : 'move', [trimSymbols(notation)]);
-        if (isCheck(notation)) { elTrigger.trigger('check'); }
+        let notationType = isCapture(notation) ? 'capture' : 'move';
+
+        el.dispatchEvent(new CustomEvent(notationType, {
+          detail: trimSymbols(notation)
+        }));
+
+        if (isCheck(notation)) {
+          el.dispatchEvent(new CustomEvent('check'));
+        }
       });
     };
 

@@ -1,7 +1,7 @@
 var GameStateEmitter = (function() {
   'use strict';
 
-  function GameStateEmitter(header, elTrigger) {
+  function GameStateEmitter(header, el) {
     var handleMutation = function() {
       if (!(lichess && lichess.isGameOver())) { return; }
 
@@ -13,7 +13,9 @@ var GameStateEmitter = (function() {
         if (text.indexOf(states[i]) > -1) { state = states[i]; }
       }
 
-      elTrigger.trigger('state', [state]);
+      el.dispatchEvent(new CustomEvent('state', {
+        detail: state
+      }));
 
       // Automatically disconnect after the game ends
       // to prevent triggering again on rematch

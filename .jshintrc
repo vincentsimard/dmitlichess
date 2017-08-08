@@ -1,7 +1,4 @@
 {
-    // JSHint Default Configuration File (as on JSHint website)
-    // See http://jshint.com/docs/ for more details
-
     "maxerr"        : 50,       // {int} Maximum error before stopping
 
     // Enforcing
@@ -42,7 +39,7 @@
     "boss"          : false,     // true: Tolerate assignments where comparisons would be expected
     "debug"         : false,     // true: Allow debugger statements e.g. browser breakpoints.
     "eqnull"        : false,     // true: Tolerate use of `== null`
-    "esversion"     : 5,         // {int} Specify the ECMAScript version to which the code must adhere.
+    "esversion"     : 6,         // {int} Specify the ECMAScript version to which the code must adhere.
     "moz"           : false,     // true: Allow Mozilla specific syntax (extends and overrides esnext features)
                                  // (ex: `for each`, multiple try/catch, function expression…)
     "evil"          : false,     // true: Tolerate use of `eval` and `new Function()`
@@ -88,6 +85,7 @@
 
     // Custom Globals
     "globals"       : {
+      "_": true,
       "jQuery": true,
       "chrome": true,
       "sounds": true,
