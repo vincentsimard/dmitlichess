@@ -2,8 +2,14 @@ const GameStateEmitter = (function() {
   'use strict';
 
   function GameStateEmitter(header, el) {
+    let isGameOver = function() {
+      let table = document.querySelector('#lichess .lichess_ground .table');
+
+      return !!table ? table.classList.contains('finished') : true;
+    };
+
     var handleMutation = function() {
-      if (!(lichess && lichess.isGameOver())) { return; }
+      if (!isGameOver()) { return; }
 
       var text = header.innerText.toLowerCase();
       var states = ['checkmate', 'draw', 'time out', 'white resigned', 'black resigned'];

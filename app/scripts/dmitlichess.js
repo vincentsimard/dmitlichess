@@ -1,4 +1,4 @@
-(function(chrome, sounds, lichess, MoveEmitter, GameStateEmitter) {
+(function(chrome, sounds, MoveEmitter, GameStateEmitter) {
   'use strict';
 
   // @TODO: Game start/end sounds
@@ -140,19 +140,26 @@
     },
 
     init: function() {
+      let elements = {
+        main: document.querySelector('#lichess'),
+        board: document.querySelector('#lichess .lichess_board'),
+        moves: document.querySelector('#lichess .moves'),
+        header: document.querySelector('#site_header')
+      };
+
       if (!sounds) { return; }
-      if (!lichess.elBoard) { return; }
+      if (!elements.board) { return; }
 
-      let moves = new MoveEmitter(lichess.elMoves, lichess.el);
-      let gamestates = new GameStateEmitter(lichess.elSiteHeader, lichess.el);
+      let moves = new MoveEmitter(elements.moves, elements.main);
+      let gamestates = new GameStateEmitter(elements.header, elements.main);
 
-      chrome.storage.sync.get(this.defaults, (items) => {
+      chrome.storage.sync.get(this.defaults, (items)=> {
         this.options = items;
         sounds = sounds[this.options.commentator];
-        this.start(lichess.el);
+        this.start(elements.main);
       });
     }
   };
 
   Dmitlichess.init();
-}(chrome, sounds, lichess, MoveEmitter, GameStateEmitter));
+}(chrome, sounds, MoveEmitter, GameStateEmitter));
