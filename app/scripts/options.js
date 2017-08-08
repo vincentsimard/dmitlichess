@@ -1,28 +1,26 @@
-(function() {
+(function(chrome) {
   'use strict';
 
   // Based off https://developer.chrome.com/extensions/options
 
   // Saves options to chrome.storage
   function saveOptions() {
-    var volume = document.getElementById('volume').value;
-    var commentator = document.querySelector('input[name="commentator"]:checked').value;
-    var miscInterval = document.getElementById('miscInterval').value;
-    var fillInterval = document.getElementById('fillInterval').value;
-    var longTimeout = document.getElementById('longTimeout').value;
-
     chrome.storage.sync.set({
-      volume: volume,
-      commentator: commentator,
-      miscInterval: miscInterval,
-      fillInterval: fillInterval,
-      longTimeout: longTimeout
+      volume:       document.getElementById('volume').value,
+      commentator:  document.querySelector('input[name="commentator"]:checked').value,
+      miscInterval: document.getElementById('miscInterval').value,
+      fillInterval: document.getElementById('fillInterval').value,
+      longTimeout:  document.getElementById('longTimeout').value
     }, function() {
       // Update status to let user know options were saved.
+      // @TODO: Figure out a way to apply the options directly
       var status = document.getElementById('status');
-      status.textContent = 'Options saved. Please refresh your lichess.org window/tab';
+      status.textContent = 'Options saved. Please refresh your lichess.org page';
+      status.classList.remove = 'fade';
 
-      setTimeout(function() { status.textContent = ''; }, 5000);
+      setTimeout(function() {
+        status.classList.add('fade');
+      }, 5000);
 
       // @TODO: Would be nice but icon reverts back when reloading browser
       // chrome.browserAction.setIcon({ path : '/images/' + commentator + '.png' });
@@ -63,4 +61,4 @@
   document.addEventListener('DOMContentLoaded', restoreOptions);
   if (saveButton) { saveButton.addEventListener('click', saveOptions); }
   if (defaultButton) { defaultButton.addEventListener('click', resetOptions); }
-})();
+})(chrome);

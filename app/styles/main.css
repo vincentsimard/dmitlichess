@@ -181,3 +181,6 @@ label, button, details {
 
 input[type=range] { width: 100%; }
 input[type=range]:focus { outline: none; }
+
+#status { opacity: 1; transition: opacity .5s ease-in-out; }
+#status.fade { opacity: 0; }

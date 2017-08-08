@@ -1,15 +1,7 @@
-(function() {
+(function(chrome, sounds) {
   'use strict';
 
-  var soundboard = document.querySelector('#soundboard');
-  var board = document.querySelector('#board');
-  var squares = document.querySelectorAll('.square');
-  var squaresArray = Array.prototype.slice.call(squares);
-
-  var keyModifier = '';
-
-  var options = { volume: 100 };
-
+  let options = { volume: 100 };
 
   var makeAudio = function(file, volume) {
     var audio = new Audio(chrome.extension.getURL('ogg/' + options.commentator + '/' + file));
@@ -36,7 +28,12 @@
   };
 
   var initBoard = function() {
-    var createSquareListener = function(square) {
+    const squares = document.querySelectorAll('#board .square');
+    const squaresArray = Array.prototype.slice.call(squares);
+
+    let keyModifier = '';
+
+    let createSquareListener = function(square) {
       square.addEventListener('click', function(event) {
         var keys = ['N', 'B', 'R', 'Q', 'K'];
         var notation = this.id;
@@ -66,6 +63,8 @@
   };
 
   var initMiscList = function() {
+    let soundboard = document.querySelector('#soundboard');
+
     var list = []
       .concat(sounds.misc)
       .concat(sounds.check)
@@ -112,7 +111,6 @@
 
   var init = function() {
     if (!sounds) { return; }
-    if (!board) { return; }
     if (!chrome.storage) { return; }
 
     chrome.storage.sync.get({
@@ -131,4 +129,4 @@
   };
 
   init();
-})();
+})(chrome, sounds);

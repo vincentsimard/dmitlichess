@@ -1,4 +1,4 @@
-(function(chrome, sounds, MoveEmitter, GameStateEmitter) {
+const Dmitlichess = (function(chrome, sounds, MoveEmitter, GameStateEmitter) {
   'use strict';
 
   // @TODO: Game start/end sounds
@@ -7,8 +7,9 @@
   //   - playing
   //   - observing
   //   - analyzing (needs additional work...)
-  // @TODO: Handle notation like Nbd7, Rae1, etc.
-  // @TODO: Running grunt build doesn't copy scripts/options.js to the dist folder
+  // @TODO: Have fallback notation
+  //   (e.g.: Nd2 for Nbd2 when Nbd2 sound doesn't exist, xf4 is Bxf4 doesn't exist, Qx if Qxh8 doesn't exist, etc.)
+  // @TODO: Fix the gruntfile error about imgmin
 
   const Dmitlichess = {
     defaults: {
@@ -121,10 +122,10 @@
 
     start: function(el) {
       // Attach event handlers
-      el.addEventListener('move', (e)=> this.queueSound(e.detail));
+      el.addEventListener('move',    (e)=> this.queueSound(e.detail));
       el.addEventListener('capture', (e)=> this.queueSound(e.detail));
-      el.addEventListener('check', ()=> this.queueSound('check'));
-      el.addEventListener('state', (e)=> {
+      el.addEventListener('check',   ()=> this.queueSound('check'));
+      el.addEventListener('state',   (e)=> {
         this.queueSound(e.detail);
 
         if (this.intervals.misc) { clearInterval(this.intervals.misc); }
@@ -133,7 +134,6 @@
       });
 
       // Play random sound bits
-      // @TODO: Add an interval for Super GM names shoutouts (Levon Aronian, Magnus Carrrlsen, yessss)
       this.intervals.misc = setInterval(()=> { this.queueSound('misc'); }, this.options.miscInterval);
       this.intervals.fill = setInterval(()=> { this.queueSound('fill'); }, this.options.fillInterval);
       this.intervals.long = setTimeout(()=> { this.queueSound('long'); }, (Math.floor(Math.random() * this.options.longTimeout) + 1) * 1000);
@@ -141,9 +141,9 @@
 
     init: function() {
       let elements = {
-        main: document.querySelector('#lichess'),
-        board: document.querySelector('#lichess .lichess_board'),
-        moves: document.querySelector('#lichess .moves'),
+        main:   document.querySelector('#lichess'),
+        board:  document.querySelector('#lichess .lichess_board'),
+        moves:  document.querySelector('#lichess .moves'),
         header: document.querySelector('#site_header')
       };
 
@@ -162,4 +162,11 @@
   };
 
   Dmitlichess.init();
-}(chrome, sounds, MoveEmitter, GameStateEmitter));
+
+  return {
+    defaults: this.defaults,
+    options: this.options,
+    makeAudio: this.makeAudio,
+    init: this.init
+  };
+})(chrome, sounds, MoveEmitter, GameStateEmitter);

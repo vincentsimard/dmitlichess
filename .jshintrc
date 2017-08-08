@@ -87,7 +87,7 @@
     "globals"       : {
       "chrome": true,
       "sounds": true,
-      "lichess": true,
+      "Dmitlichess": true,      
       "MoveEmitter": true,
       "GameStateEmitter": true
     }
