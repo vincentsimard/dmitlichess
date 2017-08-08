@@ -109,7 +109,7 @@
     });
   };
 
-  var init = function() {
+  let init = function() {
     if (!sounds) { return; }
     if (!chrome.storage) { return; }
 

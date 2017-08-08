@@ -20,7 +20,9 @@ const GameStateEmitter = (function() {
       }
 
       el.dispatchEvent(new CustomEvent('state', {
-        detail: state
+        detail: {
+          state: state
+        }
       }));
 
       // Automatically disconnect after the game ends

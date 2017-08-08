@@ -30,7 +30,9 @@ const MoveEmitter = (function() {
         let notationType = isCapture(notation) ? 'capture' : 'move';
 
         el.dispatchEvent(new CustomEvent(notationType, {
-          detail: trimSymbols(notation)
+          detail: {
+            notation: trimSymbols(notation)
+          }
         }));
 
         if (isCheck(notation)) {

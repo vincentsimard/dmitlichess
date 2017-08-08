@@ -71,45 +71,36 @@ const Dmitlichess = (function(chrome, sounds, MoveEmitter, GameStateEmitter) {
     queueSound: function(key) {
       if (typeof key === 'undefined') { return; }
 
-      var file = this.getRandomSound(key) || this.getGenericSound(key);
-      var audio;
+      let file = this.getRandomSound(key) || this.getGenericSound(key);
+      let audio;
 
       console.log(key, file);
 
-      var trueFiveOutOfSix = function() {
-        return !!(Math.floor(Math.random() * 6));
-      };
+      let trueOneOutOfSix = ()=> !(Math.floor(Math.random() * 6));
 
-      var playNext = ()=> {
-        this.audioQueue.shift();
-        this.playNextSound();
-      };
-
-      var resetQueue = ()=> {
+      let resetQueue = ()=> {
         this.audioQueue = [];
         this.resetMiscInterval();
       };
 
-      var doEnded = ()=> {
-        // Clear the queue if there are too many sounds queued
-        // so Dmitry is not too behind the game with his commentary?
+      let doEnded = ()=> {
+        // Clear the queue if there are too many sounds queued to make sure the
+        // commentator is not too far behind the game with his commentary
         if (this.audioQueue.length > 3) {
           resetQueue();
         } else {
-          playNext();
+          this.audioQueue.shift();
+          this.playNextSound();
         }
       };
 
-      // No sound for notation :(
-      if (!file) {
-        // Random chance (1/6) to play a 'fill' sound instead of nothing
-        // when the sound doesn't exist
-        // (e.g.: dmitri's 'yes', maurice's 'uh'/'and', etc.)
-        if (trueFiveOutOfSix()) { return; }
+      // Random chance (1/6) to play a 'fill' sound instead of nothing
+      // when there is no sound for the notation
+      if (!file && trueOneOutOfSix()) {
         file = this.getRandomSound('fill');
       }
 
-      // If still no file to play, abort audio queue process (should not happen)
+      // If still no file to play, abort audio queue process
       if (!file) { return; }
 
       audio = this.makeAudio(file, this.options.volume / 100);
@@ -122,11 +113,11 @@ const Dmitlichess = (function(chrome, sounds, MoveEmitter, GameStateEmitter) {
 
     start: function(el) {
       // Attach event handlers
-      el.addEventListener('move',    (e)=> this.queueSound(e.detail));
-      el.addEventListener('capture', (e)=> this.queueSound(e.detail));
+      el.addEventListener('move',    (e)=> this.queueSound(e.detail.notation));
+      el.addEventListener('capture', (e)=> this.queueSound(e.detail.notation));
       el.addEventListener('check',   ()=> this.queueSound('check'));
       el.addEventListener('state',   (e)=> {
-        this.queueSound(e.detail);
+        this.queueSound(e.detail.state);
 
         if (this.intervals.misc) { clearInterval(this.intervals.misc); }
         if (this.intervals.fill) { clearInterval(this.intervals.fill); }
@@ -155,7 +146,9 @@ const Dmitlichess = (function(chrome, sounds, MoveEmitter, GameStateEmitter) {
 
       chrome.storage.sync.get(this.defaults, (items)=> {
         this.options = items;
+
         sounds = sounds[this.options.commentator];
+
         this.start(elements.main);
       });
     }
@@ -164,9 +157,9 @@ const Dmitlichess = (function(chrome, sounds, MoveEmitter, GameStateEmitter) {
   Dmitlichess.init();
 
   return {
-    defaults: this.defaults,
-    options: this.options,
-    makeAudio: this.makeAudio,
-    init: this.init
+    defaults: Dmitlichess.defaults,
+    options: Dmitlichess.options,
+    makeAudio: Dmitlichess.makeAudio,
+    init: Dmitlichess.init
   };
 })(chrome, sounds, MoveEmitter, GameStateEmitter);
