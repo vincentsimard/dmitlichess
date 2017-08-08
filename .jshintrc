@@ -85,8 +85,6 @@
 
     // Custom Globals
     "globals"       : {
-      "_": true,
-      "jQuery": true,
       "chrome": true,
       "sounds": true,
       "lichess": true,

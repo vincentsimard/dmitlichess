@@ -1,4 +1,4 @@
-var MoveEmitter = (function() {
+const MoveEmitter = (function() {
   'use strict';
 
   function MoveEmitter(moves, el) {

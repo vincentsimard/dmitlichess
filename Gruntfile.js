@@ -310,7 +310,7 @@ module.exports = function (grunt) {
             list[commentator][key].push(fileName);
         });
 
-        content = 'var sounds = ' + JSON.stringify(list) + ';';
+        content = 'const sounds = ' + JSON.stringify(list) + ';';
 
         grunt.file.write(config.app + '/scripts/sounds.js', content);
     });

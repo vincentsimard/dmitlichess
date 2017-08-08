@@ -1,4 +1,4 @@
-var GameStateEmitter = (function() {
+const GameStateEmitter = (function() {
   'use strict';
 
   function GameStateEmitter(header, el) {

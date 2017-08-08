@@ -1,6 +1,6 @@
 {
     "name": "dmitlichess",
-    "version": "0.3.81",
+    "version": "0.3.82",
     "manifest_version": 2,
     "description": "Adds top-level grandmaster commentary to lichess.org (audio)",
     "icons": {

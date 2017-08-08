@@ -1,4 +1,4 @@
-var lichess = (function() {
+const lichess = (function() {
   'use strict';
 
   var lichess = {};
