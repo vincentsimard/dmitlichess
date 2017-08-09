@@ -4,35 +4,7 @@ const AudioQueue = (function(sounds, Utils) {
   return {
     queue: [],
 
-    options: {
-      commentator: 'maurice',
-      volume: 100
-    },
-
-    makeAudio: function(file = Utils.throwIfMissing, commentator = 'dmitri', volume = 1) {
-      let path = chrome.extension.getURL('ogg/' + commentator + '/' + file);
-      let audio = new Audio(path);
-      audio.volume = volume;
-
-      return audio;
-    },
-
-    getRandomSound: function(key = Utils.throwIfMissing) {
-      let files = sounds['maurice'][key];
-
-      return files && files[Math.floor(Math.random()*files.length)];
-    },
-
-    getGenericSound: function(key = Utils.throwIfMissing) {
-      // Generic capture sounds
-      if (key.indexOf('x') === 1) { return this.getRandomSound(key.substring(1)); }
-
-      // Translate some game end states
-      // @TODO: Individual sounds for white/black resigned?
-      if (key.indexOf('white resigned') >= 0) { return this.getRandomSound('resign'); }
-      if (key.indexOf('black resigned') >= 0) { return this.getRandomSound('resign'); }
-      if (key.indexOf('time out') >= 0) { return this.getRandomSound('flag'); }
-    },
+    options: Utils.defaults,
 
     next: function() {
       if (this.queue.length > 0) {
@@ -46,7 +18,7 @@ const AudioQueue = (function(sounds, Utils) {
       // this.resetMiscInterval(); // @TODO: Handle interval outside, trigger event
     },
 
-    makeQueueAudio: function(file) {
+    createQueueAudio: function(file) {
       let audio;
 
       let doEnded = ()=> {
@@ -60,7 +32,7 @@ const AudioQueue = (function(sounds, Utils) {
         }
       };
 
-      audio = this.makeAudio(file, this.options.commentator, this.options.volume / 100);
+      audio = Utils.audio.create(file, this.options.commentator, this.options.volume / 100);
       audio.addEventListener('ended', doEnded, false);
 
       return audio;
@@ -69,20 +41,20 @@ const AudioQueue = (function(sounds, Utils) {
     push: function(key = Utils.throwIfMissing) {
       if (typeof key === 'undefined') { return; }
 
-      let file = this.getRandomSound(key) || this.getGenericSound(key);
+      let file = Utils.audio.getRandom(key, this.options.commentator) || Utils.audio.getGeneric(key, this.options.commentator);
 
       console.log(key, file);
 
       // Random chance (1/6) to play a 'fill' sound instead of nothing
       // when there is no sound for the notation
       if (!file && Utils.trueOneOutOfSix()) {
-        file = this.getRandomSound('fill');
+        file = Utils.audio.getRandom('fill', this.options.commentator);
       }
 
       // If still no file to play, abort audio queue process
       if (!file) { return; }
 
-      this.queue.push(this.makeQueueAudio(file));
+      this.queue.push(this.createQueueAudio(file));
 
       if (this.queue.length === 1) { this.next(); }
     }

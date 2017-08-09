@@ -7,17 +7,11 @@
   //   - playing
   //   - observing
   //   - analyzing (needs additional work...)
-  // @TODO: Have fallback notation
-  //   (e.g.: Nd2 for Nbd2 when Nbd2 sound doesn't exist, xf4 is Bxf4 doesn't exist, Qx if Qxh8 doesn't exist, etc.)
   // @TODO: Fix the gruntfile error about imgmin
 
   const Dmitlichess = {
-    defaults: Utils.defaults,
-
     options: {},
-
     audioQueue: {},
-
     intervals: {
       misc: undefined,
       fill: undefined,
@@ -64,7 +58,7 @@
       let moves = new MoveEmitter(elements.moves, elements.main);
       let gamestates = new GameStateEmitter(elements.header, elements.main);
 
-      chrome.storage.sync.get(this.defaults, (items)=> {
+      chrome.storage.sync.get(Utils.defaults, (items)=> {
         this.options = items;
 
         this.audioQueue = Object.create(AudioQueue, {

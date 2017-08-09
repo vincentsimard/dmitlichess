@@ -1,29 +1,16 @@
-(function(chrome, sounds) {
+(function(chrome, sounds, Utils) {
   'use strict';
 
-  let options = { volume: 100 };
+  let options = Utils.defaults;
 
-  let makeAudio = function(file, volume) {
-    let audio = new Audio(chrome.extension.getURL('ogg/' + options.commentator + '/' + file));
-    audio.volume = volume;
-
-    return audio;
-  };
-
-  let getRandomSound = function(key) {
-    let files = sounds[key];
-
-    return files && files[Math.floor(Math.random()*files.length)];
-  };
-
-  let playSound = function(key, isMisc) {
-    let file = isMisc ? key : getRandomSound(key);
+  let playSound = function(key, isRandom = true) {
+    let file = isRandom ? Utils.audio.getRandom(key, options.commentator) : key;
     let audio;
 
     // No sound for notation :(
     if (!file) { return; }
 
-    audio = makeAudio(file, options.volume / 100);
+    audio = Utils.audio.create(file, options.commentator, options.volume / 100);
     audio.play();
   };
 
@@ -105,7 +92,7 @@
     soundboard.appendChild(selectList);
 
     selectList.addEventListener('change', function() {
-      playSound(this.value, true);
+      playSound(this.value, false);
     });
   };
 
@@ -113,13 +100,7 @@
     if (!sounds) { return; }
     if (!chrome.storage) { return; }
 
-    chrome.storage.sync.get({
-      volume: 100,
-      commentator: 'dmitri',
-      miscInterval: 10000,
-      fillInterval: 17000,
-      longTimeout: 3600
-    }, function(items) {
+    chrome.storage.sync.get(Utils.defauls, (items)=> {
       options = items;
       sounds = sounds[options.commentator];
       initMiscRandom();
@@ -129,4 +110,4 @@
   };
 
   init();
-})(chrome, sounds);
+})(chrome, sounds, Utils);
