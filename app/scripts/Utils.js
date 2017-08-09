@@ -38,6 +38,7 @@ const Utils = (function(chrome, sounds) {
         // @TODO: Also handle other fallback notation:
         //   - Nd2 if Nbd2 sound doesn't exist
         //   - Bx if Bxf4 doesn't exist
+        //   - h1 if Kh1 doesn't exist
 
         // Translate some game end states
         // @TODO: Individual sounds for white/black resigned?
