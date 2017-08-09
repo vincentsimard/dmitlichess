@@ -14,7 +14,7 @@
     }, function() {
       // Update status to let user know options were saved.
       // @TODO: Figure out a way to apply the options directly
-      var status = document.getElementById('status');
+      let status = document.getElementById('status');
       status.textContent = 'Options saved. Please refresh your lichess.org page';
       status.classList.remove = 'fade';
 
@@ -55,8 +55,8 @@
     saveOptions();
   }
 
-  var saveButton = document.getElementById('save');
-  var defaultButton = document.getElementById('default');
+  let saveButton = document.getElementById('save');
+  let defaultButton = document.getElementById('default');
 
   document.addEventListener('DOMContentLoaded', restoreOptions);
   if (saveButton) { saveButton.addEventListener('click', saveOptions); }

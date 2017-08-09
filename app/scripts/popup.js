@@ -3,22 +3,22 @@
 
   let options = { volume: 100 };
 
-  var makeAudio = function(file, volume) {
-    var audio = new Audio(chrome.extension.getURL('ogg/' + options.commentator + '/' + file));
+  let makeAudio = function(file, volume) {
+    let audio = new Audio(chrome.extension.getURL('ogg/' + options.commentator + '/' + file));
     audio.volume = volume;
 
     return audio;
   };
 
-  var getRandomSound = function(key) {
-    var files = sounds[key];
+  let getRandomSound = function(key) {
+    let files = sounds[key];
 
     return files && files[Math.floor(Math.random()*files.length)];
   };
 
-  var playSound = function(key, isMisc) {
-    var file = isMisc ? key : getRandomSound(key);
-    var audio;
+  let playSound = function(key, isMisc) {
+    let file = isMisc ? key : getRandomSound(key);
+    let audio;
 
     // No sound for notation :(
     if (!file) { return; }
@@ -27,7 +27,7 @@
     audio.play();
   };
 
-  var initBoard = function() {
+  let initBoard = function() {
     const squares = document.querySelectorAll('#board .square');
     const squaresArray = Array.prototype.slice.call(squares);
 
@@ -35,8 +35,8 @@
 
     let createSquareListener = function(square) {
       square.addEventListener('click', function(event) {
-        var keys = ['N', 'B', 'R', 'Q', 'K'];
-        var notation = this.id;
+        let keys = ['N', 'B', 'R', 'Q', 'K'];
+        let notation = this.id;
 
         if (event.shiftKey) { notation = 'x' + notation; }
         if (keys.indexOf(keyModifier.toUpperCase()) >= 0) { notation = keyModifier + notation; }
@@ -56,16 +56,16 @@
     squaresArray.map(createSquareListener);
   };
 
-  var initMiscRandom = function() {
+  let initMiscRandom = function() {
     document.querySelector('#randomMisc').addEventListener('click', function() {
       playSound('misc');
     });
   };
 
-  var initMiscList = function() {
+  let initMiscList = function() {
     let soundboard = document.querySelector('#soundboard');
 
-    var list = []
+    let list = []
       .concat(sounds.misc)
       .concat(sounds.check)
       .concat(sounds.checkmate)
@@ -77,7 +77,7 @@
       .concat(sounds.fill)
       .concat(sounds.long);
 
-    var trimmed = list.map(function(item) {
+    let trimmed = list.map(function(item) {
       if (!item) { return; }
 
       item = item.replace('misc_', '');
@@ -87,18 +87,18 @@
       return item;
     });
 
-    var createOption = function(value, text) {
-      var option = document.createElement('option');
+    let createOption = function(value, text) {
+      let option = document.createElement('option');
       option.value = value;
       option.text = text ? text.replace(/_/g, ' ') : '';
       return option;
     };
 
-    var selectList = document.createElement('select');
+    let selectList = document.createElement('select');
     selectList.id = 'miscList';
 
     selectList.appendChild(createOption('', ''));
-    for (var i = 0; i < trimmed.length; i++) {
+    for (let i = 0; i < trimmed.length; i++) {
       selectList.appendChild(createOption(list[i], trimmed[i]));
     }
 
