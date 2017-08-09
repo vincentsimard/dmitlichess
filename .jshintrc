@@ -87,7 +87,8 @@
     "globals"       : {
       "chrome": true,
       "sounds": true,
-      "Dmitlichess": true,
+      "Utils": true,
+      "AudioQueue": true,
       "MoveEmitter": true,
       "GameStateEmitter": true
     }

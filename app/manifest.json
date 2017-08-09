@@ -22,9 +22,11 @@
             "css": [],
             "js": [
                 "scripts/sounds.js",
-                "scripts/moveEmitter.js",
-                "scripts/gameStateEmitter.js",
-                "scripts/dmitlichess.js",
+                "scripts/Utils.js",
+                "scripts/AudioQueue.js",
+                "scripts/MoveEmitter.js",
+                "scripts/GameStateEmitter.js",
+                "scripts/Dmitlichess.js",
                 "scripts/options.js"
             ],
             "run_at": "document_idle",
