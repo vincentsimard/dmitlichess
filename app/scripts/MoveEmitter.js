@@ -2,16 +2,16 @@ const MoveEmitter = (function() {
   'use strict';
 
   function MoveEmitter(moves, el) {
-    var isCapture = function(notation) { return notation.indexOf('x') > -1; };
-    var isCastle = function(notation) { return notation.indexOf('0-0') > -1; };
-    var isCheck = function(notation) { return notation.indexOf('+') > -1; };
+    let isCapture = function(notation) { return notation.indexOf('x') > -1; };
+    let isCastle = function(notation) { return notation.indexOf('0-0') > -1; };
+    let isCheck = function(notation) { return notation.indexOf('+') > -1; };
 
-    var trimSymbols = function(notation) {
+    let trimSymbols = function(notation) {
       return notation.replace('+', '').replace('#', '');
     };
 
-    var handleMutation = function(mutations) {
-      var added, notation;
+    let handleMutation = function(mutations) {
+      let added, notation;
 
       mutations.forEach(function(mutation) {
         if (mutation.addedNodes.length < 1) { return; }
@@ -42,8 +42,8 @@ const MoveEmitter = (function() {
     };
 
     this.createObserver = function(moves) {
-      var observer = new MutationObserver(handleMutation);
-      var config = { childList: true, subtree: true };
+      let observer = new MutationObserver(handleMutation);
+      let config = { childList: true, subtree: true };
 
       if (moves) { observer.observe(moves, config); }
 
