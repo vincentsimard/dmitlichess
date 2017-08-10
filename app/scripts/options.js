@@ -4,7 +4,7 @@
   const OptionsCtrl = {
     elements: {
       volume: document.getElementById('volume'),
-      commentator: document.querySelectorAll('input[name="commentator"]'),
+      commentators: document.querySelectorAll('input[name="commentator"]'),
       miscInterval: document.getElementById('miscInterval'),
       fillInterval: document.getElementById('fillInterval'),
       longTimeout: document.getElementById('longTimeout'),
@@ -64,6 +64,12 @@
 
       this.elements.saveButton.addEventListener('click', ()=> this.save());
       this.elements.defaultButton.addEventListener('click', ()=> this.reset());
+
+      // Play a random commentary when a commentator is selected
+      Array.prototype.forEach.call(this.elements.commentators, (item)=> {
+        let listener = ()=> Utils.audio.play('misc', item.value, this.elements.volume.value);
+        item.addEventListener('click', listener);
+      });
     }
   };
 

@@ -47,6 +47,17 @@ const Utils = (function(chrome, sounds) {
         if (key.indexOf('white resigned') >= 0) { return this.getRandom('resign', commentator); }
         if (key.indexOf('black resigned') >= 0) { return this.getRandom('resign', commentator); }
         if (key.indexOf('time out') >= 0) { return this.getRandom('flag', commentator); }
+      },
+
+      play: function(key, commentator = this.defaults.commentator, volume = this.defaults.volume, isRandom = true) {
+        let audio;
+        let file = isRandom ? this.getRandom(key, commentator) : key;
+
+        // No sound for the notation :(
+        if (!file) { return; }
+
+        audio = this.create(file, commentator, volume / 100);
+        audio.play();
       }
     }
   };

@@ -4,17 +4,6 @@
   const PopupCtrl = {
     options: Utils.defaults,
 
-    playSound: function(key, isRandom = true) {
-      let audio;
-      let file = isRandom ? Utils.audio.getRandom(key, this.options.commentator) : key;
-
-      // No sound for the notation :(
-      if (!file) { return; }
-
-      audio = Utils.audio.create(file, this.options.commentator, this.options.volume / 100);
-      audio.play();
-    },
-
     generateMiscList: function() {
       let soundboard = document.querySelector('#soundboard');
 
@@ -76,7 +65,7 @@
           if (event.shiftKey) { notation = 'x' + notation; }
           if (keys.indexOf(keyModifier.toUpperCase()) >= 0) { notation = keyModifier + notation; }
 
-          self.playSound(notation);
+          Utils.audio.play(notation, self.options.commentator, self.options.volume);
         });
       };
 
@@ -92,12 +81,12 @@
 
       // "Play a random commentary" link
       document.querySelector('#randomMisc').addEventListener('click', ()=> {
-        this.playSound('misc');
+        Utils.audio.play('misc', this.options.commentator, this.options.volume);
       });
 
       // Full sound list dropdown
       document.querySelector('#miscList').addEventListener('change', (event)=> {
-        this.playSound(event.target.value, false);
+        Utils.audio.play(event.target.value, this.options.commentator, this.options.volume, false);
       });
     },
 
