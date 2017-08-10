@@ -3,6 +3,7 @@
 
   const OptionsCtrl = {
     elements: {
+      enabled: document.getElementById('enabled'),
       volume: document.getElementById('volume'),
       commentators: document.querySelectorAll('input[name="commentator"]'),
       miscInterval: document.getElementById('miscInterval'),
@@ -19,7 +20,7 @@
         // @TODO: Figure out a way to apply the options without requiring lichess to be refreshed
         let status = this.elements.status;
 
-        status.textContent = 'Options saved. Please refresh your lichess.org page';
+        status.textContent = 'Options have been saved.';
         status.classList.remove('faded');
 
         setTimeout(()=> status.classList.add('faded'), 5000);
@@ -30,6 +31,7 @@
 
       chrome.storage.sync.set({
         commentator:  document.querySelector('input[name="commentator"]:checked').value,
+        enabled:      this.elements.enabled.checked,
         volume:       this.elements.volume.value,
         miscInterval: this.elements.miscInterval.value,
         fillInterval: this.elements.fillInterval.value,
@@ -39,6 +41,7 @@
 
     reset: function() {
       document.getElementById('commentator_' + Utils.defaults.commentator).checked = true;
+      this.elements.enabled.checked = Utils.defaults.enabled;
       this.elements.miscInterval.value = Utils.defaults.miscInterval;
       this.elements.fillInterval.value = Utils.defaults.fillInterval;
       this.elements.longTimeout.value = Utils.defaults.longTimeout;
@@ -52,6 +55,7 @@
       // Default values
       chrome.storage.sync.get(Utils.defaults, (items)=> {
         document.getElementById('commentator_' + items.commentator).checked = true;
+        this.elements.enabled.checked = items.enabled;
         this.elements.volume.value = items.volume;
         this.elements.miscInterval.value = items.miscInterval;
         this.elements.fillInterval.value = items.fillInterval;
@@ -61,6 +65,8 @@
 
     init: function() {
       document.addEventListener('DOMContentLoaded', ()=> this.restore());
+
+      this.elements.enabled.addEventListener('change', ()=> this.save());
 
       this.elements.saveButton.addEventListener('click', ()=> this.save());
       this.elements.defaultButton.addEventListener('click', ()=> this.reset());

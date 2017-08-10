@@ -51,7 +51,7 @@
       soundboard.appendChild(selectList);
     },
 
-    addEventListeners: function() {
+    addListeners: function() {
       let self = this;
       let squares = document.querySelectorAll('#board .square');
       let squaresArray = Array.prototype.slice.call(squares);
@@ -80,13 +80,17 @@
       squaresArray.map(createSquareListener);
 
       // "Play a random commentary" link
-      document.querySelector('#randomMisc').addEventListener('click', ()=> {
+      document.getElementById('randomMisc').addEventListener('click', ()=> {
         Utils.audio.play('misc', this.options.commentator, this.options.volume);
       });
 
       // Full sound list dropdown
-      document.querySelector('#miscList').addEventListener('change', (event)=> {
+      document.getElementById('miscList').addEventListener('change', (event)=> {
         Utils.audio.play(event.target.value, this.options.commentator, this.options.volume, false);
+      });
+
+      document.getElementById('enabled').addEventListener('change', (event)=> {
+        chrome.storage.sync.set({ enabled: event.target.checked });
       });
     },
 
@@ -97,8 +101,10 @@
       chrome.storage.sync.get(Utils.defauls, (items)=> {
         this.options = items;
 
+        document.getElementById('enabled').checked = this.options.enabled;
+
         this.generateMiscList();
-        this.addEventListeners();
+        this.addListeners();
       });
     }
   };

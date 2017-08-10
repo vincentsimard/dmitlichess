@@ -2,6 +2,8 @@ const GameStateEmitter = (function() {
   'use strict';
 
   function GameStateEmitter(header, el) {
+    this.observers = [];
+    
     let isGameOver = function() {
       let table = document.querySelector('#lichess .lichess_ground .table');
 
@@ -46,8 +48,10 @@ const GameStateEmitter = (function() {
       });
     };
 
-    this.observers = [];
-    this.observers.push(this.createObserver());
+    this.init = function() {
+      this.observers = [];
+      this.observers.push(this.createObserver());
+    }
   }
 
   return GameStateEmitter;

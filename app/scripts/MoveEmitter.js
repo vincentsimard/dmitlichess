@@ -2,6 +2,8 @@ const MoveEmitter = (function() {
   'use strict';
 
   function MoveEmitter(moves, el) {
+    this.observers = [];
+
     let isCapture = function(notation) { return notation.indexOf('x') > -1; };
     let isCastle = function(notation) { return notation.indexOf('0-0') > -1; };
     let isCheck = function(notation) { return notation.indexOf('+') > -1; };
@@ -56,7 +58,10 @@ const MoveEmitter = (function() {
       });
     };
 
-    this.createObserver(moves);
+    this.init = function() {
+      this.observers = [];
+      this.observers.push(this.createObserver(moves));
+    };
   }
 
   return MoveEmitter;
