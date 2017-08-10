@@ -8,6 +8,7 @@
   //   - observing
   //   - analyzing (needs additional work...)
   // @TODO: Fix the gruntfile error about imgmin
+  // @TODO: Play signoff sound after game end sound
 
   const Dmitlichess = {
     options: {},
