@@ -1,64 +1,72 @@
-(function(chrome) {
+(function(chrome, Utils) {
   'use strict';
 
-  // Based off https://developer.chrome.com/extensions/options
+  const OptionsCtrl = {
+    elements: {
+      volume: document.getElementById('volume'),
+      commentator: document.querySelectorAll('input[name="commentator"]'),
+      miscInterval: document.getElementById('miscInterval'),
+      fillInterval: document.getElementById('fillInterval'),
+      longTimeout: document.getElementById('longTimeout'),
+      status: document.getElementById('status'),
+      saveButton: document.getElementById('save'),
+      defaultButton: document.getElementById('default')
+    },
 
-  // Saves options to chrome.storage
-  function saveOptions() {
-    chrome.storage.sync.set({
-      volume:       document.getElementById('volume').value,
-      commentator:  document.querySelector('input[name="commentator"]:checked').value,
-      miscInterval: document.getElementById('miscInterval').value,
-      fillInterval: document.getElementById('fillInterval').value,
-      longTimeout:  document.getElementById('longTimeout').value
-    }, function() {
-      // Update status to let user know options were saved.
-      // @TODO: Figure out a way to apply the options directly
-      let status = document.getElementById('status');
-      status.textContent = 'Options saved. Please refresh your lichess.org page';
-      status.classList.remove = 'fade';
+    save: function() {
+      let doSaved = ()=> {
+        // Update status to let user know options were saved.
+        // @TODO: Figure out a way to apply the options without requiring lichess to be refreshed
+        let status = this.elements.status;
 
-      setTimeout(function() {
-        status.classList.add('fade');
-      }, 5000);
+        status.textContent = 'Options saved. Please refresh your lichess.org page';
+        status.classList.remove('faded');
 
-      // @TODO: Would be nice but icon reverts back when reloading browser
-      // chrome.browserAction.setIcon({ path : '/images/' + commentator + '.png' });
-    });
-  }
+        setTimeout(()=> status.classList.add('faded'), 5000);
 
-  // Restores select box and checkbox state using the preferences
-  // stored in chrome.storage.
-  function restoreOptions() {
-    // Default values
-    chrome.storage.sync.get({
-      volume: 100,
-      commentator: 'dmitri',
-      miscInterval: 10000,
-      fillInterval: 17000,
-      longTimeout: 3600
-    }, function(items) {
-      document.getElementById('volume').value = items.volume;
-      document.getElementById('commentator_' + items.commentator).checked = true;
-      document.getElementById('miscInterval').value = items.miscInterval;
-      document.getElementById('fillInterval').value = items.fillInterval;
-      document.getElementById('longTimeout').value = items.longTimeout;
-    });
-  }
+        // @TODO: Would be nice but icon reverts back when reloading browser
+        // chrome.browserAction.setIcon({ path : '/images/' + commentator + '.png' });
+      };
 
-  function resetOptions() {
-    document.getElementById('commentator_dmitri').checked = true;
-    document.getElementById('miscInterval').value = 10000;
-    document.getElementById('fillInterval').value = 17000;
-    document.getElementById('longTimeout').value = 3600;
+      chrome.storage.sync.set({
+        commentator:  document.querySelector('input[name="commentator"]:checked').value,
+        volume:       this.elements.volume.value,
+        miscInterval: this.elements.miscInterval.value,
+        fillInterval: this.elements.fillInterval.value,
+        longTimeout:  this.elements.longTimeout.value
+      }, doSaved);
+    },
 
-    saveOptions();
-  }
+    reset: function() {
+      document.getElementById('commentator_' + Utils.defaults.commentator).checked = true;
+      this.elements.miscInterval.value = Utils.defaults.miscInterval;
+      this.elements.fillInterval.value = Utils.defaults.fillInterval;
+      this.elements.longTimeout.value = Utils.defaults.longTimeout;
 
-  let saveButton = document.getElementById('save');
-  let defaultButton = document.getElementById('default');
+      this.save();
+    },
 
-  document.addEventListener('DOMContentLoaded', restoreOptions);
-  if (saveButton) { saveButton.addEventListener('click', saveOptions); }
-  if (defaultButton) { defaultButton.addEventListener('click', resetOptions); }
-})(chrome);
+    // Restores select box and checkbox state using the preferences
+    // stored in chrome.storage.
+    restore: function() {
+      // Default values
+      chrome.storage.sync.get(Utils.defaults, (items)=> {
+        document.getElementById('commentator_' + items.commentator).checked = true;
+        this.elements.volume.value = items.volume;
+        this.elements.miscInterval.value = items.miscInterval;
+        this.elements.fillInterval.value = items.fillInterval;
+        this.elements.longTimeout.value = items.longTimeout;
+      });
+    },
+
+    init: function() {
+      document.addEventListener('DOMContentLoaded', ()=> this.restore());
+
+      this.elements.saveButton.addEventListener('click', ()=> this.save());
+      this.elements.defaultButton.addEventListener('click', ()=> this.reset());
+    }
+  };
+
+  let ctrl = Object.create(OptionsCtrl);
+  ctrl.init();
+})(chrome, Utils);

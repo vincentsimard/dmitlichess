@@ -114,5 +114,6 @@
     }
   };
 
-  PopupCtrl.init();
+  let ctrl = Object.create(PopupCtrl);
+  ctrl.init();
 })(chrome, sounds, Utils);

@@ -26,6 +26,8 @@ const Utils = (function(chrome, sounds) {
       },
 
       getRandom: function(key = this.throwIfMissing, commentator = defaults.commentator) {
+        if (!sounds) { return; }
+
         let files = sounds[commentator][key];
 
         return files && files[Math.floor(Math.random()*files.length)];
