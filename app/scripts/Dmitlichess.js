@@ -27,6 +27,8 @@
 
     start: function(el) {
       // Attach event handlers
+      el.addEventListener('queueCleared', ()=> this.resetMiscInterval());
+
       el.addEventListener('move',    (e)=> this.audioQueue.push(e.detail.notation));
       el.addEventListener('capture', (e)=> this.audioQueue.push(e.detail.notation));
       el.addEventListener('check',   ()=> this.audioQueue.push('check'));
@@ -62,7 +64,8 @@
         this.options = items;
 
         this.audioQueue = Object.create(AudioQueue, {
-          options: { value: this.options }
+          options: { value: this.options },
+          eventElement: { value: elements.main }
         });
 
         this.start(elements.main);

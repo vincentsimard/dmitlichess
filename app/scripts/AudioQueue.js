@@ -5,6 +5,7 @@ const AudioQueue = (function(sounds, Utils) {
     queue: [],
 
     options: Utils.defaults,
+    eventElement: undefined,
 
     next: function() {
       if (this.queue.length > 0) {
@@ -15,7 +16,7 @@ const AudioQueue = (function(sounds, Utils) {
     clear: function() {
       this.queue = [];
 
-      // this.resetMiscInterval(); // @TODO: Handle interval outside, trigger event
+      this.eventElement.dispatchEvent(new CustomEvent('queueCleared'));
     },
 
     createQueueAudio: function(file) {
