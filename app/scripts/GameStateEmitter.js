@@ -11,12 +11,17 @@ const GameStateEmitter = (function(Utils) {
     'black resigned'
   ];
 
+  let resultElementAdded = function(mutations) {
+    return mutations.some((mutation)=> !Utils.mutation.hasAddedNodes(mutation, 'result_wrap'));
+  };
+
   return {
     elements: Utils.elements,
 
     observers: [],
 
-    handleMutations: function() {
+    handleMutations: function(mutations) {
+      if (!resultElementAdded(mutations)) { return; }
       if (!Utils.isGameOver()) { return; }
 
       let status = document.querySelector('.status');
@@ -35,9 +40,9 @@ const GameStateEmitter = (function(Utils) {
     },
 
     create: function() {
-      let el = this.elements.header; // @TODO: Target smaller element (sidebox or something, didn't work for some reason)
+      let el = this.elements.moves;
       let observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
-      let config = { childList: true, subtree: true };
+      let config = { childList: true, subtree: false };
 
       if (el) { observer.observe(el, config); }
 

@@ -1,4 +1,4 @@
-const MoveEmitter = (function() {
+const MoveEmitter = (function(Utils) {
   'use strict';
 
   let isCapture = (notation)=> notation.indexOf('x') > -1;
@@ -13,7 +13,7 @@ const MoveEmitter = (function() {
 
     handleMutations: function(mutations) {
       mutations.forEach((mutation)=> {
-        if (mutation.addedNodes.length < 1) { return; }
+        if (!Utils.mutation.hasAddedNodes(mutation)) { return; }
 
         let added = mutation.addedNodes[0];
         let notation = added.textContent;
@@ -57,4 +57,4 @@ const MoveEmitter = (function() {
       this.observers.push(this.create());
     }
   };
-})();
+})(Utils);

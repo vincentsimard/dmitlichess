@@ -36,7 +36,6 @@
     doGameOver: function(state = 'resign') {
       this.stop();
 
-      // @TODO: Wait until there is no audio playing before pushing state/signoff
       this.audioQueue.clear();
       this.audioQueue.push(state);
       this.audioQueue.push('signoff');
