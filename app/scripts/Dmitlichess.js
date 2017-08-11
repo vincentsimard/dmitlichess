@@ -35,6 +35,15 @@
       }
     },
 
+    doGameOver: function(state = 'resign') {
+      this.stop();
+
+      // @TODO: Wait until there is no audio playing before pushing state/signoff
+      this.audioQueue.clear();
+      this.audioQueue.push(state);
+      this.audioQueue.push('signoff');
+    },
+
     addListeners: function(el) {
       // Attach event handlers
       el.addEventListener('queueCleared', ()=> this.resetMiscInterval());
@@ -44,11 +53,8 @@
       el.addEventListener('check',   ()=> this.audioQueue.push('check'));
       el.addEventListener('start',   ()=> this.audioQueue.push('start'));
       el.addEventListener('state',   (e)=> {
-        this.stop();
-
-        this.audioQueue.clear();
-        this.audioQueue.push(e.detail.state);
-        this.audioQueue.push('signoff');
+        if (e.detail.isOver) { this.doGameOver(e.detail.state); }
+        // @TODO: Handle takeback offers?
       });
 
       chrome.runtime.onMessage.addListener((request)=> {
@@ -103,7 +109,8 @@
 
         this.addListeners(elements.main);
 
-        this[this.options.enabled ? 'start' : 'stop']();
+        // Start if the extension is enabled and the game is not over
+        this[this.options.enabled && !Utils.isGameOver() ? 'start' : 'stop']();
       });
     }
   };

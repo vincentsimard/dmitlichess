@@ -11,12 +11,13 @@ const Utils = (function(chrome, sounds) {
   };
 
   let elements = {
-    main:   document.querySelector('#lichess'),
-    board:  document.querySelector('#lichess .lichess_board'),
-    moves:  document.querySelector('#lichess .moves'),
-    header: document.querySelector('#site_header'),
-    table:  document.querySelector('#lichess .lichess_ground .table')
+    main:    document.querySelector('#lichess'),
+    board:   document.querySelector('#lichess .lichess_board'),
+    moves:   document.querySelector('#lichess .moves'),
+    header:  document.querySelector('#site_header')
   };
+
+  let getStatusElement = ()=> document.querySelector('#site_header .status, #lichess .lichess_ground .status');
 
   return {
     defaults: defaults,
@@ -27,7 +28,7 @@ const Utils = (function(chrome, sounds) {
     trueOneOutOfSix: ()=> !(Math.floor(Math.random() * 6)),
 
     isGameStart: ()=> elements.moves && elements.moves.children.length === 0,
-    isGameOver: ()=> !elements.table && elements.table.classList.contains('finished'),
+    isGameOver: ()=> !!getStatusElement(),
 
     sendSaveMessage: ()=> {
       chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
@@ -63,8 +64,11 @@ const Utils = (function(chrome, sounds) {
 
         // Translate some game end states
         // @TODO: Individual sounds for white/black resigned?
+        /*
         if (key.indexOf('white resigned') >= 0) { return this.getRandom('resign', commentator); }
         if (key.indexOf('black resigned') >= 0) { return this.getRandom('resign', commentator); }
+        */
+        if (key.indexOf('resigned') >= 0) { return this.getRandom('resign', commentator); }
         if (key.indexOf('time out') >= 0) { return this.getRandom('flag', commentator); }
       },
 
