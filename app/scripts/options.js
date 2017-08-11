@@ -28,9 +28,6 @@
 
           setTimeout(()=> status.classList.add('faded'), 5000);
         }
-
-        // @TODO: Would be nice but icon reverts back when reloading browser
-        // chrome.browserAction.setIcon({ path : '/images/' + commentator + '.png' });
       };
 
       chrome.storage.sync.set({

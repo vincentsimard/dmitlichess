@@ -2,10 +2,10 @@ const AudioQueue = (function(sounds, Utils) {
   'use strict';
 
   return {
-    queue: [],
-
     options: Utils.defaults,
     eventElement: undefined,
+
+    queue: [],
 
     next: function() {
       if (this.queue.length > 0) {

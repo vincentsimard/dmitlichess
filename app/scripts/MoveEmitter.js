@@ -1,68 +1,60 @@
 const MoveEmitter = (function() {
   'use strict';
 
-  function MoveEmitter(moves, el) {
-    this.observers = [];
+  let isCapture = (notation)=> notation.indexOf('x') > -1;
+  let isCastle = (notation)=> notation.indexOf('0-0') > -1;
+  let isCheck = (notation)=> notation.indexOf('+') > -1;
+  let trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
 
-    let isCapture = function(notation) { return notation.indexOf('x') > -1; };
-    let isCastle = function(notation) { return notation.indexOf('0-0') > -1; };
-    let isCheck = function(notation) { return notation.indexOf('+') > -1; };
+  return {
+    moves: undefined,
+    eventElement: undefined,
 
-    let trimSymbols = function(notation) {
-      return notation.replace('+', '').replace('#', '');
-    };
+    observers: [],
 
-    let handleMutation = function(mutations) {
-      let added, notation;
-
-      mutations.forEach(function(mutation) {
+    handleMutations: function(mutations) {
+      mutations.forEach((mutation)=> {
         if (mutation.addedNodes.length < 1) { return; }
 
-        added = mutation.addedNodes[0];
+        let added = mutation.addedNodes[0];
+        let notation = added.textContent;
 
         if (added.nodeName === 'TURN') {
           added = added.querySelector('MOVE.active');
         }
 
-        notation = added.textContent;
-
         if (!notation) { return; }
         if (!added.classList.contains('active')) { return; }
 
         let notationType = isCapture(notation) ? 'capture' : 'move';
+        let eventDetail = {
+          detail: { notation: trimSymbols(notation) }
+        };
 
-        el.dispatchEvent(new CustomEvent(notationType, {
-          detail: {
-            notation: trimSymbols(notation)
-          }
-        }));
+        this.eventElement.dispatchEvent(new CustomEvent(notationType, eventDetail));
 
         if (isCheck(notation)) {
-          el.dispatchEvent(new CustomEvent('check'));
+          this.eventElement.dispatchEvent(new CustomEvent('check'));
         }
       });
-    };
+    },
 
-    this.createObserver = function(moves) {
-      let observer = new MutationObserver(handleMutation);
+    create: function(moves) {
+      let observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
       let config = { childList: true, subtree: true };
 
       if (moves) { observer.observe(moves, config); }
 
       return observer;
-    };
+    },
 
-    this.disconnectObservers = function() {
-      this.observers.map(function(o) {
-        return o.disconnect();
-      });
-    };
+    disconnect: function() {
+      this.observers.map((o)=> o.disconnect());
+    },
 
-    this.init = function() {
+    init: function() {
       this.observers = [];
-      this.observers.push(this.createObserver(moves));
-    };
-  }
-
-  return MoveEmitter;
+      this.observers.push(this.create(this.moves));
+    }
+  };
 })();

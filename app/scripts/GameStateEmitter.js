@@ -1,58 +1,61 @@
-const GameStateEmitter = (function() {
+const GameStateEmitter = (function(Utils) {
   'use strict';
 
-  function GameStateEmitter(header, el) {
-    this.observers = [];
-    
-    let isGameOver = function() {
-      let table = document.querySelector('#lichess .lichess_ground .table');
+  return {
+    eventElement: undefined,
+    header: undefined,
 
-      return !!table ? table.classList.contains('finished') : true;
-    };
+    observers: [],
 
-    var handleMutation = function() {
-      if (!isGameOver()) { return; }
+    handleMutations: function() {
+      if (!isGameOver()) { console.log('not over'); return; }
+      console.log('over');
 
-      var text = header.innerText.toLowerCase();
-      var states = ['checkmate', 'draw', 'time out', 'white resigned', 'black resigned'];
-      var state, i;
+      let text = this.header.innerText.toLowerCase();
+      let states = [
+        'checkmate',
+        'draw',
+        'time out',
+        'white resigned',
+        'black resigned'
+      ];
 
-      for (i=0; i<states.length; i++) {
+      // @TODO: Bleh, do better
+      let state;
+      for (let i=0; i<states.length; i++) {
         if (text.indexOf(states[i]) > -1) { state = states[i]; }
       }
 
-      el.dispatchEvent(new CustomEvent('state', {
-        detail: {
-          state: state
-        }
+      this.eventElement.dispatchEvent(new CustomEvent('state', {
+        detail: { state: state }
       }));
 
-      // Automatically disconnect after the game ends
-      // to prevent triggering again on rematch
-      // @TODO: Figure out a better solution
+      // Disconnect after the game ends to prevent triggering again on rematch
       this.disconnect();
-    };
+    },
 
-    this.createObserver = function() {
-      var observer = new MutationObserver(handleMutation);
-      var config = { childList: true, subtree: true };
+    create: function() {
+      let observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
+      let config = { childList: true, subtree: true };
 
-      if (header) { observer.observe(header, config); }
+      if (this.header) { observer.observe(this.header, config); }
 
       return observer;
-    };
+    },
 
-    this.disconnectObservers = function() {
-      this.observers.map(function(o) {
-        return o.disconnect();
-      });
-    };
+    disconnect: function() {
+      this.observers.map((o)=> o.disconnect());
+    },
 
-    this.init = function() {
+    init: function() {
       this.observers = [];
-      this.observers.push(this.createObserver());
-    }
-  }
+      this.observers.push(this.create());
 
-  return GameStateEmitter;
-})();
+      console.log(Utils.isGameStart());
+
+      if (Utils.isGameStart()) {
+        console.log('game start');
+      }
+    }
+  };
+})(Utils);

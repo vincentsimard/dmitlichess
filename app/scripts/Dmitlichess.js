@@ -73,8 +73,8 @@
     },
 
     stop: function() {
-      this.emitters.moves.disconnectObservers();
-      this.emitters.gamestates.disconnectObservers();
+      this.emitters.moves.disconnect();
+      this.emitters.gamestates.disconnect();
 
       if (this.intervals.misc) { clearInterval(this.intervals.misc); }
       if (this.intervals.fill) { clearInterval(this.intervals.fill); }
@@ -94,8 +94,16 @@
       if (!sounds) { return; }
       if (!elements.board) { return; }
 
-      this.emitters.moves = new MoveEmitter(elements.moves, elements.main);
-      this.emitters.gamestates = new GameStateEmitter(elements.header, elements.main);
+      // @TODO: Send elements object instead of individual vars when using Object.create
+      this.emitters.moves = Object.create(MoveEmitter, {
+        moves: { value: elements.moves },
+        eventElement: { value: elements.main }
+      });
+
+      this.emitters.gamestates = Object.create(GameStateEmitter, {
+        header: { value: elements.header },
+        eventElement: { value: elements.main }
+      });
 
       chrome.storage.sync.get(Utils.defaults, (items)=> {
         this.options = items;

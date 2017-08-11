@@ -10,12 +10,20 @@ const Utils = (function(chrome, sounds) {
     enabled: true
   };
 
+  let elements = {
+    table: document.querySelector('#lichess .lichess_ground .table'),
+    moves: document.querySelector('#lichess .moves')
+  };
+
   return {
     defaults: defaults,
 
     throwIfMissing: ()=> { throw new Error('Missing parameter'); },
 
     trueOneOutOfSix: ()=> !(Math.floor(Math.random() * 6)),
+
+    isGameStart: ()=> elements.moves && elements.moves.children.length === 0,
+    isGameOver: ()=> !elements.table && elements.table.classList.contains('finished'),
 
     sendSaveMessage: ()=> {
       chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
