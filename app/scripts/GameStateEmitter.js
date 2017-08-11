@@ -52,8 +52,7 @@ const GameStateEmitter = (function(Utils) {
       this.observers.push(this.create());
 
       if (Utils.isGameStart()) {
-        // @TODO:
-        console.log('game start');
+        this.elements.main.dispatchEvent(new CustomEvent('start'));
       }
     }
   };

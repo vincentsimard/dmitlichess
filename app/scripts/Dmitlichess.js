@@ -1,7 +1,7 @@
 (function(chrome, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter) {
   'use strict';
 
-  // @TODO: Game start/end sounds
+  // @TODO: Game end sounds
   // @TODO: Add option to enable/disable extension for when:
   //   - playing
   //   - observing
@@ -42,6 +42,7 @@
       el.addEventListener('move',    (e)=> this.audioQueue.push(e.detail.notation));
       el.addEventListener('capture', (e)=> this.audioQueue.push(e.detail.notation));
       el.addEventListener('check',   ()=> this.audioQueue.push('check'));
+      el.addEventListener('start',   ()=> this.audioQueue.push('start'));
       el.addEventListener('state',   (e)=> {
         this.stop();
 
