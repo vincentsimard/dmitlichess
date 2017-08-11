@@ -44,6 +44,40 @@ kbd {
 #board .square.light { background-color: #f9f9f9; color: black; }
 #board .square.dark  { background-color: #3a3a3a; color: white; }
 
+.square {
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+.square:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10,10);
+  opacity: 0;
+  transition: transform .5s, opacity 1s;
+}
+
+.square.dark:after {
+  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+}
+
+.square:active:after {
+  transform: scale(0,0);
+  opacity: .2;
+  transition: 0s;
+}
+
+
 
 label, input, small { display: block; }
 input, button { margin-bottom: 1em; }
