@@ -1,13 +1,11 @@
 (function(chrome, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter) {
   'use strict';
 
-  // @TODO: Game end sounds
   // @TODO: Add option to enable/disable extension for when:
   //   - playing
   //   - observing
   //   - analyzing (needs additional work...)
   // @TODO: Fix the gruntfile error about imgmin
-  // @TODO: Play signoff sound after game end sound
 
   const Dmitlichess = {
     options: {},
