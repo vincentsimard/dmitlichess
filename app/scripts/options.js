@@ -14,16 +14,20 @@
       defaultButton: document.getElementById('default')
     },
 
-    save: function() {
+    save: function(showStatus = true) {
       let doSaved = ()=> {
-        // Update status to let user know options were saved.
-        // @TODO: Figure out a way to apply the options without requiring lichess to be refreshed
-        let status = this.elements.status;
+        Utils.sendSaveMessage();
 
-        status.textContent = 'Options have been saved.';
-        status.classList.remove('faded');
+        if (showStatus) {
+          // Update status to let user know options were saved.
+          // @TODO: Apply the options without requiring lichess to be refreshed
+          let status = this.elements.status;
 
-        setTimeout(()=> status.classList.add('faded'), 5000);
+          status.textContent = 'Options saved. Please refresh your lichess.org page';
+          status.classList.remove('faded');
+
+          setTimeout(()=> status.classList.add('faded'), 5000);
+        }
 
         // @TODO: Would be nice but icon reverts back when reloading browser
         // chrome.browserAction.setIcon({ path : '/images/' + commentator + '.png' });
@@ -66,7 +70,7 @@
     init: function() {
       document.addEventListener('DOMContentLoaded', ()=> this.restore());
 
-      this.elements.enabled.addEventListener('change', ()=> this.save());
+      this.elements.enabled.addEventListener('change', ()=> this.save(false));
 
       this.elements.saveButton.addEventListener('click', ()=> this.save());
       this.elements.defaultButton.addEventListener('click', ()=> this.reset());

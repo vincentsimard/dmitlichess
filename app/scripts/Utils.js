@@ -17,6 +17,12 @@ const Utils = (function(chrome, sounds) {
 
     trueOneOutOfSix: ()=> !(Math.floor(Math.random() * 6)),
 
+    sendSaveMessage: ()=> {
+      chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
+        chrome.tabs.sendMessage(tabs[0].id, { 'message': 'optionsSaved' });
+      });
+    },
+
     audio: {
       create: function(file = this.throwIfMissing, commentator = defaults.commentator, volume = defaults.volume) {
         let path = chrome.extension.getURL('ogg/' + commentator + '/' + file);

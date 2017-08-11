@@ -90,7 +90,7 @@
       });
 
       document.getElementById('enabled').addEventListener('change', (event)=> {
-        chrome.storage.sync.set({ enabled: event.target.checked });
+        chrome.storage.sync.set({ enabled: event.target.checked }, Utils.sendSaveMessage);
       });
     },
 

@@ -49,6 +49,15 @@
         this.audioQueue.push(e.detail.state);
         this.audioQueue.push('signoff');
       });
+
+      chrome.runtime.onMessage.addListener((request)=> {
+        if (request.message === 'optionsSaved' ) {
+          // Apply saved dmitlichess options
+          chrome.storage.sync.get(Utils.defaults, (items)=> {
+            this[items.enabled ? 'start' : 'stop']();
+          });
+        }
+      });
     },
 
     start: function() {
@@ -98,11 +107,7 @@
 
         this.addListeners(elements.main);
 
-        if (this.options.enabled) {
-          this.start();
-        } else {
-          this.stop();
-        }
+        this[this.options.enabled ? 'start' : 'stop']();
       });
     }
   };
