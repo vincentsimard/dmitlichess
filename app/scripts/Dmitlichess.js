@@ -84,33 +84,20 @@
     },
 
     init: function() {
-      let elements = {
-        main:   document.querySelector('#lichess'),
-        board:  document.querySelector('#lichess .lichess_board'),
-        moves:  document.querySelector('#lichess .moves'),
-        header: document.querySelector('#site_header')
-      };
+      let elements = Utils.elements;
 
       if (!sounds) { return; }
       if (!elements.board) { return; }
 
-      // @TODO: Send elements object instead of individual vars when using Object.create
-      this.emitters.moves = Object.create(MoveEmitter, {
-        moves: { value: elements.moves },
-        eventElement: { value: elements.main }
-      });
-
-      this.emitters.gamestates = Object.create(GameStateEmitter, {
-        header: { value: elements.header },
-        eventElement: { value: elements.main }
-      });
+      this.emitters.moves = Object.create(MoveEmitter, { elements: { value: elements } });
+      this.emitters.gamestates = Object.create(GameStateEmitter, { elements: { value: elements } });
 
       chrome.storage.sync.get(Utils.defaults, (items)=> {
         this.options = items;
 
         this.audioQueue = Object.create(AudioQueue, {
           options: { value: this.options },
-          eventElement: { value: elements.main }
+          elements: { value: elements }
         });
 
         this.addListeners(elements.main);

@@ -11,12 +11,16 @@ const Utils = (function(chrome, sounds) {
   };
 
   let elements = {
-    table: document.querySelector('#lichess .lichess_ground .table'),
-    moves: document.querySelector('#lichess .moves')
+    main:   document.querySelector('#lichess'),
+    board:  document.querySelector('#lichess .lichess_board'),
+    moves:  document.querySelector('#lichess .moves'),
+    header: document.querySelector('#site_header'),
+    table:  document.querySelector('#lichess .lichess_ground .table')
   };
 
   return {
     defaults: defaults,
+    elements: elements,
 
     throwIfMissing: ()=> { throw new Error('Missing parameter'); },
 

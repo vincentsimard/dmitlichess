@@ -3,7 +3,7 @@ const AudioQueue = (function(sounds, Utils) {
 
   return {
     options: Utils.defaults,
-    eventElement: undefined,
+    elements: Utils.elements,
 
     queue: [],
 
@@ -16,7 +16,7 @@ const AudioQueue = (function(sounds, Utils) {
     clear: function() {
       this.queue = [];
 
-      this.eventElement.dispatchEvent(new CustomEvent('queueCleared'));
+      this.elements.main.dispatchEvent(new CustomEvent('queueCleared'));
     },
 
     createQueueAudio: function(file) {

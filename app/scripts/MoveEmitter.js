@@ -7,8 +7,7 @@ const MoveEmitter = (function() {
   let trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
 
   return {
-    moves: undefined,
-    eventElement: undefined,
+    elements: Utils.elements,
 
     observers: [],
 
@@ -31,19 +30,20 @@ const MoveEmitter = (function() {
           detail: { notation: trimSymbols(notation) }
         };
 
-        this.eventElement.dispatchEvent(new CustomEvent(notationType, eventDetail));
+        this.elements.main.dispatchEvent(new CustomEvent(notationType, eventDetail));
 
         if (isCheck(notation)) {
-          this.eventElement.dispatchEvent(new CustomEvent('check'));
+          this.elements.main.dispatchEvent(new CustomEvent('check'));
         }
       });
     },
 
-    create: function(moves) {
+    create: function() {
+      let el = this.elements.moves;
       let observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
       let config = { childList: true, subtree: true };
 
-      if (moves) { observer.observe(moves, config); }
+      if (el) { observer.observe(el, config); }
 
       return observer;
     },
@@ -54,7 +54,7 @@ const MoveEmitter = (function() {
 
     init: function() {
       this.observers = [];
-      this.observers.push(this.create(this.moves));
+      this.observers.push(this.create());
     }
   };
 })();

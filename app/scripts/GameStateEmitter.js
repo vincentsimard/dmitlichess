@@ -2,13 +2,12 @@ const GameStateEmitter = (function(Utils) {
   'use strict';
 
   return {
-    eventElement: undefined,
-    header: undefined,
+    elements: Utils.elements,
 
     observers: [],
 
     handleMutations: function() {
-      if (!isGameOver()) { console.log('not over'); return; }
+      if (!Utils.isGameOver()) { console.log('not over'); return; }
       console.log('over');
 
       let text = this.header.innerText.toLowerCase();
@@ -26,7 +25,7 @@ const GameStateEmitter = (function(Utils) {
         if (text.indexOf(states[i]) > -1) { state = states[i]; }
       }
 
-      this.eventElement.dispatchEvent(new CustomEvent('state', {
+      this.elements.main.dispatchEvent(new CustomEvent('state', {
         detail: { state: state }
       }));
 
@@ -35,10 +34,11 @@ const GameStateEmitter = (function(Utils) {
     },
 
     create: function() {
+      let el = this.elements.header;
       let observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
       let config = { childList: true, subtree: true };
 
-      if (this.header) { observer.observe(this.header, config); }
+      if (el) { observer.observe(el, config); }
 
       return observer;
     },
@@ -51,9 +51,8 @@ const GameStateEmitter = (function(Utils) {
       this.observers = [];
       this.observers.push(this.create());
 
-      console.log(Utils.isGameStart());
-
       if (Utils.isGameStart()) {
+        // @TODO:
         console.log('game start');
       }
     }
