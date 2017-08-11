@@ -14,7 +14,9 @@ const AudioQueue = (function(sounds, Utils) {
     },
 
     clear: function() {
-      this.queue = [];
+      // Keep the first audio file if its playback has not finished
+      let first = this.queue[0];
+      this.queue = first && !first.ended ? [first] : [];
 
       this.elements.main.dispatchEvent(new CustomEvent('queueCleared'));
     },
