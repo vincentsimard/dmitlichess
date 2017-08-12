@@ -11,7 +11,13 @@ const AudioQueue = (function(sounds, Utils) {
       if (this.queue.length > 0) {
         let first = this.queue[0];
 
-        if (typeof first.play === 'function') { first.play(); }
+        if (typeof first.play === 'function') {
+          first.play().then(()=> {
+
+          }).catch((error) => {
+            // console.log('play() error', error);
+          });
+        }
       }
     },
 
