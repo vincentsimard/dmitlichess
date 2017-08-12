@@ -88,10 +88,11 @@
     },
 
     init: function() {
-      let elements = Utils.elements;
+      let elements = Utils.getElements();
 
       if (!sounds) { return; }
       if (!elements.board) { return; }
+      if (!elements.moves) { return; } // @TODO: Wait for moves element to be created...
 
       this.emitters.moves = Object.create(MoveEmitter, { elements: { value: elements } });
       this.emitters.gamestates = Object.create(GameStateEmitter, { elements: { value: elements } });
@@ -112,5 +113,5 @@
     }
   };
 
-  Dmitlichess.init();
+  setTimeout(()=> Dmitlichess.init(), 1); // @TODO: Dafuq is this shit
 })(chrome, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter);

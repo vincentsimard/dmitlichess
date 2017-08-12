@@ -23,6 +23,17 @@ const Utils = (function(chrome, sounds) {
     defaults: defaults,
     elements: elements,
 
+    getElements: function() {
+      this.elements = {
+        main:   document.querySelector('#lichess'),
+        board:  document.querySelector('#lichess .lichess_board'),
+        moves:  document.querySelector('#lichess .moves'),
+        header: document.querySelector('#site_header')
+      };
+
+      return this.elements;
+    },
+
     throwIfMissing: ()=> { throw new Error('Missing parameter'); },
 
     trueOneOutOfSix: ()=> !(Math.floor(Math.random() * 6)),

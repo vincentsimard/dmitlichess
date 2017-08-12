@@ -9,7 +9,9 @@ const AudioQueue = (function(sounds, Utils) {
 
     next: function() {
       if (this.queue.length > 0) {
-        this.queue[0].play();
+        let first = this.queue[0];
+
+        if (typeof first.play === 'function') { first.play(); }
       }
     },
 
