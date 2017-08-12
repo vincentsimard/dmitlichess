@@ -46,7 +46,7 @@ const AudioQueue = (function(sounds, Utils) {
 
       let file = Utils.audio.getRandom(key, this.options.commentator) || Utils.audio.getGeneric(key, this.options.commentator);
 
-      console.log(key, file);
+      // console.log(key, file);
 
       // Random chance (1/6) to play a 'fill' sound instead of nothing
       // when there is no sound for the notation
