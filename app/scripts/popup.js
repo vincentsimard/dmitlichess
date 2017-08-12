@@ -98,7 +98,7 @@
       if (!sounds) { return; }
       if (!chrome.storage) { return; }
 
-      chrome.storage.sync.get(Utils.defauls, (items)=> {
+      chrome.storage.sync.get(Utils.defaults, (items)=> {
         this.options = items;
 
         document.getElementById('enabled').checked = this.options.enabled;
