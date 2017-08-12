@@ -12,7 +12,7 @@ const GameStateEmitter = (function(Utils) {
   ];
 
   let resultElementAdded = function(mutations) {
-    return mutations.some((mutation)=> !Utils.mutation.hasAddedNodes(mutation, 'result_wrap'));
+    return mutations.some((mutation)=> Utils.mutation.hasAddedNodes(mutation, 'result_wrap'));
   };
 
   return {

@@ -36,7 +36,7 @@
     doGameOver: function(state = 'resign') {
       this.stop();
 
-      this.audioQueue.clear();
+      this.audioQueue.clear(true);
       this.audioQueue.push(state);
       this.audioQueue.push('signoff');
     },

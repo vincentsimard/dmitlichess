@@ -21,10 +21,15 @@ const AudioQueue = (function(sounds, Utils) {
       }
     },
 
-    clear: function() {
+    clear: function(keepFirst = false) {
+      /*
       // Keep the first audio file if its playback has not finished
       let first = this.queue[0];
       this.queue = first && !first.ended ? [first] : [];
+      */
+      let first = this.queue[0];
+
+      this.queue = keepFirst ? (first && !first.ended ? [first] : []) : [];
 
       this.elements.main.dispatchEvent(new CustomEvent('queueCleared'));
     },
@@ -54,7 +59,7 @@ const AudioQueue = (function(sounds, Utils) {
 
       let file = Utils.audio.getRandom(key, this.options.commentator) || Utils.audio.getGeneric(key, this.options.commentator);
 
-      // console.log(key, file);
+      // console.log(key, file, this.queue.length);
 
       // Random chance (1/6) to play a 'fill' sound instead of nothing
       // when there is no sound for the notation
