@@ -320,3 +320,7 @@ input[type=range]:focus { outline: none; }
   right: 70px;
   top: 0;
 }
+
+.rtl {
+  direction: rtl;
+}
