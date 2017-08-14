@@ -17,7 +17,7 @@
           <input type="checkbox" id="enabled" class="tgl tgl-flip" />
           <label for="enabled" class="tgl-btn" data-on="Enabled" data-off="Disabled"></label>
         </div>
-        
+
         <div id="soundboard">
             <p id="instructions">Click the squares on the board to play move sounds:
               <ul>
@@ -101,6 +101,7 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/popup.js -->
+        <script src="vendor/webextension-polyfill/dist/browser-polyfill.min.js"></script>
         <script src="scripts/sounds.js"></script>
         <script src="scripts/Utils.js"></script>
         <script src="scripts/popup.js"></script>

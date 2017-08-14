@@ -1,4 +1,4 @@
-(function(chrome, sounds, Utils) {
+(function(browser, sounds, Utils) {
   'use strict';
 
   const PopupCtrl = {
@@ -90,15 +90,15 @@
       });
 
       document.getElementById('enabled').addEventListener('change', (event)=> {
-        chrome.storage.sync.set({ enabled: event.target.checked }, Utils.sendSaveMessage);
+        browser.storage.sync.set({ enabled: event.target.checked }).then(Utils.sendSaveMessage);
       });
     },
 
     init: function() {
       if (!sounds) { return; }
-      if (!chrome.storage) { return; }
+      if (!browser.storage) { return; }
 
-      chrome.storage.sync.get(Utils.defaults, (items)=> {
+      browser.storage.sync.get(Utils.defaults).then((items)=> {
         this.options = items;
 
         document.getElementById('enabled').checked = this.options.enabled;
@@ -111,4 +111,4 @@
 
   let ctrl = Object.create(PopupCtrl);
   ctrl.init();
-})(chrome, sounds, Utils);
+})(browser, sounds, Utils);

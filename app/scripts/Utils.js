@@ -1,4 +1,4 @@
-const Utils = (function(chrome, sounds) {
+const Utils = (function(browser, sounds) {
   'use strict';
 
   let defaults = {
@@ -42,14 +42,14 @@ const Utils = (function(chrome, sounds) {
     isGameOver: ()=> !!getStatusElement(),
 
     sendSaveMessage: ()=> {
-      chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-        chrome.tabs.sendMessage(tabs[0].id, { 'message': 'optionsSaved' });
+      browser.tabs.query({currentWindow: true, active: true}).then(function (tabs){
+        browser.tabs.sendMessage(tabs[0].id, { 'message': 'optionsSaved' });
       });
     },
 
     audio: {
       create: function(file = this.throwIfMissing, commentator = defaults.commentator, volume = defaults.volume) {
-        let path = chrome.extension.getURL('ogg/' + commentator + '/' + file);
+        let path = browser.extension.getURL('ogg/' + commentator + '/' + file);
         let audio = new Audio(path);
         audio.volume = volume;
 
@@ -101,4 +101,4 @@ const Utils = (function(chrome, sounds) {
       }
     }
   };
-})(chrome, sounds);
+})(browser, sounds);

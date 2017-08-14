@@ -1,4 +1,4 @@
-(function(chrome, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter) {
+(function(browser, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter) {
   'use strict';
 
   const Dmitlichess = {
@@ -48,10 +48,10 @@
         // @TODO: Handle takeback offers?
       });
 
-      chrome.runtime.onMessage.addListener((request)=> {
+      browser.runtime.onMessage.addListener((request)=> {
         if (request.message === 'optionsSaved' ) {
           // Apply saved dmitlichess options
-          chrome.storage.sync.get(Utils.defaults, (items)=> {
+          browser.storage.sync.get(Utils.defaults).then((items)=> {
             this[items.enabled ? 'start' : 'stop']();
           });
         }
@@ -91,7 +91,7 @@
       this.emitters.moves = Object.create(MoveEmitter, { elements: { value: elements } });
       this.emitters.gamestates = Object.create(GameStateEmitter, { elements: { value: elements } });
 
-      chrome.storage.sync.get(Utils.defaults, (items)=> {
+      browser.storage.sync.get(Utils.defaults).then((items)=> {
         this.options = items;
 
         this.audioQueue = Object.create(AudioQueue, {
@@ -108,4 +108,4 @@
   };
 
   setTimeout(()=> Dmitlichess.init(), 1);
-})(chrome, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter);
+})(browser, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter);

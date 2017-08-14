@@ -1,4 +1,4 @@
-(function(chrome, Utils) {
+(function(browser, Utils) {
   'use strict';
 
   const OptionsCtrl = {
@@ -29,14 +29,14 @@
         }
       };
 
-      chrome.storage.sync.set({
+      browser.storage.sync.set({
         commentator:  document.querySelector('input[name="commentator"]:checked').value,
         enabled:      this.elements.enabled.checked,
         volume:       this.elements.volume.value,
         miscInterval: this.elements.miscInterval.value,
         fillInterval: this.elements.fillInterval.value,
         longTimeout:  this.elements.longTimeout.value
-      }, doSaved);
+      }).then(doSaved);
     },
 
     reset: function() {
@@ -49,11 +49,10 @@
       this.save();
     },
 
-    // Restores select box and checkbox state using the preferences
-    // stored in chrome.storage.
+    // Restores select box and checkbox state using the preferences storage.
     restore: function() {
       // Default values
-      chrome.storage.sync.get(Utils.defaults, (items)=> {
+      browser.storage.sync.get(Utils.defaults).then((items)=> {
         document.getElementById('commentator_' + items.commentator).checked = true;
         this.elements.enabled.checked = items.enabled;
         this.elements.volume.value = items.volume;
@@ -81,4 +80,4 @@
 
   let ctrl = Object.create(OptionsCtrl);
   ctrl.init();
-})(chrome, Utils);
+})(browser, Utils);
