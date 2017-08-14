@@ -205,13 +205,19 @@ label, button, details {
 
 .commentator_radio img { width: 64px; height: 64px; }
 .commentator_radio input { display: none !important; }
-.commentator_radio input:checked + label { opacity: 1; }
+.commentator_radio input:checked + label {
+  opacity: 1;
+  -webkit-filter: drop-shadow(0 0 5px #ccc);
+  filter: drop-shadow(0 0 5px #ccc);
+}
 .commentator_radio label {
-  opacity: 0.1;
+  opacity: 0.33;
   cursor: pointer;
   display: inline-block;
   margin: 1em 0 0;
 }
+
+
 
 input[type=range] { width: 100%; }
 input[type=range]:focus { outline: none; }
