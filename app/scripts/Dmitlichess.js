@@ -1,12 +1,6 @@
 (function(chrome, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter) {
   'use strict';
 
-  // @TODO: Add option to enable/disable extension for when:
-  //   - playing
-  //   - observing
-  //   - analyzing (needs additional work...)
-  // @TODO: Fix the gruntfile error about imgmin
-
   const Dmitlichess = {
     options: {},
 
@@ -92,7 +86,7 @@
 
       if (!sounds) { return; }
       if (!elements.board) { return; }
-      if (!elements.moves) { return; } // @TODO: Wait for moves element to be created...
+      if (!elements.moves) { return; }
 
       this.emitters.moves = Object.create(MoveEmitter, { elements: { value: elements } });
       this.emitters.gamestates = Object.create(GameStateEmitter, { elements: { value: elements } });
@@ -113,5 +107,5 @@
     }
   };
 
-  setTimeout(()=> Dmitlichess.init(), 1); // @TODO: Dafuq is this shit
+  setTimeout(()=> Dmitlichess.init(), 1);
 })(chrome, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter);

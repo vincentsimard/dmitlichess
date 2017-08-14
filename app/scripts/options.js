@@ -20,7 +20,6 @@
 
         if (showStatus) {
           // Update status to let user know options were saved.
-          // @TODO: Apply the options without requiring lichess to be refreshed
           let status = this.elements.status;
 
           status.textContent = 'Options saved. Please refresh your lichess.org page';
