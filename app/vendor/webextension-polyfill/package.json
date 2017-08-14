@@ -1,0 +1,124 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "webextension-polyfill",
+        "scope": null,
+        "escapedName": "webextension-polyfill",
+        "name": "webextension-polyfill",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/vincent/Projects/dmitlichess"
+    ]
+  ],
+  "_from": "webextension-polyfill@latest",
+  "_id": "webextension-polyfill@0.1.1",
+  "_inCache": true,
+  "_location": "/webextension-polyfill",
+  "_nodeVersion": "6.10.2",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/webextension-polyfill-0.1.1.tgz_1492089317566_0.49166757869534194"
+  },
+  "_npmUser": {
+    "name": "addons-robot",
+    "email": "addons-dev-automation+npm@mozilla.com"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "webextension-polyfill",
+    "scope": null,
+    "escapedName": "webextension-polyfill",
+    "name": "webextension-polyfill",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/webextension-polyfill/-/webextension-polyfill-0.1.1.tgz",
+  "_shasum": "1d172e59b9ee8706d5ce2c55eebfe0cf23972d70",
+  "_shrinkwrap": null,
+  "_spec": "webextension-polyfill",
+  "_where": "/home/vincent/Projects/dmitlichess",
+  "author": {
+    "name": "Mozilla"
+  },
+  "bugs": {
+    "url": "https://github.com/mozilla/webextension-polyfill/issues"
+  },
+  "dependencies": {},
+  "description": "A lightweight polyfill library for Promise-based WebExtension APIs in Chrome.",
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-preset-babili": "0.0.10",
+    "chai": "^3.5.0",
+    "eslint": "3.9.1",
+    "grunt": "^1.0.1",
+    "grunt-babel": "^6.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-coveralls": "^1.0.1",
+    "grunt-replace": "*",
+    "gruntify-eslint": "*",
+    "istanbul-lib-instrument": "^1.1.3",
+    "jsdom": "^9.6.0",
+    "mocha": "^3.1.0",
+    "nyc": "^8.3.1",
+    "sinon": "^1.17.6"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "1d172e59b9ee8706d5ce2c55eebfe0cf23972d70",
+    "tarball": "https://registry.npmjs.org/webextension-polyfill/-/webextension-polyfill-0.1.1.tgz"
+  },
+  "files": [
+    "dist"
+  ],
+  "gitHead": "a1fd64cab19f418caa389c13e606778e33415d4d",
+  "homepage": "https://github.com/mozilla/webextension-polyfill",
+  "license": "MPL-2.0",
+  "main": "dist/browser-polyfill.js",
+  "maintainers": [
+    {
+      "name": "addons-robot",
+      "email": "addons-dev-automation+npm@mozilla.com"
+    },
+    {
+      "name": "josephfrazier",
+      "email": "1212jtraceur@gmail.com"
+    },
+    {
+      "name": "rpl",
+      "email": "luca.greco@alcacoop.it"
+    }
+  ],
+  "name": "webextension-polyfill",
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text",
+      "html"
+    ],
+    "instrument": false
+  },
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mozilla/webextension-polyfill.git"
+  },
+  "scripts": {
+    "build": "grunt",
+    "prepublish": "npm run build && npm run test",
+    "publish-coverage": "grunt coveralls",
+    "test": "mocha",
+    "test-coverage": "COVERAGE=y nyc mocha",
+    "test-minified": "TEST_MINIFIED_POLYFILL=1 mocha"
+  },
+  "version": "0.1.1"
+}
