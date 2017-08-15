@@ -15,7 +15,7 @@ const AudioQueue = (function(sounds, Utils) {
           first.play().then(()=> {
 
           }).catch((error) => {
-            // console.log('play() error', error);
+            // console.error('play() error', error);
           });
         }
       }
@@ -48,6 +48,12 @@ const AudioQueue = (function(sounds, Utils) {
         }
       };
 
+      // Random error, sound not playing and queue building up (since it is
+      // only cleared in the play() callback).
+      // Making sure to clear it if it gets too large
+      // @TODO: Figure out a better way
+      if (this.queue.length > 7) { doEnded(); }
+
       audio = Utils.audio.create(file, this.options.commentator, this.options.volume / 100);
       audio.addEventListener('ended', doEnded, false);
 
@@ -59,13 +65,13 @@ const AudioQueue = (function(sounds, Utils) {
 
       let file = Utils.audio.getRandom(key, this.options.commentator) || Utils.audio.getGeneric(key, this.options.commentator);
 
-      // console.log(key, file, this.queue.length);
-
       // Random chance (1/6) to play a 'fill' sound instead of nothing
       // when there is no sound for the notation
       if (!file && Utils.trueOneOutOfSix()) {
         file = Utils.audio.getRandom('fill', this.options.commentator);
       }
+
+      // console.log(key, file, this.queue.length);
 
       // If still no file to play, abort audio queue process
       if (!file) { return; }
