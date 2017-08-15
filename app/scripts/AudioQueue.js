@@ -52,7 +52,7 @@ const AudioQueue = (function(sounds, Utils) {
       // only cleared in the play() callback).
       // Making sure to clear it if it gets too large
       // @TODO: Figure out a better way
-      if (this.queue.length > 7) { doEnded(); }
+      if (this.queue.length > 7) { this.clear(); }
 
       audio = Utils.audio.create(file, this.options.commentator, this.options.volume / 100);
       audio.addEventListener('ended', doEnded, false);
