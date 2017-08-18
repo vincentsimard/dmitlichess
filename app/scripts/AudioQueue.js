@@ -52,7 +52,10 @@ const AudioQueue = (function(sounds, Utils) {
       // only cleared in the play() callback).
       // Making sure to clear it if it gets too large
       // @TODO: Figure out a better way
-      if (this.queue.length > 7) { this.clear(); }
+      if (this.queue.length > 10) {
+        let duration = this.queue[0].duration;
+        setTimeout(()=> { this.clear(); }, duration * 1000); // Making sure sounds don't overlap
+      }
 
       audio = Utils.audio.create(file, this.options.commentator, this.options.volume / 100);
       audio.addEventListener('ended', doEnded, false);
