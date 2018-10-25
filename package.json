@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "imagemin-gifsicle": "^5.2.0",
-    "webextension-polyfill": "^0.1.1"
+    "webextension-polyfill": "^0.1.1",
+    "snyk": "^1.105.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -30,5 +31,10 @@
   },
   "engines": {
     "node": ">=0.8.0"
-  }
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }
