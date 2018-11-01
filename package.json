@@ -2,7 +2,7 @@
   "name": "dmitlichess",
   "version": "0.0.0",
   "dependencies": {
-    "imagemin-gifsicle": "^5.2.0",
+    "imagemin-gifsicle": "^6.0.0",
     "webextension-polyfill": "^0.1.1"
   },
   "devDependencies": {
