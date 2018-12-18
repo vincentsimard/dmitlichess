@@ -74,7 +74,7 @@ const AudioQueue = (function(sounds, Utils) {
         file = Utils.audio.getRandom('fill', this.options.commentator);
       }
 
-      // console.log(key, file, this.queue.length);
+      console.log(key, file, this.queue.length);
 
       // If still no file to play, abort audio queue process
       if (!file) { return; }
