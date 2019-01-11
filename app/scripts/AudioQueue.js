@@ -9,13 +9,13 @@ const AudioQueue = (function(sounds, Utils) {
 
     next: function() {
       if (this.queue.length > 0) {
-        let first = this.queue[0];
+        const first = this.queue[0];
 
         if (typeof first.play === 'function') {
           first.play().then(()=> {
 
           }).catch((error) => {
-            // console.error('play() error', error);
+            console.error('play() error', error);
           });
         }
       }
@@ -24,10 +24,10 @@ const AudioQueue = (function(sounds, Utils) {
     clear: function(keepFirst = false) {
       /*
       // Keep the first audio file if its playback has not finished
-      let first = this.queue[0];
+      const first = this.queue[0];
       this.queue = first && !first.ended ? [first] : [];
       */
-      let first = this.queue[0];
+      const first = this.queue[0];
 
       this.queue = keepFirst ? (first && !first.ended ? [first] : []) : [];
 
@@ -37,7 +37,7 @@ const AudioQueue = (function(sounds, Utils) {
     createQueueAudio: function(file) {
       let audio;
 
-      let doEnded = ()=> {
+      const doEnded = ()=> {
         // Clear the queue if there are too many sounds queued to make sure the
         // commentator is not too far behind the game with his commentary
         if (this.queue.length > 3) {
@@ -53,7 +53,7 @@ const AudioQueue = (function(sounds, Utils) {
       // Making sure to clear it if it gets too large
       // @TODO: Figure out a better way
       if (this.queue.length > 10) {
-        let duration = this.queue[0].duration;
+        const duration = this.queue[0].duration;
         setTimeout(()=> { this.clear(); }, duration * 1000); // Making sure sounds don't overlap
       }
 

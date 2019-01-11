@@ -1,10 +1,10 @@
 const MoveEmitter = (function(Utils) {
   'use strict';
 
-  let isCapture = (notation)=> notation.indexOf('x') > -1;
-  let isCastle = (notation)=> notation.indexOf('0-0') > -1;
-  let isCheck = (notation)=> notation.indexOf('+') > -1;
-  let trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
+  const isCapture = (notation)=> notation.indexOf('x') > -1;
+  const isCastle = (notation)=> notation.indexOf('0-0') > -1;
+  const isCheck = (notation)=> notation.indexOf('+') > -1;
+  const trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
 
   return {
     elements: Utils.elements,
@@ -16,7 +16,7 @@ const MoveEmitter = (function(Utils) {
         if (!Utils.mutation.hasAddedNodes(mutation)) { return; }
 
         let added = mutation.addedNodes[0];
-        let notation = added.textContent;
+        const notation = added.textContent;
 
         if (added.nodeName === 'TURN') {
           added = added.querySelector('MOVE.active');
@@ -25,8 +25,8 @@ const MoveEmitter = (function(Utils) {
         if (!notation) { return; }
         if (!added.classList.contains('active')) { return; }
 
-        let notationType = isCapture(notation) ? 'capture' : 'move';
-        let eventDetail = {
+        const notationType = isCapture(notation) ? 'capture' : 'move';
+        const eventDetail = {
           detail: { notation: trimSymbols(notation) }
         };
 
@@ -39,9 +39,9 @@ const MoveEmitter = (function(Utils) {
     },
 
     create: function() {
-      let el = this.elements.moves;
-      let observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
-      let config = { childList: true, subtree: true };
+      const el = this.elements.moves;
+      const observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
+      const config = { childList: true, subtree: true };
 
       if (el) { observer.observe(el, config); }
 

@@ -1,7 +1,7 @@
 const Utils = (function(browser, sounds) {
   'use strict';
 
-  let defaults = {
+  const defaults = {
     volume: 100,          // Percentage
     miscInterval: 10000,  // Every 10 seconds
     fillInterval: 17000,  // Every 17 seconds
@@ -17,7 +17,7 @@ const Utils = (function(browser, sounds) {
     header: document.querySelector('#site_header')
   };
 
-  let getStatusElement = ()=> document.querySelector('#site_header .status, #lichess .lichess_ground .status');
+  const getStatusElement = ()=> document.querySelector('#site_header .status, #lichess .lichess_ground .status');
 
   return {
     defaults: defaults,
@@ -49,8 +49,8 @@ const Utils = (function(browser, sounds) {
 
     audio: {
       create: function(file = this.throwIfMissing, commentator = defaults.commentator, volume = defaults.volume) {
-        let path = browser.extension.getURL('ogg/' + commentator + '/' + file);
-        let audio = new Audio(path);
+        const path = browser.extension.getURL('ogg/' + commentator + '/' + file);
+        const audio = new Audio(path);
         audio.volume = volume;
 
         return audio;
@@ -59,7 +59,7 @@ const Utils = (function(browser, sounds) {
       getRandom: function(key = this.throwIfMissing, commentator = defaults.commentator) {
         if (!sounds) { return; }
 
-        let files = sounds[commentator][key];
+        const files = sounds[commentator][key];
 
         return files && files[Math.floor(Math.random()*files.length)];
       },
@@ -85,7 +85,7 @@ const Utils = (function(browser, sounds) {
 
       play: function(key, commentator = this.defaults.commentator, volume = this.defaults.volume, isRandom = true) {
         let audio;
-        let file = isRandom ? this.getRandom(key, commentator) : key;
+        const file = isRandom ? this.getRandom(key, commentator) : key;
 
         // No sound for the notation :(
         if (!file) { return; }

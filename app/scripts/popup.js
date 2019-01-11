@@ -5,10 +5,10 @@
     options: Utils.defaults,
 
     generateMiscList: function() {
-      let soundboard = document.querySelector('#soundboard');
+      const soundboard = document.querySelector('#soundboard');
 
-      let s = sounds[this.options.commentator];
-      let list = []
+      const s = sounds[this.options.commentator];
+      const list = []
         .concat(s.misc)
         .concat(s.check)
         .concat(s.checkmate)
@@ -21,7 +21,7 @@
         .concat(s.long)
         .filter((n)=> !!n); // Remove undefined entries (if sounds don't exist for one category)
 
-      let trimmed = list.map((item)=> {
+      const trimmed = list.map((item)=> {
         if (!item) { return; }
 
         item = item.replace('misc_', '');
@@ -31,11 +31,11 @@
         return item;
       });
 
-      let selectList = document.createElement('select');
+      const selectList = document.createElement('select');
       selectList.id = 'miscList';
 
-      let createOption = function(text, index) {
-        let option = document.createElement('option');
+      const createOption = function(text, index) {
+        const option = document.createElement('option');
 
         option.text = text ? text.replace(/_/g, ' ') : '';
         option.value = list[index];
@@ -52,12 +52,12 @@
     },
 
     addListeners: function() {
-      let self = this;
-      let squares = document.querySelectorAll('#board .square');
-      let squaresArray = Array.prototype.slice.call(squares);
+      const self = this;
+      const squares = document.querySelectorAll('#board .square');
+      const squaresArray = Array.prototype.slice.call(squares);
       let keyModifier = '';
 
-      let createSquareListener = (square)=> {
+      const createSquareListener = (square)=> {
         square.addEventListener('click', function(event) {
           const keys = ['N', 'B', 'R', 'Q', 'K'];
           let notation = this.id;
@@ -109,6 +109,6 @@
     }
   };
 
-  let ctrl = Object.create(PopupCtrl);
+  const ctrl = Object.create(PopupCtrl);
   ctrl.init();
 })(browser, sounds, Utils);

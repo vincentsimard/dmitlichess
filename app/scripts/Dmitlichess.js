@@ -82,7 +82,7 @@
     },
 
     init: function() {
-      let elements = Utils.getElements();
+      const elements = Utils.getElements();
 
       if (!sounds) { return; }
       if (!elements.board) { return; }

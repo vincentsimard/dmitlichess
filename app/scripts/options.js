@@ -15,12 +15,12 @@
     },
 
     save: function(showStatus = true) {
-      let doSaved = ()=> {
+      const doSaved = ()=> {
         Utils.sendSaveMessage();
 
         if (showStatus) {
           // Update status to let user know options were saved.
-          let status = this.elements.status;
+          const status = this.elements.status;
 
           status.textContent = 'Options saved. Please refresh your lichess.org page';
           status.classList.remove('faded');
@@ -72,12 +72,12 @@
 
       // Play a random commentary when a commentator is selected
       Array.prototype.forEach.call(this.elements.commentators, (item)=> {
-        let listener = ()=> Utils.audio.play('misc', item.value, this.elements.volume.value);
+        const listener = ()=> Utils.audio.play('misc', item.value, this.elements.volume.value);
         item.addEventListener('click', listener);
       });
     }
   };
 
-  let ctrl = Object.create(OptionsCtrl);
+  const ctrl = Object.create(OptionsCtrl);
   ctrl.init();
 })(browser, Utils);
