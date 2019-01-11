@@ -63,7 +63,7 @@
           let notation = this.id;
 
           if (event.shiftKey) { notation = 'x' + notation; }
-          if (keys.indexOf(keyModifier.toUpperCase()) >= 0) { notation = keyModifier + notation; }
+          if (keys.includes(keyModifier.toUpperCase())) { notation = keyModifier + notation; }
 
           Utils.audio.play(notation, self.options.commentator, self.options.volume);
         });

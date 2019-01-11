@@ -26,7 +26,7 @@ const GameStateEmitter = (function(Utils) {
 
       const status = document.querySelector('.status');
       const text = status && status.innerText.toLowerCase();
-      const state = states.reduce((a, v)=> text.indexOf(v) > -1 ? v : a, undefined);
+      const state = states.reduce((a, v)=> text.includes(v) ? v : a, undefined);
 
       this.elements.main.dispatchEvent(new CustomEvent('state', {
         detail: {

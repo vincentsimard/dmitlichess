@@ -76,11 +76,11 @@ const Utils = (function(browser, sounds) {
         // Translate some game end states
         // @TODO: Individual sounds for white/black resigned?
         /*
-        if (key.indexOf('white resigned') >= 0) { return this.getRandom('resign', commentator); }
-        if (key.indexOf('black resigned') >= 0) { return this.getRandom('resign', commentator); }
+        if (key.includes('white resigned')) { return this.getRandom('resign', commentator); }
+        if (key.includes('black resigned')) { return this.getRandom('resign', commentator); }
         */
-        if (key.indexOf('resigned') >= 0) { return this.getRandom('resign', commentator); }
-        if (key.indexOf('time out') >= 0) { return this.getRandom('flag', commentator); }
+        if (key.includes('resigned')) { return this.getRandom('resign', commentator); }
+        if (key.includes('time out')) { return this.getRandom('flag', commentator); }
       },
 
       play: function(key, commentator = this.defaults.commentator, volume = this.defaults.volume, isRandom = true) {

@@ -1,9 +1,9 @@
 const MoveEmitter = (function(Utils) {
   'use strict';
 
-  const isCapture = (notation)=> notation.indexOf('x') > -1;
-  const isCastle = (notation)=> notation.indexOf('0-0') > -1;
-  const isCheck = (notation)=> notation.indexOf('+') > -1;
+  const isCapture = (notation)=> notation.includes('x');
+  const isCastle = (notation)=> notation.includes('0-0');
+  const isCheck = (notation)=> notation.includes('+');
   const trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
 
   return {
