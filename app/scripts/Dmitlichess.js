@@ -1,3 +1,5 @@
+// const browser = require('webextension-polyfill');
+
 (function(browser, sounds, Utils, AudioQueue, MoveEmitter, GameStateEmitter) {
   'use strict';
 
