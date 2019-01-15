@@ -1,7 +1,9 @@
+'use strict';
+
 class AudioQueue {
-  constructor(options, elements) {
+  constructor(options, dispatchTarget) {
     this.options = options;
-    this.elements = elements;
+    this.dispatchTarget = dispatchTarget;
     this.sounds = sounds;
 
     this.queue = [];
@@ -31,7 +33,7 @@ class AudioQueue {
 
     this.queue = keepFirst ? (first && !first.ended ? [first] : []) : [];
 
-    this.elements.main.dispatchEvent(new CustomEvent('queueCleared'));
+    this.dispatchTarget.dispatchEvent(new CustomEvent('queueCleared'));
   }
 
   createQueueAudio(file) {

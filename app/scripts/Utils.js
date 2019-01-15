@@ -10,31 +10,19 @@ const Utils = (function(browser, sounds) {
     enabled: true
   };
 
-  let elements = {
-    main: document.querySelector('#lichess'),
-    moves: document.querySelector('#lichess .moves')
-  };
+  const movesElement = document.querySelector('#lichess .moves');
 
   const getStatusElement = ()=> document.querySelector('#site_header .status, #lichess .lichess_ground .status');
 
   return {
     defaults: defaults,
-    elements: elements,
-
-    getElements: function() {
-      this.elements = {
-        main: document.querySelector('#lichess'),
-        moves: document.querySelector('#lichess .moves')
-      };
-
-      return this.elements;
-    },
+    movesElement: movesElement,
 
     throwIfMissing: ()=> { throw new Error('Missing parameter'); },
 
     trueOneOutOfSix: ()=> !(Math.floor(Math.random() * 6)),
 
-    isGameStart: ()=> elements.moves && elements.moves.children.length === 0,
+    isGameStart: ()=> movesElement && movesElement.children.length === 0,
     isGameOver: ()=> !!getStatusElement(),
 
     sendSaveMessage: ()=> {

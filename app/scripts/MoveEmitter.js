@@ -1,11 +1,14 @@
+'use strict';
+
 const isCapture = (notation)=> notation.includes('x');
 const isCastle = (notation)=> notation.includes('0-0');
 const isCheck = (notation)=> notation.includes('+');
 const trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
 
 class MoveEmitter {
-  constructor(elements) {
-    this.elements = elements;
+  constructor(movesElement, dispatchTarget) {
+    this.movesElement = movesElement;
+    this.dispatchTarget = dispatchTarget;
     this.observers = [];
   }
 
@@ -28,16 +31,16 @@ class MoveEmitter {
         detail: { notation: trimSymbols(notation) }
       };
 
-      this.elements.main.dispatchEvent(new CustomEvent(notationType, eventDetail));
+      this.dispatchTarget.dispatchEvent(new CustomEvent(notationType, eventDetail));
 
       if (isCheck(notation)) {
-        this.elements.main.dispatchEvent(new CustomEvent('check'));
+        this.dispatchTarget.dispatchEvent(new CustomEvent('check'));
       }
     });
   }
 
   createObserver() {
-    const el = this.elements.moves;
+    const el = this.movesElement;
     const observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
     const config = { childList: true, subtree: true };
 

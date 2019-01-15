@@ -1,3 +1,5 @@
+'use strict';
+
 const states = [
   'aborted',
   'stalemate',
@@ -9,8 +11,9 @@ const states = [
 ];
 
 class GameStateEmitter {
-  constructor(elements) {
-    this.elements = elements;
+  constructor(movesElement, dispatchTarget) {
+    this.movesElement = movesElement;
+    this.dispatchTarget = dispatchTarget;
     this.observers = [];
   }
   
@@ -26,7 +29,7 @@ class GameStateEmitter {
     const text = status && status.innerText.toLowerCase();
     const state = states.reduce((a, v)=> text.includes(v) ? v : a, undefined);
 
-    this.elements.main.dispatchEvent(new CustomEvent('state', {
+    this.dispatchTarget.dispatchEvent(new CustomEvent('state', {
       detail: {
         isOver: true,
         state: state
@@ -38,7 +41,7 @@ class GameStateEmitter {
   }
   
   createObserver() {
-    const el = this.elements.moves;
+    const el = this.movesElement;
     const observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
     const config = { childList: true, subtree: false };
 
@@ -56,7 +59,7 @@ class GameStateEmitter {
     this.observers.push(this.createObserver());
 
     if (Utils.isGameStart()) {
-      this.elements.main.dispatchEvent(new CustomEvent('start'));
+      this.dispatchTarget.dispatchEvent(new CustomEvent('start'));
     }
   }
 }

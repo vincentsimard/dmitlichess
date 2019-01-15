@@ -1,5 +1,7 @@
+'use strict';
+
 class Dmitlichess {
-  constructor() {
+  constructor(movesElement) {
     this.options = {};
     this.audioQueue = {};
     this.intervals = {
@@ -8,10 +10,7 @@ class Dmitlichess {
       long: undefined
     };
 
-    this.elements = {
-      main: document.querySelector('#lichess'), // @TODO: Dispatch events on the body and remove this unnecessary document.querySelector?
-      moves: document.querySelector('#lichess .moves')
-    };
+    this.movesElement = movesElement;
 
     this.emitters = {
       moves: undefined,
@@ -19,7 +18,7 @@ class Dmitlichess {
     };
 
     if (!sounds) { throw new Error('No sound files'); }
-    if (!this.elements.moves) { throw new Error('Lichess moves notation not found'); }
+    if (!this.movesElement) { throw new Error('Lichess moves notation not found'); }
   }
 
   addListeners(el) {
@@ -50,16 +49,16 @@ class Dmitlichess {
 
   init() {
     this.emitters = {
-      moves: new MoveEmitter(this.elements),
-      gameStates: new GameStateEmitter(this.elements)
+      moves: new MoveEmitter(this.movesElement, this.movesElement),
+      gameStates: new GameStateEmitter(this.movesElement, this.movesElement)
     };
 
     browser.storage.sync.get(Utils.defaults).then((items)=> {
       this.options = items;
 
-      this.audioQueue = new AudioQueue(this.options, this.elements);
+      this.audioQueue = new AudioQueue(this.options, this.movesElement);
 
-      this.addListeners(this.elements.main);
+      this.addListeners(this.movesElement);
 
       // Start if the extension is enabled and the game is not over
       this[this.options.enabled && !Utils.isGameOver() ? 'start' : 'stop']();
@@ -124,7 +123,7 @@ const observer = new MutationObserver((mutations, observerInstance) => {
 
   if (!movesElement) { return; }
 
-  window.dmitli = new Dmitlichess();
+  window.dmitli = new Dmitlichess(movesElement);
   window.dmitli.init();
 
   observerInstance.disconnect();
