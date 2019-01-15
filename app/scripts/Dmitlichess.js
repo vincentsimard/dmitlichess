@@ -20,7 +20,35 @@ class Dmitlichess {
 
     if (!sounds) { throw new Error('No sound files'); }
     if (!this.elements.moves) { throw new Error('Lichess moves notation not found'); }
+  }
 
+  addListeners(el) {
+    el.addEventListener('queueCleared', ()=> this.resetMiscInterval());
+
+    el.addEventListener('move',    (e)=> this.audioQueue.push(e.detail.notation));
+    el.addEventListener('capture', (e)=> this.audioQueue.push(e.detail.notation));
+    el.addEventListener('check',   ()=> this.audioQueue.push('check'));
+    el.addEventListener('start',   ()=> this.audioQueue.push('start'));
+    el.addEventListener('state',   (e)=> {
+      if (e.detail.isOver) { this.gameOver(e.detail.state); }
+      // @TODO: Handle takeback offers?
+    });
+
+    browser.runtime.onMessage.addListener((request)=> {
+      // Restart dmitlichess when options are saved
+      if (request.message === 'optionsSaved' ) {
+        // Stop to prevent sounds being repeated multiple times
+        this.stop();
+
+        // Apply saved dmitlichess options and restart if enabled
+        browser.storage.sync.get(Utils.defaults).then((items)=> {
+          this[items.enabled ? 'start' : 'stop']();
+        });
+      }
+    });
+  }
+
+  init() {
     this.emitters = {
       moves: new MoveEmitter(this.elements),
       gameStates: new GameStateEmitter(this.elements)
@@ -36,33 +64,6 @@ class Dmitlichess {
       // Start if the extension is enabled and the game is not over
       this[this.options.enabled && !Utils.isGameOver() ? 'start' : 'stop']();
     });
-  }
-
-  addListeners(el) {
-    // Attach event handlers
-    el.addEventListener('queueCleared', ()=> this.resetMiscInterval());
-
-    el.addEventListener('move',    (e)=> this.audioQueue.push(e.detail.notation));
-    el.addEventListener('capture', (e)=> this.audioQueue.push(e.detail.notation));
-    el.addEventListener('check',   ()=> this.audioQueue.push('check'));
-    el.addEventListener('start',   ()=> this.audioQueue.push('start'));
-    el.addEventListener('state',   (e)=> {
-      if (e.detail.isOver) { this.gameOver(e.detail.state); }
-      // @TODO: Handle takeback offers?
-    });
-
-    browser.runtime.onMessage.addListener((request)=> {
-      if (request.message === 'optionsSaved' ) {
-        // Apply saved dmitlichess options
-        browser.storage.sync.get(Utils.defaults).then((items)=> {
-          this[items.enabled ? 'start' : 'stop']();
-        });
-      }
-    });
-  }
-
-  init() {
-    console.log('booted');
   }
 
   gameOver(state = 'resign') {
