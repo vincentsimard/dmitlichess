@@ -11,10 +11,8 @@ const Utils = (function(browser, sounds) {
   };
 
   let elements = {
-    main:   document.querySelector('#lichess'),
-    board:  document.querySelector('#lichess .lichess_board'),
-    moves:  document.querySelector('#lichess .moves'),
-    header: document.querySelector('#site_header')
+    main: document.querySelector('#lichess'),
+    moves: document.querySelector('#lichess .moves')
   };
 
   const getStatusElement = ()=> document.querySelector('#site_header .status, #lichess .lichess_ground .status');
@@ -25,10 +23,8 @@ const Utils = (function(browser, sounds) {
 
     getElements: function() {
       this.elements = {
-        main:   document.querySelector('#lichess'),
-        board:  document.querySelector('#lichess .lichess_board'),
-        moves:  document.querySelector('#lichess .moves'),
-        header: document.querySelector('#site_header')
+        main: document.querySelector('#lichess'),
+        moves: document.querySelector('#lichess .moves')
       };
 
       return this.elements;

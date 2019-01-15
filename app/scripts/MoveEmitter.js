@@ -1,60 +1,57 @@
-const MoveEmitter = (function(Utils) {
-  'use strict';
+const isCapture = (notation)=> notation.includes('x');
+const isCastle = (notation)=> notation.includes('0-0');
+const isCheck = (notation)=> notation.includes('+');
+const trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
 
-  const isCapture = (notation)=> notation.includes('x');
-  const isCastle = (notation)=> notation.includes('0-0');
-  const isCheck = (notation)=> notation.includes('+');
-  const trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
+class MoveEmitter {
+  constructor(elements) {
+    this.elements = elements;
+    this.observers = [];
+  }
 
-  return {
-    elements: Utils.elements,
+  handleMutations(mutations) {
+    mutations.forEach((mutation)=> {
+      if (!Utils.mutation.hasAddedNodes(mutation)) { return; }
 
-    observers: [],
+      let added = mutation.addedNodes[0];
+      const notation = added.textContent;
 
-    handleMutations: function(mutations) {
-      mutations.forEach((mutation)=> {
-        if (!Utils.mutation.hasAddedNodes(mutation)) { return; }
+      if (added.nodeName === 'TURN') {
+        added = added.querySelector('MOVE.active');
+      }
 
-        let added = mutation.addedNodes[0];
-        const notation = added.textContent;
+      if (!notation) { return; }
+      if (!added.classList.contains('active')) { return; }
 
-        if (added.nodeName === 'TURN') {
-          added = added.querySelector('MOVE.active');
-        }
+      const notationType = isCapture(notation) ? 'capture' : 'move';
+      const eventDetail = {
+        detail: { notation: trimSymbols(notation) }
+      };
 
-        if (!notation) { return; }
-        if (!added.classList.contains('active')) { return; }
+      this.elements.main.dispatchEvent(new CustomEvent(notationType, eventDetail));
 
-        const notationType = isCapture(notation) ? 'capture' : 'move';
-        const eventDetail = {
-          detail: { notation: trimSymbols(notation) }
-        };
+      if (isCheck(notation)) {
+        this.elements.main.dispatchEvent(new CustomEvent('check'));
+      }
+    });
+  }
 
-        this.elements.main.dispatchEvent(new CustomEvent(notationType, eventDetail));
+  createObserver() {
+    const el = this.elements.moves;
+    const observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
+    const config = { childList: true, subtree: true };
 
-        if (isCheck(notation)) {
-          this.elements.main.dispatchEvent(new CustomEvent('check'));
-        }
-      });
-    },
+    if (el) { observer.observe(el, config); }
 
-    create: function() {
-      const el = this.elements.moves;
-      const observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
-      const config = { childList: true, subtree: true };
+    return observer;
+  }
 
-      if (el) { observer.observe(el, config); }
+  disconnect() {
+    this.observers.map((o)=> o.disconnect());
+  }
 
-      return observer;
-    },
-
-    disconnect: function() {
-      this.observers.map((o)=> o.disconnect());
-    },
-
-    init: function() {
-      this.observers = [];
-      this.observers.push(this.create());
-    }
-  };
-})(Utils);
+  init() {
+    this.observers = [];
+    this.observers.push(this.createObserver());
+  }
+}
