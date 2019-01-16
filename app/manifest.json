@@ -29,6 +29,7 @@
             "js": [
                 "vendor/webextension-polyfill/dist/browser-polyfill.min.js",
                 "scripts/sounds.js",
+                "scripts/UserPrefs.js",
                 "scripts/Utils.js",
                 "scripts/AudioQueue.js",
                 "scripts/MoveEmitter.js",

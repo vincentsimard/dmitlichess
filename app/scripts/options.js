@@ -29,7 +29,7 @@
         }
       };
 
-      browser.storage.sync.set({
+      UserPrefs.saveOptions({
         commentator:  document.querySelector('input[name="commentator"]:checked').value,
         enabled:      this.elements.enabled.checked,
         volume:       this.elements.volume.value,
@@ -40,11 +40,11 @@
     },
 
     reset: function() {
-      document.getElementById('commentator_' + Utils.defaults.commentator).checked = true;
-      this.elements.enabled.checked = Utils.defaults.enabled;
-      this.elements.miscInterval.value = Utils.defaults.miscInterval;
-      this.elements.fillInterval.value = Utils.defaults.fillInterval;
-      this.elements.longTimeout.value = Utils.defaults.longTimeout;
+      document.getElementById('commentator_' + UserPrefs.defaults.commentator).checked = true;
+      this.elements.enabled.checked = UserPrefs.defaults.enabled;
+      this.elements.miscInterval.value = UserPrefs.defaults.miscInterval;
+      this.elements.fillInterval.value = UserPrefs.defaults.fillInterval;
+      this.elements.longTimeout.value = UserPrefs.defaults.longTimeout;
 
       this.save();
     },
@@ -52,7 +52,7 @@
     // Restores select box and checkbox state using the preferences storage.
     restore: function() {
       // Default values
-      browser.storage.sync.get(Utils.defaults).then((items)=> {
+      UserPrefs.getOptions().then((items)=> {
         document.getElementById('commentator_' + items.commentator).checked = true;
         this.elements.enabled.checked = items.enabled;
         this.elements.volume.value = items.volume;

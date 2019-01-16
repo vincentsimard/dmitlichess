@@ -2,7 +2,7 @@
   'use strict';
 
   const PopupCtrl = {
-    options: Utils.defaults,
+    options: UserPrefs.defaults,
 
     generateMiscList: function() {
       const soundboard = document.querySelector('#soundboard');
@@ -90,7 +90,7 @@
       });
 
       document.getElementById('enabled').addEventListener('change', (event)=> {
-        browser.storage.sync.set({ enabled: event.target.checked }).then(Utils.sendSaveMessage);
+        UserPrefs.saveOptions({ enabled: event.target.checked }).then(Utils.sendSaveMessage);
       });
     },
 
@@ -98,7 +98,7 @@
       if (!sounds) { return; }
       if (!browser.storage) { return; }
 
-      browser.storage.sync.get(Utils.defaults).then((items)=> {
+      UserPrefs.getOptions().then((items)=> {
         this.options = items;
 
         document.getElementById('enabled').checked = this.options.enabled;

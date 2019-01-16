@@ -2,15 +2,16 @@
 
 class Dmitlichess {
   constructor(movesElement) {
+    this.movesElement = movesElement;
+
     this.options = {};
     this.audioQueue = {};
+
     this.intervals = {
       misc: undefined,
       fill: undefined,
       long: undefined
     };
-
-    this.movesElement = movesElement;
 
     this.emitters = {
       moves: undefined,
@@ -40,7 +41,7 @@ class Dmitlichess {
         this.stop();
 
         // Apply saved dmitlichess options and restart if enabled
-        browser.storage.sync.get(Utils.defaults).then((items)=> {
+        UserPrefs.getOptions().then((items)=> {
           this[items.enabled ? 'start' : 'stop']();
         });
       }
@@ -53,7 +54,7 @@ class Dmitlichess {
       gameStates: new GameStateEmitter(this.movesElement, this.movesElement)
     };
 
-    browser.storage.sync.get(Utils.defaults).then((items)=> {
+    UserPrefs.getOptions().then((items)=> {
       this.options = items;
 
       this.audioQueue = new AudioQueue(this.options, this.movesElement);

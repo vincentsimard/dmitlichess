@@ -1,21 +1,11 @@
 const Utils = (function(browser, sounds) {
   'use strict';
 
-  const defaults = {
-    volume: 100,          // Percentage
-    miscInterval: 10000,  // Every 10 seconds
-    fillInterval: 17000,  // Every 17 seconds
-    longTimeout: 3600,    // Once before the 1 hour mark (random time)
-    commentator: 'dmitri',
-    enabled: true
-  };
-
   const movesElement = document.querySelector('#lichess .moves');
 
   const getStatusElement = ()=> document.querySelector('#site_header .status, #lichess .lichess_ground .status');
 
   return {
-    defaults: defaults,
     movesElement: movesElement,
 
     throwIfMissing: ()=> { throw new Error('Missing parameter'); },
@@ -27,12 +17,13 @@ const Utils = (function(browser, sounds) {
 
     sendSaveMessage: ()=> {
       browser.tabs.query({currentWindow: true, active: true}).then(function (tabs){
+        // @TODO: Getting an error in console...
         browser.tabs.sendMessage(tabs[0].id, { 'message': 'optionsSaved' });
       });
     },
 
     audio: {
-      create: function(file = this.throwIfMissing, commentator = defaults.commentator, volume = defaults.volume) {
+      create: function(file = this.throwIfMissing, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume) {
         const path = browser.extension.getURL('ogg/' + commentator + '/' + file);
         const audio = new Audio(path);
         audio.volume = volume;
@@ -40,7 +31,7 @@ const Utils = (function(browser, sounds) {
         return audio;
       },
 
-      getRandom: function(key = this.throwIfMissing, commentator = defaults.commentator) {
+      getRandom: function(key = this.throwIfMissing, commentator = UserPrefs.defaults.commentator) {
         if (!sounds) { return; }
 
         const files = sounds[commentator][key];
@@ -48,7 +39,7 @@ const Utils = (function(browser, sounds) {
         return files && files[Math.floor(Math.random()*files.length)];
       },
 
-      getGeneric: function(key = this.throwIfMissing, commentator = defaults.commentator) {
+      getGeneric: function(key = this.throwIfMissing, commentator = UserPrefs.defaults.commentator) {
         // Generic capture sounds. e.g.: use xf7 if Nxf7 sound doesn't exist
         if (key.indexOf('x') === 1) { return this.getRandom(key.substring(1), commentator); }
 
@@ -67,7 +58,7 @@ const Utils = (function(browser, sounds) {
         if (key.includes('time out')) { return this.getRandom('flag', commentator); }
       },
 
-      play: function(key, commentator = this.defaults.commentator, volume = this.defaults.volume, isRandom = true) {
+      play: function(key, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume, isRandom = true) {
         let audio;
         const file = isRandom ? this.getRandom(key, commentator) : key;
 
