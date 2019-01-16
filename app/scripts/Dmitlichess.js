@@ -4,6 +4,9 @@ class Dmitlichess {
   constructor(movesElement) {
     this.movesElement = movesElement;
 
+    if (!sounds) { throw new Error('No sound files'); }
+    if (!this.movesElement) { throw new Error('Move list with notation not found'); }
+
     this.options = {};
     this.audioQueue = {};
 
@@ -14,26 +17,26 @@ class Dmitlichess {
     };
 
     this.emitters = {
-      moves: undefined,
-      gameStates: undefined
+      moves: new MoveEmitter(this.movesElement, this.movesElement),
+      gameStates: new GameStateEmitter(this.movesElement, this.movesElement)
     };
-
-    if (!sounds) { throw new Error('No sound files'); }
-    if (!this.movesElement) { throw new Error('Lichess moves notation not found'); }
   }
 
-  addListeners(el) {
-    el.addEventListener('queueCleared', ()=> this.resetMiscInterval());
-
-    el.addEventListener('move',    (e)=> this.audioQueue.push(e.detail.notation));
-    el.addEventListener('capture', (e)=> this.audioQueue.push(e.detail.notation));
-    el.addEventListener('check',   ()=> this.audioQueue.push('check'));
-    el.addEventListener('start',   ()=> this.audioQueue.push('start'));
-    el.addEventListener('state',   (e)=> {
+  addListeners(target) {
+    // Moves and game events
+    target.addEventListener('move',    (e)=> this.audioQueue.push(e.detail.notation));
+    target.addEventListener('capture', (e)=> this.audioQueue.push(e.detail.notation));
+    target.addEventListener('check',   ()=> this.audioQueue.push('check'));
+    target.addEventListener('start',   ()=> this.audioQueue.push('start'));
+    target.addEventListener('state',   (e)=> {
       if (e.detail.isOver) { this.gameOver(e.detail.state); }
       // @TODO: Handle takeback offers?
     });
 
+    // Cleared audio queue when there is too many sounds queued
+    target.addEventListener('queueCleared', ()=> this.resetMiscInterval());
+
+    // Options saved
     browser.runtime.onMessage.addListener((request)=> {
       // Restart dmitlichess when options are saved
       if (request.message === 'optionsSaved' ) {
@@ -49,11 +52,6 @@ class Dmitlichess {
   }
 
   init() {
-    this.emitters = {
-      moves: new MoveEmitter(this.movesElement, this.movesElement),
-      gameStates: new GameStateEmitter(this.movesElement, this.movesElement)
-    };
-
     UserPrefs.getOptions().then((items)=> {
       this.options = items;
 
