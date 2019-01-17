@@ -1,7 +1,6 @@
 (function(browser, sounds, Utils) {
   'use strict';
 
-  // @TODO: Can't listen to O-O, O-O-O sounds
   const PopupCtrl = {
     options: UserPrefs.defaults,
 
@@ -39,43 +38,42 @@
     },
 
     addListeners: function() {
-      const self = this;
-      const squares = Array.from(document.querySelectorAll('#board .square'));
       let keyModifier = '';
+      const {commentator, volume} = this.options;
+      const squares = Array.from(document.querySelectorAll('#board .square'));
 
-      const createSquareListener = square => {
-        square.addEventListener('click', function(event) {
-          const keys = ['N', 'B', 'R', 'Q', 'K'];
-          let notation = this.id;
+      const createSquareEventListener = event => {
+        // @TODO: Can't listen to O-O, O-O-O sounds
+        const keys = ['N', 'B', 'R', 'Q', 'K'];
+        let notation = event.target.id;
 
-          if (event.shiftKey) { notation = 'x' + notation; }
-          if (keys.includes(keyModifier.toUpperCase())) { notation = keyModifier + notation; }
+        if (event.shiftKey) { notation = 'x' + notation; }
+        if (keys.includes(keyModifier.toUpperCase())) { notation = keyModifier + notation; }
 
-          Utils.audio.play(notation, self.options.commentator, self.options.volume);
-        });
+        Utils.audio.play(notation, commentator, volume);
       };
 
-      document.addEventListener('keydown', (event)=> {
+      squares.forEach(square => square.addEventListener('click', createSquareEventListener));
+
+      document.addEventListener('keydown', event => {
         keyModifier = String.fromCharCode(event.keyCode);
       });
 
-      document.addEventListener('keyup', ()=> {
+      document.addEventListener('keyup', () => {
         keyModifier = '';
       });
 
-      squares.map(createSquareListener);
-
       // "Play a random commentary" link
-      document.getElementById('randomMisc').addEventListener('click', ()=> {
+      document.getElementById('randomMisc').addEventListener('click', () => {
         Utils.audio.play('misc', this.options.commentator, this.options.volume);
       });
 
       // Full sound list dropdown
-      document.getElementById('miscList').addEventListener('change', (event)=> {
+      document.getElementById('miscList').addEventListener('change', event => {
         Utils.audio.play(event.target.value, this.options.commentator, this.options.volume, false);
       });
 
-      document.getElementById('enabled').addEventListener('change', (event)=> {
+      document.getElementById('enabled').addEventListener('change', event => {
         UserPrefs.saveOptions({ enabled: event.target.checked }).then(Utils.sendSaveMessage);
       });
     },
@@ -84,7 +82,7 @@
       if (!sounds) { return; }
       if (!browser.storage) { return; }
 
-      UserPrefs.getOptions().then((items)=> {
+      UserPrefs.getOptions().then(items => {
         this.options = items;
 
         document.getElementById('enabled').checked = this.options.enabled;
