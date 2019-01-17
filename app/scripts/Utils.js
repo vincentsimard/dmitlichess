@@ -61,12 +61,6 @@ const Utils = (function(browser, sounds) {
         audio = this.create(file, commentator, volume / 100);
         audio.play();
       }
-    },
-
-    mutation: {
-      hasAddedNodes: function(mutation = this.throwIfMissing, className = undefined) {
-        return mutation.addedNodes.length > 0 && (typeof className === 'undefined' || mutation.addedNodes[0].classList.contains(className));
-      }
     }
   };
 })(browser, sounds);

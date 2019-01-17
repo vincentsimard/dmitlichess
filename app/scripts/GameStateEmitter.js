@@ -18,7 +18,7 @@ class GameStateEmitter {
   }
   
   resultElementAdded(mutations) {
-    return mutations.some((mutation)=> Utils.mutation.hasAddedNodes(mutation, 'result_wrap'));
+    return mutations.some((mutation)=> MutationUtils.hasAddedNodes(mutation, 'result_wrap'));
   }
 
   handleMutations(mutations) {

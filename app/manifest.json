@@ -31,6 +31,7 @@
                 "scripts/sounds.js",
                 "scripts/UserPrefs.js",
                 "scripts/Utils.js",
+                "scripts/MutationUtils.js",
                 "scripts/AudioQueue.js",
                 "scripts/MoveEmitter.js",
                 "scripts/GameStateEmitter.js",

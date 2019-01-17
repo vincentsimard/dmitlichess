@@ -14,7 +14,7 @@ class MoveEmitter {
 
   handleMutations(mutations) {
     mutations.forEach((mutation)=> {
-      if (!Utils.mutation.hasAddedNodes(mutation)) { return; }
+      if (!MutationUtils.hasAddedNodes(mutation)) { return; }
 
       let added = mutation.addedNodes[0];
       const notation = added.textContent;
