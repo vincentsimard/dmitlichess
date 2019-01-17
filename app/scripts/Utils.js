@@ -1,17 +1,8 @@
 const Utils = (function(browser, sounds) {
   'use strict';
 
-  const movesElement = document.querySelector('#lichess .moves');
-
-  const getStatusElement = ()=> document.querySelector('#site_header .status, #lichess .lichess_ground .status');
-
   return {
-    movesElement: movesElement,
-
     throwIfMissing: ()=> { throw new Error('Missing parameter'); },
-
-    isGameStart: ()=> movesElement && movesElement.children.length === 0,
-    isGameOver: ()=> !!getStatusElement(),
 
     audio: {
       create: function(file = this.throwIfMissing, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume) {

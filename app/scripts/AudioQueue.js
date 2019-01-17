@@ -65,7 +65,7 @@ class AudioQueue {
     return audio;
   }
 
-  push(key = Utils.throwIfMissing) {
+  push(key) {
     if (typeof key === 'undefined') { return; }
     
     let file = Utils.audio.getRandom(key, this.options.commentator) || Utils.audio.getGeneric(key, this.options.commentator);

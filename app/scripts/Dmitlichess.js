@@ -53,6 +53,9 @@ class Dmitlichess {
 
   init() {
     UserPrefs.getOptions().then((items)=> {
+      const status = document.querySelector('#lichess .lichess_ground .status');
+      const isGameOver = !!status;
+
       this.options = items;
 
       this.audioQueue = new AudioQueue(this.options, this.movesElement);
@@ -60,7 +63,7 @@ class Dmitlichess {
       this.addListeners(this.movesElement);
 
       // Start if the extension is enabled and the game is not over
-      this[this.options.enabled && !Utils.isGameOver() ? 'start' : 'stop']();
+      this[this.options.enabled && !isGameOver ? 'start' : 'stop']();
     });
   }
 

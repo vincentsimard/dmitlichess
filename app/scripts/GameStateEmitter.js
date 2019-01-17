@@ -22,10 +22,12 @@ class GameStateEmitter {
   }
 
   handleMutations(mutations) {
-    if (!this.resultElementAdded(mutations)) { return; }
-    if (!Utils.isGameOver()) { return; }
+    const status = document.querySelector('#lichess .lichess_ground .status');
+    const isGameOver = !!status;
 
-    const status = document.querySelector('.status');
+    if (!this.resultElementAdded(mutations)) { return; }
+    if (!isGameOver) { return; }
+
     const text = status && status.innerText.toLowerCase();
     const state = states.reduce((a, v)=> text.includes(v) ? v : a, undefined);
 
@@ -58,7 +60,9 @@ class GameStateEmitter {
     this.observers = [];
     this.observers.push(this.createObserver());
 
-    if (Utils.isGameStart()) {
+    const isGameStart = () => this.movesElement && this.movesElement.children.length === 0;
+
+    if (isGameStart()) {
       this.dispatchTarget.dispatchEvent(new CustomEvent('start'));
     }
   }
