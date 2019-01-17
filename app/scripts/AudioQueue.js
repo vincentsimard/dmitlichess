@@ -4,20 +4,24 @@ class AudioQueue {
   constructor(options, dispatchTarget) {
     this.options = options;
     this.dispatchTarget = dispatchTarget;
-    this.sounds = sounds;
 
     this.queue = [];
   }
 
   next() {
-    if (this.queue.length > 0) {
-      const first = this.queue[0];
+    if (this.queue.length === 0) { return; }
+    
+    const first = this.queue[0];
 
-      if (typeof first.play === 'function') {
-        first.play().catch(error => {
-          console.error('play() error', error, first, this.queue);
-        });
-      }
+    if (typeof first.play === 'function') {
+      first.play().catch(error => {
+        // Chrome does not allow autoplay of sounds when a page is loaded
+        // and the user has not interacted with it yet.
+        // Ignore these errors.
+        if (error instanceof DOMException && error.name === 'NotAllowedError') { return; }
+
+        console.error('play() error', error, first, this.queue);
+      });
     }
   }
 
