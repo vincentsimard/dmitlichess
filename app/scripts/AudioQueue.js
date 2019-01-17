@@ -26,14 +26,10 @@ class AudioQueue {
   }
 
   clear(keepFirst = false) {
-    /*
-    // Keep the first audio file if its playback has not finished
-    const first = this.queue[0];
-    this.queue = first && !first.ended ? [first] : [];
-    */
+    // Keep the first audio file if its playback has not finished and the game is over
     const first = this.queue[0];
 
-    this.queue = keepFirst ? (first && !first.ended ? [first] : []) : [];
+    this.queue = keepFirst && first && !first.ended ? [first] : [];
 
     this.dispatchTarget.dispatchEvent(new CustomEvent('queueCleared'));
   }
