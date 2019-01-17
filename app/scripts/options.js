@@ -73,7 +73,7 @@ class OptionsCtrl {
 
     // Play a random commentary when a commentator is selected
     Array.from(this.elements.commentators).forEach(item => {
-      const listener = () => Utils.audio.play('misc', item.value, this.elements.volume.value);
+      const listener = () => AudioUtils.play('misc', item.value, this.elements.volume.value);
       item.addEventListener('click', listener);
     });
   }

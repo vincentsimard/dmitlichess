@@ -59,7 +59,7 @@ class AudioQueue {
       setTimeout(()=> { this.clear(); }, duration * 1000); // Making sure sounds don't overlap
     }
 
-    audio = Utils.audio.create(file, this.options.commentator, this.options.volume / 100);
+    audio = AudioUtils.create(file, this.options.commentator, this.options.volume / 100);
     audio.addEventListener('ended', doEnded, false);
 
     return audio;
@@ -68,13 +68,13 @@ class AudioQueue {
   push(key) {
     if (typeof key === 'undefined') { return; }
     
-    let file = Utils.audio.getRandom(key, this.options.commentator) || Utils.audio.getGeneric(key, this.options.commentator);
+    let file = AudioUtils.getRandom(key, this.options.commentator) || AudioUtils.getGeneric(key, this.options.commentator);
     
     // Random chance (1/6) to play a 'fill' sound instead of nothing
     // when there is no sound for the notation
     const trueOneOutOfSix = ()=> !(Math.floor(Math.random() * 6));
     if (!file && trueOneOutOfSix()) {
-      file = Utils.audio.getRandom('fill', this.options.commentator);
+      file = AudioUtils.getRandom('fill', this.options.commentator);
     }
 
     // console.log(key, file, this.queue.length);

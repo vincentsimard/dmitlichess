@@ -51,7 +51,7 @@ class PopupCtrl {
       if (event.shiftKey) { notation = 'x' + notation; }
       if (keys.includes(keyModifier.toUpperCase())) { notation = keyModifier + notation; }
 
-      Utils.audio.play(notation, commentator, volume);
+      AudioUtils.play(notation, commentator, volume);
     };
 
     squares.forEach(square => square.addEventListener('click', createSquareEventListener));
@@ -66,12 +66,12 @@ class PopupCtrl {
 
     // "Play a random commentary" link
     document.getElementById('randomMisc').addEventListener('click', () => {
-      Utils.audio.play('misc', this.options.commentator, this.options.volume);
+      AudioUtils.play('misc', this.options.commentator, this.options.volume);
     });
 
     // Full sound list dropdown
     document.getElementById('miscList').addEventListener('change', event => {
-      Utils.audio.play(event.target.value, this.options.commentator, this.options.volume, false);
+      AudioUtils.play(event.target.value, this.options.commentator, this.options.volume, false);
     });
 
     document.getElementById('enabled').addEventListener('change', event => {
