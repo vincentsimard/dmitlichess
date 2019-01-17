@@ -15,13 +15,6 @@ const Utils = (function(browser, sounds) {
     isGameStart: ()=> movesElement && movesElement.children.length === 0,
     isGameOver: ()=> !!getStatusElement(),
 
-    sendSaveMessage: ()=> {
-      browser.tabs.query({currentWindow: true, active: true}).then(function (tabs){
-        // @TODO: Getting an error in console...
-        browser.tabs.sendMessage(tabs[0].id, { 'message': 'optionsSaved' });
-      });
-    },
-
     audio: {
       create: function(file = this.throwIfMissing, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume) {
         const path = browser.extension.getURL('ogg/' + commentator + '/' + file);

@@ -44,7 +44,7 @@ class PopupCtrl {
     const squares = Array.from(document.querySelectorAll('#board .square'));
 
     const createSquareEventListener = event => {
-      // @TODO: Can't listen to O-O, O-O-O sounds
+      // @TODO: Provide a way to listen to O-O, O-O-O sounds
       const keys = ['N', 'B', 'R', 'Q', 'K'];
       let notation = event.target.id;
 
@@ -75,14 +75,11 @@ class PopupCtrl {
     });
 
     document.getElementById('enabled').addEventListener('change', event => {
-      UserPrefs.saveOptions({ enabled: event.target.checked }).then(Utils.sendSaveMessage);
+      UserPrefs.saveOptions({ enabled: event.target.checked }).then(UserPrefs.sendSaveMessage);
     });
   }
 
   init() {
-    if (!sounds) { return; }
-    if (!browser.storage) { return; }
-
     UserPrefs.getOptions().then(items => {
       this.options = items;
 

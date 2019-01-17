@@ -17,7 +17,7 @@ class OptionsCtrl {
 
   save(showStatus = true) {
     const doSaved = () => {
-      Utils.sendSaveMessage();
+      UserPrefs.sendSaveMessage();
 
       if (showStatus) {
         // Update status to let user know options were saved.
@@ -26,7 +26,7 @@ class OptionsCtrl {
         status.textContent = 'Options saved. Please refresh your lichess.org page';
         status.classList.remove('faded');
 
-        setTimeout(()=> status.classList.add('faded'), 5000);
+        setTimeout(() => status.classList.add('faded'), 5000);
       }
     };
 
@@ -53,7 +53,7 @@ class OptionsCtrl {
   // Restores select box and checkbox state using the preferences storage.
   restore() {
     // Default values
-    UserPrefs.getOptions().then((items)=> {
+    UserPrefs.getOptions().then(items => {
       document.getElementById('commentator_' + items.commentator).checked = true;
       this.elements.enabled.checked = items.enabled;
       this.elements.volume.value = items.volume;
@@ -72,7 +72,7 @@ class OptionsCtrl {
     this.elements.defaultButton.addEventListener('click', () => this.reset());
 
     // Play a random commentary when a commentator is selected
-    Array.prototype.forEach.call(this.elements.commentators, item => {
+    Array.from(this.elements.commentators).forEach(item => {
       const listener = () => Utils.audio.play('misc', item.value, this.elements.volume.value);
       item.addEventListener('click', listener);
     });

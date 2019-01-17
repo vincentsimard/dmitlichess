@@ -17,6 +17,13 @@ class UserPrefs {
   static saveOptions(items) {
     return browser.storage.sync.set(items);
   }
+
+  static sendSaveMessage() {
+    browser.tabs.query({currentWindow: true, active: true}).then(tabs => {
+      // @TODO: Getting an error in console...
+      browser.tabs.sendMessage(tabs[0].id, { 'message': 'optionsSaved' });
+    });
+  }
 }
 
 UserPrefs.defaults = defaults;
