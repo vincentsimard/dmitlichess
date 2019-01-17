@@ -67,12 +67,13 @@ class AudioQueue {
 
   push(key = Utils.throwIfMissing) {
     if (typeof key === 'undefined') { return; }
-
+    
     let file = Utils.audio.getRandom(key, this.options.commentator) || Utils.audio.getGeneric(key, this.options.commentator);
-
+    
     // Random chance (1/6) to play a 'fill' sound instead of nothing
     // when there is no sound for the notation
-    if (!file && Utils.trueOneOutOfSix()) {
+    const trueOneOutOfSix = ()=> !(Math.floor(Math.random() * 6));
+    if (!file && trueOneOutOfSix()) {
       file = Utils.audio.getRandom('fill', this.options.commentator);
     }
 

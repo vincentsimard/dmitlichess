@@ -10,8 +10,6 @@ const Utils = (function(browser, sounds) {
 
     throwIfMissing: ()=> { throw new Error('Missing parameter'); },
 
-    trueOneOutOfSix: ()=> !(Math.floor(Math.random() * 6)),
-
     isGameStart: ()=> movesElement && movesElement.children.length === 0,
     isGameOver: ()=> !!getStatusElement(),
 
