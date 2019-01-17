@@ -1,9 +1,9 @@
 'use strict';
 
-const isCapture = (notation)=> notation.includes('x');
-const isCastle = (notation)=> notation.includes('0-0');
-const isCheck = (notation)=> notation.includes('+');
-const trimSymbols = (notation)=> notation.replace('+', '').replace('#', '');
+const isCapture = notation => notation.includes('x');
+const isCastle = notation => notation.includes('0-0');
+const isCheck = notation => notation.includes('+');
+const trimSymbols = notation => notation.replace(/#|\+|@/g, '');
 
 class MoveEmitter {
   constructor(movesElement, dispatchTarget) {
@@ -13,7 +13,7 @@ class MoveEmitter {
   }
 
   handleMutations(mutations) {
-    mutations.forEach((mutation)=> {
+    mutations.forEach(mutation => {
       if (!MutationUtils.hasAddedNodes(mutation)) { return; }
 
       let added = mutation.addedNodes[0];
@@ -41,7 +41,7 @@ class MoveEmitter {
 
   createObserver() {
     const el = this.movesElement;
-    const observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
+    const observer = new MutationObserver(mutations => this.handleMutations(mutations));
     const config = { childList: true, subtree: true };
 
     if (el) { observer.observe(el, config); }
@@ -50,7 +50,7 @@ class MoveEmitter {
   }
 
   disconnect() {
-    this.observers.map((o)=> o.disconnect());
+    this.observers.map(o => o.disconnect());
   }
 
   init() {
