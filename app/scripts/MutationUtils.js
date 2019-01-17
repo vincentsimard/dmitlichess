@@ -7,4 +7,4 @@ class MutationUtils {
 
     return hasNodes(mutation) && containsClass(mutation, className);
   }
-};
+}
