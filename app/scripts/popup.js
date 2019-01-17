@@ -12,6 +12,7 @@
         .concat(s.misc)
         .concat(s.check)
         .concat(s.checkmate)
+        .concat(s.stalemate)
         .concat(s.draw)
         .concat(s.resign)
         .concat(s.start)
@@ -19,6 +20,7 @@
         .concat(s.check)
         .concat(s.fill)
         .concat(s.long)
+        .concat(s.signoff)
         .filter((n)=> !!n); // Remove undefined entries (if sounds don't exist for one category)
 
       const trimmed = list.map((item)=> {
