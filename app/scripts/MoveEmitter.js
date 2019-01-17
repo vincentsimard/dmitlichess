@@ -1,10 +1,5 @@
 'use strict';
 
-const isCapture = notation => notation.includes('x');
-const isCastle = notation => notation.includes('0-0');
-const isCheck = notation => notation.includes('+');
-const trimSymbols = notation => notation.replace(/#|\+|@/g, '');
-
 class MoveEmitter {
   constructor(movesElement, dispatchTarget) {
     this.movesElement = movesElement;
@@ -13,6 +8,11 @@ class MoveEmitter {
   }
 
   handleMutations(mutations) {
+    const isCapture = notation => notation.includes('x');
+    const isCastle = notation => notation.includes('0-0');
+    const isCheck = notation => notation.includes('+');
+    const trimSymbols = notation => notation.replace(/#|\+|@/g, '');
+
     mutations.forEach(mutation => {
       if (!MutationUtils.hasAddedNodes(mutation)) { return; }
 

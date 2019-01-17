@@ -1,15 +1,5 @@
 'use strict';
 
-const states = [
-  'aborted',
-  'stalemate',
-  'checkmate',
-  'draw',
-  'time out',
-  'white resigned',
-  'black resigned'
-];
-
 class GameStateEmitter {
   constructor(movesElement, dispatchTarget) {
     this.movesElement = movesElement;
@@ -22,6 +12,16 @@ class GameStateEmitter {
   }
 
   handleMutations(mutations) {
+    const states = [
+      'aborted',
+      'stalemate',
+      'checkmate',
+      'draw',
+      'time out',
+      'white resigned',
+      'black resigned'
+    ];
+
     const status = document.querySelector('#lichess .lichess_ground .status');
     const isGameOver = !!status;
 
@@ -67,4 +67,3 @@ class GameStateEmitter {
     }
   }
 }
-
