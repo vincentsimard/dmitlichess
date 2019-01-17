@@ -14,9 +14,7 @@ class AudioQueue {
       const first = this.queue[0];
 
       if (typeof first.play === 'function') {
-        first.play().then(()=> {
-
-        }).catch((error) => {
+        first.play().catch(error => {
           console.error('play() error', error, first, this.queue);
         });
       }
@@ -39,7 +37,7 @@ class AudioQueue {
   createQueueAudio(file) {
     let audio;
 
-    const doEnded = ()=> {
+    const doEnded = () => {
       // Clear the queue if there are too many sounds queued to make sure the
       // commentator is not too far behind the game with his commentary
       if (this.queue.length > 3) {
@@ -56,7 +54,7 @@ class AudioQueue {
     // @TODO: Figure out a better way
     if (this.queue.length > 10) {
       const duration = this.queue[0].duration;
-      setTimeout(()=> { this.clear(); }, duration * 1000); // Making sure sounds don't overlap
+      setTimeout(() => { this.clear(); }, duration * 1000); // Making sure sounds don't overlap
     }
 
     audio = AudioUtils.create(file, this.options.commentator, this.options.volume / 100);
@@ -72,7 +70,7 @@ class AudioQueue {
     
     // Random chance (1/6) to play a 'fill' sound instead of nothing
     // when there is no sound for the notation
-    const trueOneOutOfSix = ()=> !(Math.floor(Math.random() * 6));
+    const trueOneOutOfSix = () => !(Math.floor(Math.random() * 6));
     if (!file && trueOneOutOfSix()) {
       file = AudioUtils.getRandom('fill', this.options.commentator);
     }

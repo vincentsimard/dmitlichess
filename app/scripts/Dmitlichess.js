@@ -24,27 +24,27 @@ class Dmitlichess {
 
   addListeners(target) {
     // Moves and game events
-    target.addEventListener('move',    (e)=> this.audioQueue.push(e.detail.notation));
-    target.addEventListener('capture', (e)=> this.audioQueue.push(e.detail.notation));
-    target.addEventListener('check',   ()=> this.audioQueue.push('check'));
-    target.addEventListener('start',   ()=> this.audioQueue.push('start'));
-    target.addEventListener('state',   (e)=> {
+    target.addEventListener('move', e => this.audioQueue.push(e.detail.notation));
+    target.addEventListener('capture', e => this.audioQueue.push(e.detail.notation));
+    target.addEventListener('check', () => this.audioQueue.push('check'));
+    target.addEventListener('start', () => this.audioQueue.push('start'));
+    target.addEventListener('state', e => {
       if (e.detail.isOver) { this.gameOver(e.detail.state); }
       // @TODO: Handle takeback offers?
     });
 
     // Cleared audio queue when there is too many sounds queued
-    target.addEventListener('queueCleared', ()=> this.resetMiscInterval());
+    target.addEventListener('queueCleared', () => this.resetMiscInterval());
 
     // Options saved
-    browser.runtime.onMessage.addListener((request)=> {
+    browser.runtime.onMessage.addListener(request => {
       // Restart dmitlichess when options are saved
       if (request.message === 'optionsSaved' ) {
         // Stop to prevent sounds being repeated multiple times
         this.stop();
 
         // Apply saved dmitlichess options and restart if enabled
-        UserPrefs.getOptions().then((items)=> {
+        UserPrefs.getOptions().then(items => {
           this[items.enabled ? 'start' : 'stop']();
         });
       }
@@ -52,7 +52,7 @@ class Dmitlichess {
   }
 
   init() {
-    UserPrefs.getOptions().then((items)=> {
+    UserPrefs.getOptions().then(items => {
       const status = document.querySelector('#lichess .lichess_ground .status');
       const isGameOver = !!status;
 
@@ -81,7 +81,7 @@ class Dmitlichess {
     clearInterval(this.intervals.misc);
 
     if (this.options.enabled) {
-      this.intervals.misc = setInterval(()=> { this.audioQueue.push('misc'); }, this.options.miscInterval);
+      this.intervals.misc = setInterval(() => { this.audioQueue.push('misc'); }, this.options.miscInterval);
     }
   }
 
@@ -90,9 +90,9 @@ class Dmitlichess {
     this.emitters.gameStates.init();
 
     // Play random sound bits
-    this.intervals.misc = setInterval(()=> { this.audioQueue.push('misc'); }, this.options.miscInterval);
-    this.intervals.fill = setInterval(()=> { this.audioQueue.push('fill'); }, this.options.fillInterval);
-    this.intervals.long = setTimeout(()=> { this.audioQueue.push('long'); }, (Math.floor(Math.random() * this.options.longTimeout) + 1) * 1000);
+    this.intervals.misc = setInterval(() => { this.audioQueue.push('misc'); }, this.options.miscInterval);
+    this.intervals.fill = setInterval(() => { this.audioQueue.push('fill'); }, this.options.fillInterval);
+    this.intervals.long = setTimeout(() => { this.audioQueue.push('long'); }, (Math.floor(Math.random() * this.options.longTimeout) + 1) * 1000);
 
     this.options.enabled = true;
   }

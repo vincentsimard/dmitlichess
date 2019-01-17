@@ -29,7 +29,7 @@ class GameStateEmitter {
     if (!isGameOver) { return; }
 
     const text = status && status.innerText.toLowerCase();
-    const state = states.reduce((a, v)=> text.includes(v) ? v : a, undefined);
+    const state = states.reduce((a, v) => text.includes(v) ? v : a, undefined);
 
     this.dispatchTarget.dispatchEvent(new CustomEvent('state', {
       detail: {
@@ -44,7 +44,7 @@ class GameStateEmitter {
   
   createObserver() {
     const el = this.movesElement;
-    const observer = new MutationObserver((mutations)=> this.handleMutations(mutations));
+    const observer = new MutationObserver(mutations => this.handleMutations(mutations));
     const config = { childList: true, subtree: false };
 
     if (el) { observer.observe(el, config); }
@@ -53,7 +53,7 @@ class GameStateEmitter {
   }
 
   disconnect() {
-    this.observers.map((o)=> o.disconnect());
+    this.observers.map(o => o.disconnect());
   }
 
   init() {

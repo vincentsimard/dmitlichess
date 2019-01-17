@@ -1,6 +1,6 @@
 'use strict';
 
-const throwIfMissing = ()=> { throw new Error('Missing parameter'); };
+const throwIfMissing = () => { throw new Error('Missing parameter'); };
 
 class AudioUtils {
   static create(file = throwIfMissing, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume) {

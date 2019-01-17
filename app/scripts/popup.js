@@ -20,7 +20,7 @@ class PopupCtrl {
       .concat(s.fill)
       .concat(s.long)
       .concat(s.signoff)
-      .filter((n)=> !!n); // Remove undefined entries (if sounds don't exist for one category)
+      .filter(n => !!n); // Remove undefined entries (if sounds don't exist for one category)
 
     const soundboard = document.querySelector('#soundboard');
     const selectList = document.createElement('select');
