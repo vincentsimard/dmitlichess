@@ -18,7 +18,7 @@ class AudioQueue {
         // Chrome does not allow autoplay of sounds when a page is loaded
         // and the user has not interacted with it yet.
         // Ignore these errors.
-        if (error instanceof DOMException && error.name === 'NotAllowedError') { return; }
+        if (error instanceof DOMException && error.name === 'NotAllowedError') { return; } // jshint ignore:line
 
         console.error('play() error', error, first, this.queue);
       });
