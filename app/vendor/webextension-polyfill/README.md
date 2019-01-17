@@ -1,32 +1,73 @@
-# WebExtension `browser` API Polyfill
+# WebExtension `browser` API Polyfill [![Build Status](https://travis-ci.org/mozilla/webextension-polyfill.svg?branch=master)](https://travis-ci.org/mozilla/webextension-polyfill) [![npm version](https://badge.fury.io/js/webextension-polyfill.svg)](https://www.npmjs.com/package/webextension-polyfill)
 
-This library allows extensions written for the Promise-based
-WebExtension/BrowserExt API being standardized by the [W3 Browser
-Extensions][w3-browserext] group to be used without modification in Google
-Chrome.
+This library allows extensions that use the Promise-based WebExtension/BrowserExt API being standardized by the
+[W3 Browser Extensions][w3-browserext] group to run on Google Chrome with minimal or no changes.
+
+> This library doesn't (and it is not going to) polyfill API methods or options that are missing on Chrome but natively provided
+> on Firefox, and so the extension has to do its own "runtime feature detection" in those cases (and then eventually polyfill the
+> missing feature on its own or enable/disable some of the features accordingly).
 
 [w3-browserext]: https://www.w3.org/community/browserext/
 
-## Building
+Table of contents
+=================
 
-To build, assuming you're already installed [node >= 6](https://nodejs.org) and
-[npm](https://www.npmjs.com/), simply run:
+* [Supported Browsers](#supported-browsers)
+* [Installation](#installation)
+* [Basic Setup](#basic-setup)
+  * [Basic Setup with module bundlers](#basic-setup-with-module-bundlers)
+* [Using the Promise-based APIs](#using-the-promise-based-apis)
+* [Examples](#examples)
+* [Known Limitations and Incompatibilities](#known-limitations-and-incompatibilities)
+* [Contributing to this project](#contributing-to-this-project)
 
-```sh
-npm install
-npm run build
-npm run test
+Supported Browsers
+==================
+
+| Browser       | Support Level                                                                                        |
+| ------------- | ---------------------------------------------------------------------------------------------------- |
+| Chrome        | *Officially Supported* (with automated tests)                                                        |
+| Firefox       | *Officially Supported as a NO-OP* (with automated tests for comparison with the behaviors on Chrome) |
+| Opera         | *Unofficially Supported* as a Chrome-compatible target (but not explicitly tested in automation)     |
+| Edge          | *Not supported* (may become unofficially supported once [#114][PR-114] lands)                          |
+
+The polyfill is being tested explictly (with automated tests that run on every pull request) on **officially supported** 
+browsers (that are currently the last stable versions of Chrome and Firefox).
+
+On Firefox, this library is actually acting as a NO-OP: it detects that the `browser` API object is already defined 
+and it does not create any custom wrappers.
+Firefox is still included in the automated tests, to ensure that no wrappers are being created when running on Firefox,
+and for comparison with the behaviors implemented by the library on Chrome.
+
+## Installation
+
+A new version of the library is built from this repository and released as an npm package.
+
+The npm package is named after this repo: [webextension-polyfill](https://www.npmjs.com/package/webextension-polyfill).
+
+For the extension that already include a package.json file, the last released version of this library can be quickly installed using:
+
+```
+npm install --save-dev webextension-polyfill
 ```
 
-This will install all the npm dependencies and build both non-minified and minified versions
-of the final library, and output them to `dist/browser-polyfill.js` and `dist/browser-polyfill.min.js`,
-respectively, and finally executes the unit tests on the generated dist files.
+Inside the `dist/` directory of the npm package, there are both the minified and non-minified builds (and their related source map files):
+
+- node_modules/webextension-polyfill/dist/browser-polyfill.js
+- node_modules/webextension-polyfill/dist/browser-polyfill.min.js
+
+For extensions that do not include a package.json file and/or prefer to download and add the library directly into their own code repository, all the versions released on npm are also available for direct download from unpkg.com:
+
+- https://unpkg.com/webextension-polyfill/dist/
+
+and linked to the github releases:
+
+- https://github.com/mozilla/webextension-polyfill/releases
 
 ## Basic Setup
 
-In order to use the polyfill, it must be loaded into any context where
-`browser` APIs are accessed. The most common cases are background and
-content scripts, which can be specified in `manifest.json`:
+In order to use the polyfill, it must be loaded into any context where `browser` APIs are accessed. The most common cases
+are background and content scripts, which can be specified in `manifest.json`:
 
 ```javascript
 {
@@ -75,6 +116,45 @@ browser.tabs.executeScript({file: "content.js"}).then(result => {
 });
 ```
 
+### Basic Setup with module bundlers
+
+This library is built as a **UMD module** (Universal Module Definition), and so it can also be used with module bundlers (and explictly tested on both **webpack** and **browserify**) or AMD module loaders.
+
+**src/background.js**:
+```javascript
+var browser = require("webextension-polyfill");
+
+browser.runtime.onMessage.addListener(async (msg, sender) => {
+  console.log("BG page received message", msg, "from", sender);
+  console.log("Stored data", await browser.storage.local.get());
+});
+
+browser.browserAction.onClicked.addListener(() => {
+  browser.tabs.executeScript({file: "content.js"});
+});
+```
+
+**src/content.js**:
+```javascript
+var browser = require("webextension-polyfill");
+
+browser.storage.local.set({
+  [window.location.hostname]: document.title,
+}).then(() => {
+  browser.runtime.sendMessage(`Saved document title for ${window.location.hostname}`);
+});
+```
+
+By using `require("webextension-polyfill")`, the module bundler will use the non-minified version of this library, and the extension is supposed to minify the entire generated bundles as part of its own build steps.
+
+If the extension doesn't minify its own sources, it is still possible to explicitly ask the module bundler to use the minified version of this library, e.g.:
+
+```javascript
+var browser = require("webextension-polyfill/dist/browser-polyfill.min");
+
+...
+```
+
 ## Using the Promise-based APIs
 
 The Promise-based APIs in the `browser` namespace work, for the most part,
@@ -95,9 +175,8 @@ The major differences are:
 * Rather than nesting callbacks when a sequence of operations depend on each
   other, Promise chaining is generally used instead.
 
-* For users of an ES7 transpiler, such as Babel, the resulting Promises are
-  generally used with `async` and `await`, rather than dealt with
-  directly.
+* The resulting Promises can be also used with `async` and `await`, rather
+  than dealt with directly.
 
 ## Examples
 
@@ -106,11 +185,11 @@ API, retrieve a list of tabs which match any of them, reload each of those
 tabs, and notify the user that is has been done:
 
 ```javascript
-browser.storage.get("urls").then(({urls}) => {
+browser.storage.local.get("urls").then(({urls}) => {
   return browser.tabs.query({url: urls});
 }).then(tabs => {
   return Promise.all(
-    Array.from(tabs, tab => browser.tabs.reload(tab.id)));
+    Array.from(tabs, tab => browser.tabs.reload(tab.id))
   );
 }).then(() => {
   return browser.notifications.create({
@@ -129,12 +208,12 @@ Or, using an async function:
 ```javascript
 async function reloadTabs() {
   try {
-    let {urls} = await browser.storage.get("urls");
+    let {urls} = await browser.storage.local.get("urls");
 
     let tabs = await browser.tabs.query({url: urls});
 
     await Promise.all(
-      Array.from(tabs, tab => browser.tabs.reload(tab.id)));
+      Array.from(tabs, tab => browser.tabs.reload(tab.id))
     );
 
     await browser.notifications.create({
@@ -154,7 +233,7 @@ Communication between a background page and a tab content script, for example,
 looks something like this from the background page side:
 
 ```javascript
-browser.tabs.sendMessage("get-ids").then(results => {
+browser.tabs.sendMessage(tabId, "get-ids").then(results => {
   processResults(results);
 });
 ```
@@ -164,7 +243,7 @@ And like this from the content script:
 ```javascript
 browser.runtime.onMessage.addListener(msg => {
   if (msg == "get-ids") {
-    return browser.storage.get("idPattern").then(({idPattern}) => {
+    return browser.storage.local.get("idPattern").then(({idPattern}) => {
       return Array.from(document.querySelectorAll(idPattern),
                         elem => elem.textContent);
     });
@@ -177,7 +256,7 @@ or:
 ```javascript
 browser.runtime.onMessage.addListener(async function(msg) {
   if (msg == "get-ids") {
-    let {idPattern} = await browser.storage.get("idPattern");
+    let {idPattern} = await browser.storage.local.get("idPattern");
 
     return Array.from(document.querySelectorAll(idPattern),
                       elem => elem.textContent);
@@ -186,3 +265,49 @@ browser.runtime.onMessage.addListener(async function(msg) {
 ```
 
 Or vice versa.
+
+## Known Limitations and Incompatibilities
+
+This library tries to minimize the amount of "special handling" that a cross-browser extension has to do to be able to run on the supported browsers from a single codebase, but there are still cases when polyfillling the missing or incompatible behaviors or features is not possible or out of the scope of this polyfill.
+
+This section aims to keep track of the most common issues that an extension may have.
+
+### No callback supported by the Promise-based APIs on Chrome
+
+While some of the asynchronous API methods in Firefox (the ones that return a promise) also support the callback parameter (mostly as a side effect of the backward compatibility with the callback-based APIs available on Chrome), the Promise-based APIs provided by this library do not support the callback parameter (See ["#102 Cannot call browser.storage.local.get with callback"][I-102]).
+
+### No promise returned on Chrome for some API methods
+
+This library takes its knowledge of the APIs to wrap and their signatures from a metadata JSON file:
+[api-metadata.json](api-metadata.json).
+
+If an API method is not yet included in this "API metadata" file, it will not be recognized.
+Promises are not supported for unrecognized APIs, and callbacks have to be used for them.
+
+File an issue in this repository for API methods that supports a callback on Chrome and
+are currently missing from the "API metadata" file.
+
+### Issues that happen only when running on Firefox
+
+When an extension that uses this library doesn't behave as expected on Firefox, it is almost never an issue in this polyfill, but an issue with the native implementation in Firefox.
+
+"Firefox only" issues should be reported upstream on Bugzilla:
+- https://bugzilla.mozilla.org/enter_bug.cgi?product=WebExtensions&component=Untriaged
+
+### API methods or options that are only available when running in Firefox
+
+This library does not provide any polyfill for API methods and options that are only available on Firefox, and they are actually considered out of the scope of this library.
+
+### tabs.executeScript
+
+On Firefox `browser.tabs.executeScript` returns a promise which resolves to the result of the content script code that has been executed, which can be an immediate value or a Promise.
+
+On Chrome, the `browser.tabs.executeScript` API method as polyfilled by this library also returns a promise which resolves to the result of the content script code, but only immediate values are supported.
+If the content script code result is a Promise, the promise returned by `browser.tabs.executeScript` will be resolved to `undefined`.
+
+## Contributing to this project
+
+Read the [contributing section](CONTRIBUTING.md) for additional information about how to build the library from this repository and how to contribute and test changes.
+
+[PR-114]: https://github.com/mozilla/webextension-polyfill/pull/114
+[I-102]: https://github.com/mozilla/webextension-polyfill/issues/102#issuecomment-379365343

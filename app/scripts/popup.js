@@ -1,114 +1,95 @@
-(function(browser, sounds, Utils) {
-  'use strict';
+'use strict';
 
-  const PopupCtrl = {
-    options: Utils.defaults,
+class PopupCtrl {
+  constructor(options) {
+    this.options = UserPrefs.defaults;
+  }
 
-    generateMiscList: function() {
-      let soundboard = document.querySelector('#soundboard');
+  generateMiscList() {
+    const s = sounds[this.options.commentator];
+    const soundFiles = []
+      .concat(s.misc)
+      .concat(s.check)
+      .concat(s.checkmate)
+      .concat(s.stalemate)
+      .concat(s.draw)
+      .concat(s.resign)
+      .concat(s.start)
+      .concat(s.name)
+      .concat(s.check)
+      .concat(s.fill)
+      .concat(s.long)
+      .concat(s.signoff)
+      .filter(n => !!n); // Remove undefined entries (if sounds don't exist for one category)
 
-      let s = sounds[this.options.commentator];
-      let list = []
-        .concat(s.misc)
-        .concat(s.check)
-        .concat(s.checkmate)
-        .concat(s.draw)
-        .concat(s.resign)
-        .concat(s.start)
-        .concat(s.name)
-        .concat(s.check)
-        .concat(s.fill)
-        .concat(s.long)
-        .filter((n)=> !!n); // Remove undefined entries (if sounds don't exist for one category)
+    const soundboard = document.querySelector('#soundboard');
+    const selectList = document.createElement('select');
+    selectList.id = 'miscList';
 
-      let trimmed = list.map((item)=> {
-        if (!item) { return; }
+    const toDisplayName = filename => filename
+      .replace(/misc_|long_|\.ogg/g, '')
+      .replace(/_/g, ' ');
 
-        item = item.replace('misc_', '');
-        item = item.replace('long_', '');
-        item = item.replace('.ogg', '');
+    const createOption = filename => new Option(toDisplayName(filename), filename);
 
-        return item;
-      });
+    selectList.add(new Option('', ''));
+    soundFiles.forEach(sound => selectList.add(createOption(sound)));
 
-      let selectList = document.createElement('select');
-      selectList.id = 'miscList';
+    soundboard.appendChild(selectList);
+  }
 
-      let createOption = function(text, index) {
-        let option = document.createElement('option');
+  addListeners() {
+    let keyModifier = '';
+    const {commentator, volume} = this.options;
+    const squares = Array.from(document.querySelectorAll('#board .square'));
 
-        option.text = text ? text.replace(/_/g, ' ') : '';
-        option.value = list[index];
+    const createSquareEventListener = event => {
+      // @TODO: Provide a way to listen to O-O, O-O-O sounds
+      const keys = ['N', 'B', 'R', 'Q', 'K'];
+      let notation = event.target.id;
 
-        selectList.appendChild(option);
+      if (event.shiftKey) { notation = 'x' + notation; }
+      if (keys.includes(keyModifier.toUpperCase())) { notation = keyModifier + notation; }
 
-        return option;
-      };
+      AudioUtils.play(notation, commentator, volume);
+    };
 
-      selectList.appendChild(createOption('', ''));
-      trimmed.map((item, i)=> { createOption(item, i); });
+    squares.forEach(square => square.addEventListener('click', createSquareEventListener));
 
-      soundboard.appendChild(selectList);
-    },
+    document.addEventListener('keydown', event => {
+      keyModifier = String.fromCharCode(event.keyCode);
+    });
 
-    addListeners: function() {
-      let self = this;
-      let squares = document.querySelectorAll('#board .square');
-      let squaresArray = Array.prototype.slice.call(squares);
-      let keyModifier = '';
+    document.addEventListener('keyup', () => {
+      keyModifier = '';
+    });
 
-      let createSquareListener = (square)=> {
-        square.addEventListener('click', function(event) {
-          const keys = ['N', 'B', 'R', 'Q', 'K'];
-          let notation = this.id;
+    // "Play a random commentary" link
+    document.getElementById('randomMisc').addEventListener('click', () => {
+      AudioUtils.play('misc', this.options.commentator, this.options.volume);
+    });
 
-          if (event.shiftKey) { notation = 'x' + notation; }
-          if (keys.indexOf(keyModifier.toUpperCase()) >= 0) { notation = keyModifier + notation; }
+    // Full sound list dropdown
+    document.getElementById('miscList').addEventListener('change', event => {
+      AudioUtils.play(event.target.value, this.options.commentator, this.options.volume, false);
+    });
 
-          Utils.audio.play(notation, self.options.commentator, self.options.volume);
-        });
-      };
+    document.getElementById('enabled').addEventListener('change', event => {
+      UserPrefs.saveOptions({ enabled: event.target.checked }).then(UserPrefs.sendSaveMessage);
+    });
+  }
 
-      document.addEventListener('keydown', (event)=> {
-        keyModifier = String.fromCharCode(event.keyCode);
-      });
+  init() {
+    UserPrefs.getOptions().then(items => {
+      this.options = items;
 
-      document.addEventListener('keyup', ()=> {
-        keyModifier = '';
-      });
+      document.getElementById('enabled').checked = this.options.enabled;
 
-      squaresArray.map(createSquareListener);
+      this.generateMiscList();
+      this.addListeners();
+    });
+  }
+}
 
-      // "Play a random commentary" link
-      document.getElementById('randomMisc').addEventListener('click', ()=> {
-        Utils.audio.play('misc', this.options.commentator, this.options.volume);
-      });
-
-      // Full sound list dropdown
-      document.getElementById('miscList').addEventListener('change', (event)=> {
-        Utils.audio.play(event.target.value, this.options.commentator, this.options.volume, false);
-      });
-
-      document.getElementById('enabled').addEventListener('change', (event)=> {
-        browser.storage.sync.set({ enabled: event.target.checked }).then(Utils.sendSaveMessage);
-      });
-    },
-
-    init: function() {
-      if (!sounds) { return; }
-      if (!browser.storage) { return; }
-
-      browser.storage.sync.get(Utils.defaults).then((items)=> {
-        this.options = items;
-
-        document.getElementById('enabled').checked = this.options.enabled;
-
-        this.generateMiscList();
-        this.addListeners();
-      });
-    }
-  };
-
-  let ctrl = Object.create(PopupCtrl);
-  ctrl.init();
-})(browser, sounds, Utils);
+window.popupCtrl = new PopupCtrl();
+window.popupCtrl.init();

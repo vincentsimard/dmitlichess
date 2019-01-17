@@ -22,7 +22,7 @@
                                 //   "single" : require single quotes
                                 //   "double" : require double quotes
     "undef"         : true,     // true: Require all non-global variables to be declared (prevents global leaks)
-    "unused"        : true,     // Unused variables:
+    "unused"        : false,    // Unused variables:
                                 //   true     : all variables, last function parameter
                                 //   "vars"   : all variables only
                                 //   "strict" : all variables, all function parameters
@@ -71,7 +71,7 @@
     "jquery"        : false,    // jQuery
     "mocha"         : true,     // Mocha
     "mootools"      : false,    // MooTools
-    "node"          : false,    // Node.js
+    "node"          : true,     // Node.js
     "nonstandard"   : false,    // Widely adopted globals (escape, unescape, etc)
     "phantom"       : false,    // PhantomJS
     "prototypejs"   : false,    // Prototype and Scriptaculous
@@ -86,10 +86,13 @@
     // Custom Globals
     "globals"       : {
       "chrome": true,
+      "browser": true,
       "sounds": true,
-      "Utils": true,
+      "AudioUtils": true,
+      "MutationUtils": true,
       "AudioQueue": true,
       "MoveEmitter": true,
-      "GameStateEmitter": true
+      "GameStateEmitter": true,
+      "UserPrefs": true
     }
 }
