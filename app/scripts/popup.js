@@ -5,10 +5,8 @@
     options: UserPrefs.defaults,
 
     generateMiscList: function() {
-      const soundboard = document.querySelector('#soundboard');
-
       const s = sounds[this.options.commentator];
-      const list = []
+      const soundFiles = []
         .concat(s.misc)
         .concat(s.check)
         .concat(s.checkmate)
@@ -23,32 +21,18 @@
         .concat(s.signoff)
         .filter((n)=> !!n); // Remove undefined entries (if sounds don't exist for one category)
 
-      const trimmed = list.map((item)=> {
-        if (!item) { return; }
-
-        item = item.replace('misc_', '');
-        item = item.replace('long_', '');
-        item = item.replace('.ogg', '');
-
-        return item;
-      });
-
+      const soundboard = document.querySelector('#soundboard');
       const selectList = document.createElement('select');
       selectList.id = 'miscList';
 
-      const createOption = function(text, index) {
-        const option = document.createElement('option');
+      const toDisplayName = filename => filename
+        .replace(/misc_|long_|\.ogg/g, '')
+        .replace(/_/g, ' ');
 
-        option.text = text ? text.replace(/_/g, ' ') : '';
-        option.value = list[index];
+      const createOption = filename => new Option(toDisplayName(filename), filename);
 
-        selectList.appendChild(option);
-
-        return option;
-      };
-
-      selectList.appendChild(createOption('', ''));
-      trimmed.map((item, i)=> { createOption(item, i); });
+      selectList.add(new Option('', ''));
+      soundFiles.forEach(sound => selectList.add(createOption(sound)));
 
       soundboard.appendChild(selectList);
     },
