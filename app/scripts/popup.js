@@ -1,6 +1,7 @@
 (function(browser, sounds, Utils) {
   'use strict';
 
+  // @TODO: Can't listen to O-O, O-O-O sounds
   const PopupCtrl = {
     options: UserPrefs.defaults,
 
@@ -39,11 +40,10 @@
 
     addListeners: function() {
       const self = this;
-      const squares = document.querySelectorAll('#board .square');
-      const squaresArray = Array.prototype.slice.call(squares);
+      const squares = Array.from(document.querySelectorAll('#board .square'));
       let keyModifier = '';
 
-      const createSquareListener = (square)=> {
+      const createSquareListener = square => {
         square.addEventListener('click', function(event) {
           const keys = ['N', 'B', 'R', 'Q', 'K'];
           let notation = this.id;
@@ -63,7 +63,7 @@
         keyModifier = '';
       });
 
-      squaresArray.map(createSquareListener);
+      squares.map(createSquareListener);
 
       // "Play a random commentary" link
       document.getElementById('randomMisc').addEventListener('click', ()=> {
