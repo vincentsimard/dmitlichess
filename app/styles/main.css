@@ -332,6 +332,32 @@ label, button, details {
 
 
 button {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 6px 11px;
+  white-space: nowrap;
+  text-decoration: none!important;
+  border: 1px solid #e2e2e2;
+  border-radius: 2px;
+  font-size: 11px;
+  box-sizing: border-box;
+  text-shadow: 0 1px 0 #000;
+  border-color: #323232;
+  color: #ccc;
+  background: linear-gradient(to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.7) 100%);
+}
+
+button:active {
+  background: linear-gradient(to bottom,rgba(40,40,40,1),rgba(34,34,34,1) 100%);
+}
+
+.button-link {
+  padding: 6px 11px;
+  font-size: 11px;
+}
+
+
+button.green {
   padding: 8px 20px;
   border-radius: 8px;
   color: #fff;
@@ -346,29 +372,29 @@ button {
   border: none;
 }
 
-button.secondary,
-button.secondary:not(:disabled):hover,
-button.secondary:not(:disabled):active {
+button.green.secondary,
+button.green.secondary:not(:disabled):hover,
+button.green.secondary:not(:disabled):active {
   background: transparent;
 }
 
-button:hover {
+button.green:hover {
   filter: brightness(1.06);
 }
 
-button:active {
+button.green:active {
   transform: translate(0px,5px);
   border-bottom-width: 1px;
   text-shadow: 0 0 #759900;
   filter: brightness(1);
 }
 
-button:not(:disabled):active {
+button.green:not(:disabled):active {
   background: #3893e8;
   color: #fff;
 }
 
-button:not(:disabled):hover {
+button.green:not(:disabled):hover {
   background: rgba(56,147,232,.8);
   color: #fff;
   animation: none;
