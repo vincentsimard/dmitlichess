@@ -7,26 +7,31 @@ kbd {
   font-family: monospace;
 }
 
+abbr[title] {
+  text-decoration: none;
+}
+
+#soundboard ul {
+  padding-left: 18px;
+}
+
 #board {
   position: relative;
   padding: 0;
   margin: 0;
-  width: 200px;
-  height: 200px;
+  width: 225px;
+  height: 225px;
   background-color: transparent;
   font-size: 10px;
   line-height: 25px;
   overflow: hidden;
   text-align: center;
-  text-transform: uppercase;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  cursor: pointer;
-  border: 1px solid black;
 }
 
 #board:after {
@@ -41,8 +46,10 @@ kbd {
   float: left;
 }
 
-#board .square.light { background-color: #f9f9f9; color: black; }
-#board .square.dark  { background-color: #3a3a3a; color: white; }
+#board .square.light, #board .square.dark { cursor: pointer; }
+
+#board .square.light { background-color: #f0d9b5; color: black; }
+#board .square.dark  { background-color: #b58863; color: white; }
 
 .square {
   position: relative;
