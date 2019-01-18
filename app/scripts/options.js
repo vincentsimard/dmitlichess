@@ -17,8 +17,6 @@ class OptionsCtrl {
 
   save(showStatus = true) {
     const doSaved = () => {
-      UserPrefs.sendSaveMessage();
-
       if (showStatus) {
         // Update status to let user know options were saved.
         const status = this.elements.status;

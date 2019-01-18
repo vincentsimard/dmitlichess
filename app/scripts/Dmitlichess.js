@@ -37,17 +37,19 @@ class Dmitlichess {
     target.addEventListener('queueCleared', () => this.resetMiscInterval());
 
     // Options saved
-    browser.runtime.onMessage.addListener(request => {
+    browser.storage.onChanged.addListener((changes, area) => {
       // Restart dmitlichess when options are saved
-      if (request.message === 'optionsSaved' ) {
-        // Stop to prevent sounds being repeated multiple times
-        this.stop();
+      if (area !== 'sync') { return; }
 
-        // Apply saved dmitlichess options and restart if enabled
-        UserPrefs.getOptions().then(items => {
-          this[items.enabled ? 'start' : 'stop']();
-        });
-      }
+      // Stop to prevent sounds being repeated multiple times
+      this.stop();
+
+      // Apply saved dmitlichess options and restart if enabled
+      UserPrefs.getOptions().then(items => {
+        this.options = items;
+
+        this[items.enabled ? 'start' : 'stop']();
+      });
     });
   }
 
@@ -57,8 +59,6 @@ class Dmitlichess {
       const isGameOver = !!status;
 
       this.options = items;
-
-      this.audioQueue = new AudioQueue(this.options, this.movesElement);
 
       this.addListeners(this.movesElement);
 
@@ -86,6 +86,8 @@ class Dmitlichess {
   }
 
   start() {
+    this.audioQueue = new AudioQueue(this.options, this.movesElement);
+
     this.emitters.moves.init();
     this.emitters.gameStates.init();
 

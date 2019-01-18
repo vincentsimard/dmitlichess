@@ -75,7 +75,7 @@ class PopupCtrl {
     });
 
     document.getElementById('enabled').addEventListener('change', event => {
-      UserPrefs.saveOptions({ enabled: event.target.checked }).then(UserPrefs.sendSaveMessage);
+      UserPrefs.saveOptions({ enabled: event.target.checked });
     });
   }
 
