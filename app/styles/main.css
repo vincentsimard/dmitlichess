@@ -505,3 +505,39 @@ input[type=range]:focus::-moz-range-track {
   filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
+
+
+
+select {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: .375rem .75rem;
+  line-height: 1.5;
+  background-clip: padding-box;
+  border: 1px solid #404040;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  background-color: #181818;
+  color: #999;
+}
+
+select option {
+  box-sizing: border-box;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0;
+  text-shadow: none;
+  display: inline-block;
+  margin: 0;
+  font-weight: normal;
+  display: block;
+  white-space: pre;
+  min-height: 1.2em;
+  padding: 0px 2px 1px;
+  background-color: #181818;
+  color: #999;
+  border-color: #404040;
+}
