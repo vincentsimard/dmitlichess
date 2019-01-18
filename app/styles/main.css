@@ -341,9 +341,14 @@ button {
   transform: translate(0px,0px);
   background: #82bf56;
   outline: none;
-  text-transform: uppercase;
   cursor: pointer;
   border: none;
+}
+
+button.secondary,
+button.secondary:not(:disabled):hover,
+button.secondary:not(:disabled):active {
+  background: transparent;
 }
 
 button:hover {
@@ -358,13 +363,13 @@ button:active {
 }
 
 button:not(:disabled):active {
-  background: #3893e8!important;
+  background: #3893e8;
   color: #fff;
 }
 
 button:not(:disabled):hover {
   background: rgba(56,147,232,.8);
-  color: #fff!important;
+  color: #fff;
   animation: none;
 }
 
