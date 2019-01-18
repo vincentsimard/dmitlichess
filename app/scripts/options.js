@@ -21,7 +21,7 @@ class OptionsCtrl {
         // Update status to let user know options were saved.
         const status = this.elements.status;
 
-        status.textContent = 'Options saved. Please refresh your lichess.org page';
+        status.textContent = 'Options saved';
         status.classList.remove('faded');
 
         setTimeout(() => status.classList.add('faded'), 5000);
