@@ -1,10 +1,11 @@
 body {
   font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
-  padding: 0 20px;
+  padding: 0 20px 20px 20px;
 }
 
 kbd {
   font-family: monospace;
+  font-weight: 700;
 }
 
 abbr[title] {
@@ -130,9 +131,9 @@ body {
   overflow-x: hidden;
   cursor: default;
 }
-a,a:visited { color: #747474; }
+a,a:visited { color: #8f8f8f; text-decoration: none; }
 a,a:visited,button, summary { cursor: pointer; }
-a,a:hover, a:visited, summary:hover { color: #3893E8; text-decoration: none; }
+a:hover, summary:hover { color: #3893E8; }
 strong {
     font-weight: bold;
 }
@@ -143,7 +144,7 @@ body {
     color: #929292;
 }
 
-body a,body a:visited,body group.radio label,body .button {
+group.radio label,.button {
     color: #8f8f8f;
 }
 
@@ -202,6 +203,10 @@ h2 {
 label, button, details {
   margin-top: 2em;
   line-height: 2em;
+}
+
+details {
+  margin-bottom: 10px;
 }
 
 .overflow_nav { float: right; font-size: 0; line-height: 1; }
@@ -289,7 +294,7 @@ label, button, details {
   text-align: center;
   position: absolute;
   line-height: 2em;
-  color: #fff;
+  color: #ccc;
   position: absolute;
   top: 0;
   left: 0;
@@ -300,11 +305,12 @@ label, button, details {
 .tgl-flip + .tgl-btn:after {
   content: attr(data-on);
   background: #d85000;
+  color: #fff;
   -webkit-transform: rotateY(-180deg);
           transform: rotateY(-180deg);
 }
 .tgl-flip + .tgl-btn:before {
-  background: #323232;
+  background: linear-gradient(to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.7) 100%);
   content: attr(data-off);
 }
 .tgl-flip + .tgl-btn:active:before {
@@ -573,4 +579,14 @@ select option {
   background-color: #181818;
   color: #999;
   border-color: #404040;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  margin: 2em 0;
+}
+
+.actions button {
+  margin: 0;
 }

@@ -10,7 +10,6 @@ class OptionsCtrl {
       fillInterval: document.getElementById('fillInterval'),
       longTimeout: document.getElementById('longTimeout'),
       status: document.getElementById('status'),
-      saveButton: document.getElementById('save'),
       defaultButton: document.getElementById('default')
     };
   }
@@ -21,7 +20,7 @@ class OptionsCtrl {
         // Update status to let user know options were saved.
         const status = this.elements.status;
 
-        status.textContent = 'Options saved';
+        status.textContent = '\u2714 Your preferences have been saved.';
         status.classList.remove('faded');
 
         setTimeout(() => status.classList.add('faded'), 5000);
@@ -64,15 +63,27 @@ class OptionsCtrl {
   init() {
     document.addEventListener('DOMContentLoaded', () => this.restore());
 
-    this.elements.enabled.addEventListener('change', () => this.save(false));
-
-    this.elements.saveButton.addEventListener('click', () => this.save());
     this.elements.defaultButton.addEventListener('click', () => this.reset());
 
+    this.elements.enabled.addEventListener('change', () => this.save(false));
+    document.querySelectorAll('[data-saveOn]').forEach(el => {
+      el.addEventListener(el.getAttribute('data-saveOn'), () => { this.save(); });
+    });
+
     // Play a random commentary when a commentator is selected
-    Array.from(this.elements.commentators).forEach(item => {
+    this.elements.commentators.forEach(item => {
       const listener = () => AudioUtils.play('misc', item.value, this.elements.volume.value);
       item.addEventListener('click', listener);
+    });
+
+    document.querySelectorAll('.links').forEach(el => {
+      el.addEventListener('click', event => {
+        event.preventDefault();
+
+        if (event.target.href === undefined) { return; }
+
+        chrome.tabs.create({ url: event.target.href });
+      });
     });
   }
 }

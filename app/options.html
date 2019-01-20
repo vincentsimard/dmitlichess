@@ -15,26 +15,26 @@
     </div>
 
     <label for="volume">Volume </label>
-    <input id="volume" type="range" min="0" max="100" step="1" />
+    <input id="volume" type="range" min="0" max="100" step="1" data-saveOn="change" />
 
     <label for="commentator">Commentator </label>
     <div class="commentator_radio">
-      <input type="radio" value="dmitri" name="commentator" id="commentator_dmitri">
+      <input type="radio" value="dmitri" name="commentator" id="commentator_dmitri" data-saveOn="click">
       <label for="commentator_dmitri" data-tooltip="Commentator Dimitri Komarov. Grandmaster also">
         <img src="images/dmitri.png">
       </label>
 
-      <input type="radio" value="maurice" name="commentator" id="commentator_maurice">
+      <input type="radio" value="maurice" name="commentator" id="commentator_maurice" data-saveOn="click">
       <label for="commentator_maurice" data-tooltip="GM Maurice Ashley">
         <img src="images/maurice.png">
       </label>
 
-      <input type="radio" value="yasser" name="commentator" id="commentator_yasser">
+      <input type="radio" value="yasser" name="commentator" id="commentator_yasser" data-saveOn="click">
       <label for="commentator_yasser" data-tooltip="GM Yasser Seirawan">
         <img src="images/yasser.png">
       </label>
 
-      <input type="radio" value="zugaddict" name="commentator" id="commentator_zugaddict">
+      <input type="radio" value="zugaddict" name="commentator" id="commentator_zugaddict" data-saveOn="click">
       <label for="commentator_zugaddict" data-tooltip="NM John Chernoff aka Zugaddict">
         <img src="images/zugaddict.png">
       </label>
@@ -44,18 +44,26 @@
       <summary>Advanced</summary>
       <div class="advanced">
         <label for="miscInterval">Random commentary frequency</label>
-        <input id="miscInterval" type="range" min="1000" max="100000" step="1000" class="rtl" />
+        <input id="miscInterval" type="range" min="1000" max="100000" step="1000" class="rtl" data-saveOn="change" />
 
         <label for="fillInterval">Filler words frequency</label>
-        <input id="fillInterval" type="range" min="1000" max="100000" step="1000" class="rtl" />
+        <input id="fillInterval" type="range" min="1000" max="100000" step="1000" class="rtl" data-saveOn="change" />
 
         <label for="longTimeout">Chance of hearing a long commentary/story <small>Can only happen once per game</small></label>
-        <input id="longTimeout" type="range" min="10" max="10000" step="1" class="rtl" />
+        <input id="longTimeout" type="range" min="10" max="10000" step="1" class="rtl" data-saveOn="change" />
       </div>
     </details>
 
-    <button id="save" class="primary">Save</button>
-    <a id="default" class="button-link">Restore defaults</a>
+    <footer>
+      <span class="actions">
+        <a id="default" class="button-link">Restore defaults</a>
+      </span>
+
+      <span class="links">
+        <a class="button-link" href="https://github.com/vincentsimard/dmitlichess/blob/master/FAQ.md">FAQ</a>
+        <a class="button-link" href="https://streamlabs.com/vsim/donate">Donate</a>
+      </span>
+    </footer>
     <div id="status"></div>
 
     <script src="vendor/webextension-polyfill/dist/browser-polyfill.min.js"></script>
