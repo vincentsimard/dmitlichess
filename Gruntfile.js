@@ -220,6 +220,7 @@
                             'styles/{,*/}*.css',
                             'styles/fonts/{,*/}*.*',
                             '_locales/{,*/}*.json',
+                            'vendor/**',
                         ]
                     }]
                 }
