@@ -217,6 +217,7 @@
                             'images/{,*/}*.{webp,gif}',
                             '{,*/}*.html',
                             'ogg/{,*/}*.*',
+                            'scripts/**',
                             'styles/{,*/}*.css',
                             'styles/fonts/{,*/}*.*',
                             '_locales/{,*/}*.json',
