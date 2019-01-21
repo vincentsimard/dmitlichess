@@ -26,6 +26,7 @@ class PopupCtrl {
     const selectList = document.createElement('select');
     selectList.id = 'miscList';
 
+    // @TODO: Remove trailing numbers at the end of files
     const toDisplayName = filename => filename
       .replace(/misc_|long_|\.ogg/g, '')
       .replace(/_/g, ' ');
