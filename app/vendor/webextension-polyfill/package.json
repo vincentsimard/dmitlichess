@@ -1,102 +1,75 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "webextension-polyfill",
-        "scope": null,
-        "escapedName": "webextension-polyfill",
-        "name": "webextension-polyfill",
-        "rawSpec": "",
-        "spec": "latest",
-        "type": "tag"
-      },
-      "/home/vincent/Projects/dmitlichess"
-    ]
-  ],
-  "_from": "webextension-polyfill@latest",
-  "_id": "webextension-polyfill@0.1.1",
-  "_inCache": true,
+  "_from": "webextension-polyfill@^0.3.1",
+  "_id": "webextension-polyfill@0.3.1",
+  "_inBundle": false,
+  "_integrity": "sha512-ISB42vlgMyM7xE1u6pREeCqmmXjLsYu/nqAR8Dl/gIAnylb+KpRpvKbVkUYNFePhhXn0Obkkc3jasOII9ztUtg==",
   "_location": "/webextension-polyfill",
-  "_nodeVersion": "6.10.2",
-  "_npmOperationalInternal": {
-    "host": "packages-12-west.internal.npmjs.com",
-    "tmp": "tmp/webextension-polyfill-0.1.1.tgz_1492089317566_0.49166757869534194"
-  },
-  "_npmUser": {
-    "name": "addons-robot",
-    "email": "addons-dev-automation+npm@mozilla.com"
-  },
-  "_npmVersion": "3.10.10",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "webextension-polyfill",
-    "scope": null,
-    "escapedName": "webextension-polyfill",
+    "type": "range",
+    "registry": true,
+    "raw": "webextension-polyfill@^0.3.1",
     "name": "webextension-polyfill",
-    "rawSpec": "",
-    "spec": "latest",
-    "type": "tag"
+    "escapedName": "webextension-polyfill",
+    "rawSpec": "^0.3.1",
+    "saveSpec": null,
+    "fetchSpec": "^0.3.1"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/webextension-polyfill/-/webextension-polyfill-0.1.1.tgz",
-  "_shasum": "1d172e59b9ee8706d5ce2c55eebfe0cf23972d70",
-  "_shrinkwrap": null,
-  "_spec": "webextension-polyfill",
-  "_where": "/home/vincent/Projects/dmitlichess",
+  "_resolved": "https://registry.npmjs.org/webextension-polyfill/-/webextension-polyfill-0.3.1.tgz",
+  "_shasum": "fab2aed917a713a5d8221e41febad81c5d0b080f",
+  "_spec": "webextension-polyfill@^0.3.1",
+  "_where": "/home/vincent/Projects/chess/dmitlichess",
   "author": {
     "name": "Mozilla"
   },
   "bugs": {
     "url": "https://github.com/mozilla/webextension-polyfill/issues"
   },
-  "dependencies": {},
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "A lightweight polyfill library for Promise-based WebExtension APIs in Chrome.",
   "devDependencies": {
+    "async-wait-until": "^1.1.5",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.0.1",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
-    "babel-preset-babili": "0.0.10",
+    "babel-preset-babili": "^0.0.10",
+    "babel-preset-es2017": "^6.24.1",
+    "browserify": "^16.2.2",
     "chai": "^3.5.0",
-    "eslint": "3.9.1",
+    "chromedriver": "^2.38.3",
+    "eslint": "^3.9.1",
+    "finalhandler": "^1.1.0",
+    "geckodriver": "^1.11.0",
+    "global-replaceify": "^1.0.0",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-coveralls": "^1.0.1",
-    "grunt-replace": "*",
-    "gruntify-eslint": "*",
+    "grunt-replace": "^1.0.1",
+    "gruntify-eslint": "^4.0.0",
     "istanbul-lib-instrument": "^1.1.3",
     "jsdom": "^9.6.0",
     "mocha": "^3.1.0",
     "nyc": "^8.3.1",
-    "sinon": "^1.17.6"
-  },
-  "directories": {},
-  "dist": {
-    "shasum": "1d172e59b9ee8706d5ce2c55eebfe0cf23972d70",
-    "tarball": "https://registry.npmjs.org/webextension-polyfill/-/webextension-polyfill-0.1.1.tgz"
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "serve-static": "^1.13.1",
+    "shelljs": "^0.8.2",
+    "sinon": "^1.17.6",
+    "tap-nirvana": "^1.0.8",
+    "tape": "^4.9.1",
+    "tape-async": "^2.3.0",
+    "tmp": "0.0.33"
   },
   "files": [
     "dist"
   ],
-  "gitHead": "a1fd64cab19f418caa389c13e606778e33415d4d",
   "homepage": "https://github.com/mozilla/webextension-polyfill",
   "license": "MPL-2.0",
   "main": "dist/browser-polyfill.js",
-  "maintainers": [
-    {
-      "name": "addons-robot",
-      "email": "addons-dev-automation+npm@mozilla.com"
-    },
-    {
-      "name": "josephfrazier",
-      "email": "1212jtraceur@gmail.com"
-    },
-    {
-      "name": "rpl",
-      "email": "luca.greco@alcacoop.it"
-    }
-  ],
   "name": "webextension-polyfill",
   "nyc": {
     "reporter": [
@@ -106,8 +79,6 @@
     ],
     "instrument": false
   },
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mozilla/webextension-polyfill.git"
@@ -118,7 +89,8 @@
     "publish-coverage": "grunt coveralls",
     "test": "mocha",
     "test-coverage": "COVERAGE=y nyc mocha",
+    "test-integration": "tape test/integration/test-*",
     "test-minified": "TEST_MINIFIED_POLYFILL=1 mocha"
   },
-  "version": "0.1.1"
+  "version": "0.3.1"
 }
