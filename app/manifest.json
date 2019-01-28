@@ -1,12 +1,12 @@
 {
     "name": "dmitlichess",
-    "version": "0.5.432",
+    "version": "0.5.434",
     "manifest_version": 2,
     "description": "Adds top-level grandmaster commentary to lichess.org (audio)",
     "browser_specific_settings": {
         "gecko": {
             "id": "vincent@vincentsimard.com",
-            "strict_min_version": "42.0"
+            "strict_min_version": "57.0"
         }
     },
     "icons": {
