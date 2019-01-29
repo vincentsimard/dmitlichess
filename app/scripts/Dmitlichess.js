@@ -4,11 +4,11 @@ class Dmitlichess {
   constructor(movesElement) {
     this.movesElement = movesElement;
 
-    if (!sounds) { throw new Error('No sound files'); }
     if (!this.movesElement) { throw new Error('Move list with notation not found'); }
 
     this.options = {};
     this.audioQueue = {};
+    this.sounds = {};
 
     this.intervals = {
       misc: undefined,
@@ -86,17 +86,25 @@ class Dmitlichess {
   }
 
   start() {
-    this.audioQueue = new AudioQueue(this.options, this.movesElement);
+    // Load the sounds for the selected commentator
+    const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/manifest.json`);
 
-    this.emitters.moves.init();
-    this.emitters.gameStates.init();
-
-    // Play random sound bits
-    this.intervals.misc = setInterval(() => { this.audioQueue.push('misc'); }, this.options.miscInterval);
-    this.intervals.fill = setInterval(() => { this.audioQueue.push('fill'); }, this.options.fillInterval);
-    this.intervals.long = setTimeout(() => { this.audioQueue.push('long'); }, (Math.floor(Math.random() * this.options.longTimeout) + 1) * 1000);
-
-    this.options.enabled = true;
+    fetch(url)
+      .then(response => response.json())
+      .then(json => this.sounds[json.name] = json.sounds)
+      .then(() => {
+        this.audioQueue = new AudioQueue(this.options, this.movesElement, this.sounds);
+    
+        this.emitters.moves.init();
+        this.emitters.gameStates.init();
+    
+        // Play random sound bits
+        this.intervals.misc = setInterval(() => { this.audioQueue.push('misc'); }, this.options.miscInterval);
+        this.intervals.fill = setInterval(() => { this.audioQueue.push('fill'); }, this.options.fillInterval);
+        this.intervals.long = setTimeout(() => { this.audioQueue.push('long'); }, (Math.floor(Math.random() * this.options.longTimeout) + 1) * 1000);
+    
+        this.options.enabled = true;
+      });
   }
 
   stop() {

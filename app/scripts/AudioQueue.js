@@ -1,9 +1,10 @@
 'use strict';
 
 class AudioQueue {
-  constructor(options, dispatchTarget) {
+  constructor(options, dispatchTarget, sounds) {
     this.options = options;
     this.dispatchTarget = dispatchTarget;
+    this.sounds = sounds;
 
     this.queue = [];
   }
@@ -66,13 +67,13 @@ class AudioQueue {
   push(key) {
     if (typeof key === 'undefined') { return; }
     
-    let file = AudioUtils.getRandom(key, this.options.commentator) || AudioUtils.getGeneric(key, this.options.commentator);
+    let file = AudioUtils.getRandom(this.sounds, key, this.options.commentator) || AudioUtils.getGeneric(this.sounds, key, this.options.commentator);
     
     // Random chance (1/6) to play a 'fill' sound instead of nothing
     // when there is no sound for the notation
     const trueOneOutOfSix = () => !(Math.floor(Math.random() * 6));
     if (!file && trueOneOutOfSix()) {
-      file = AudioUtils.getRandom('fill', this.options.commentator);
+      file = AudioUtils.getRandom(this.sounds, 'fill', this.options.commentator);
     }
 
     // console.log(key, file, this.queue.length);
