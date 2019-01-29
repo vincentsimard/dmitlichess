@@ -36,7 +36,7 @@ class AudioUtils {
     if (key.includes('time out')) { return this.getRandom(sounds, 'flag', commentator); }
   }
 
-  static play(key, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume, isRandom = true) {
+  static play(sounds, key, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume, isRandom = true) {
     let audio;
     const file = isRandom ? this.getRandom(sounds, key, commentator) : key;
 

@@ -70,12 +70,6 @@ class OptionsCtrl {
       el.addEventListener(el.getAttribute('data-saveOn'), () => { this.save(); });
     });
 
-    // Play a random commentary when a commentator is selected
-    this.elements.commentators.forEach(item => {
-      const listener = () => AudioUtils.play('misc', item.value, this.elements.volume.value);
-      item.addEventListener('click', listener);
-    });
-
     document.querySelectorAll('.links').forEach(el => {
       el.addEventListener('click', event => {
         event.preventDefault();
@@ -84,6 +78,24 @@ class OptionsCtrl {
 
         chrome.tabs.create({ url: event.target.href });
       });
+    });
+
+    // Play a random commentary when a commentator is selected
+    // @TODO: Create commentators select elements based on manifests?
+    this.elements.commentators.forEach(item => {
+      const commentator = item.value;
+
+      const url = chrome.runtime.getURL(`ogg/${commentator}/manifest.json`);
+      fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+          const sounds = {};
+
+          sounds[json.name] = json.sounds;
+
+          const listener = () => AudioUtils.play(sounds, 'misc', commentator, this.elements.volume.value);
+          item.addEventListener('click', listener);
+        });
     });
   }
 }

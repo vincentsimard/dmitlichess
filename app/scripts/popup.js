@@ -3,10 +3,11 @@
 class PopupCtrl {
   constructor(options) {
     this.options = UserPrefs.defaults;
+    this.sounds = {};
   }
 
   generateMiscList() {
-    const s = sounds[this.options.commentator];
+    const s = this.sounds[this.options.commentator];
     const soundFiles = []
       .concat(s.misc)
       .concat(s.check)
@@ -52,7 +53,7 @@ class PopupCtrl {
       if (event.shiftKey) { notation = 'x' + notation; }
       if (keys.includes(keyModifier.toUpperCase())) { notation = keyModifier + notation; }
 
-      AudioUtils.play(notation, commentator, volume);
+      AudioUtils.play(this.sounds, notation, commentator, volume);
     };
 
     squares.forEach(square => square.addEventListener('click', createSquareEventListener));
@@ -67,12 +68,12 @@ class PopupCtrl {
 
     // "Play a random commentary" link
     document.getElementById('randomMisc').addEventListener('click', () => {
-      AudioUtils.play('misc', this.options.commentator, this.options.volume);
+      AudioUtils.play(this.sounds, 'misc', this.options.commentator, this.options.volume);
     });
 
     // Full sound list dropdown
     document.getElementById('miscList').addEventListener('change', event => {
-      AudioUtils.play(event.target.value, this.options.commentator, this.options.volume, false);
+      AudioUtils.play(this.sounds, event.target.value, this.options.commentator, this.options.volume, false);
     });
 
     document.getElementById('enabled').addEventListener('change', event => {
@@ -86,8 +87,14 @@ class PopupCtrl {
 
       document.getElementById('enabled').checked = this.options.enabled;
 
-      this.generateMiscList();
-      this.addListeners();
+      const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/manifest.json`);
+      fetch(url)
+        .then((response) => response.json())
+        .then(json => this.sounds[json.name] = json.sounds)
+        .then(() => {
+          this.generateMiscList();
+          this.addListeners();
+        });
     });
   }
 }
