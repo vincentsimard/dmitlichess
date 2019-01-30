@@ -103,7 +103,8 @@ class OptionsCtrl {
         });
     });
 
-    return Promise.all(createCommentatorOptionPromises);
+    return Promise.all(createCommentatorOptionPromises)
+      .then(() => this.elements.commentators = document.querySelectorAll('input[name="commentator"]'));
   }
 
   init() {
@@ -128,7 +129,7 @@ class OptionsCtrl {
               chrome.tabs.create({ url: event.target.href });
             });
           });
-      
+
           // Play a random commentary when a commentator is selected
           // @TODO: Create commentators select elements based on manifests?
           this.elements.commentators.forEach(item => {
