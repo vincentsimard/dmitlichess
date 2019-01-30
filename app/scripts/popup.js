@@ -90,7 +90,7 @@ class PopupCtrl {
       const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/manifest.json`);
       fetch(url)
         .then((response) => response.json())
-        .then(json => this.sounds[json.name] = json.sounds)
+        .then(json => this.sounds[this.options.commentator] = json.sounds)
         .then(() => {
           this.generateMiscList();
           this.addListeners();

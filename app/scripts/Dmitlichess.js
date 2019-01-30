@@ -91,7 +91,7 @@ class Dmitlichess {
 
     fetch(url)
       .then(response => response.json())
-      .then(json => this.sounds[json.name] = json.sounds)
+      .then(json => this.sounds[this.options.commentator] = json.sounds)
       .then(() => {
         this.audioQueue = new AudioQueue(this.options, this.movesElement, this.sounds);
     
