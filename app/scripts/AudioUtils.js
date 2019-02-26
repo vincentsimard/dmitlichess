@@ -11,17 +11,15 @@ class AudioUtils {
     return audio;
   }
 
-  static getRandom(key = throwIfMissing, commentator = UserPrefs.defaults.commentator) {
-    if (!sounds) { return; }
-
+  static getRandom(sounds = throwIfMissing, key = throwIfMissing, commentator = UserPrefs.defaults.commentator) {
     const files = sounds[commentator][key];
 
     return files && files[Math.floor(Math.random()*files.length)];
   }
 
-  static getGeneric(key = throwIfMissing, commentator = UserPrefs.defaults.commentator) {
+  static getGeneric(sounds = throwIfMissing, key = throwIfMissing, commentator = UserPrefs.defaults.commentator) {
     // Generic capture sounds. e.g.: use xf7 if Nxf7 sound doesn't exist
-    if (key.indexOf('x') === 1) { return this.getRandom(key.substring(1), commentator); }
+    if (key.indexOf('x') === 1) { return this.getRandom(sounds, key.substring(1), commentator); }
 
     // @TODO: Also handle other fallback notation:
     //   - Nd2 if Nbd2 sound doesn't exist
@@ -31,16 +29,16 @@ class AudioUtils {
     // Translate some game end states
     // @TODO: Individual sounds for white/black resigned?
     /*
-    if (key.includes('white resigned')) { return this.getRandom('resign', commentator); }
-    if (key.includes('black resigned')) { return this.getRandom('resign', commentator); }
+    if (key.includes('white resigned')) { return this.getRandom(sounds, 'resign', commentator); }
+    if (key.includes('black resigned')) { return this.getRandom(sounds, 'resign', commentator); }
     */
-    if (key.includes('resigned')) { return this.getRandom('resign', commentator); }
-    if (key.includes('time out')) { return this.getRandom('flag', commentator); }
+    if (key.includes('resigned')) { return this.getRandom(sounds, 'resign', commentator); }
+    if (key.includes('time out')) { return this.getRandom(sounds, 'flag', commentator); }
   }
 
-  static play(key, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume, isRandom = true) {
+  static play(sounds, key, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume, isRandom = true) {
     let audio;
-    const file = isRandom ? this.getRandom(key, commentator) : key;
+    const file = isRandom ? this.getRandom(sounds, key, commentator) : key;
 
     // No sound for the notation :(
     if (!file) { return; }

@@ -48,41 +48,106 @@ class OptionsCtrl {
   }
 
   // Restores select box and checkbox state using the preferences storage.
-  restore() {
-    // Default values
-    UserPrefs.getOptions().then(items => {
-      document.getElementById('commentator_' + items.commentator).checked = true;
-      this.elements.enabled.checked = items.enabled;
-      this.elements.volume.value = items.volume;
-      this.elements.miscInterval.value = items.miscInterval;
-      this.elements.fillInterval.value = items.fillInterval;
-      this.elements.longTimeout.value = items.longTimeout;
+  restore(options) {
+    document.getElementById('commentator_' + options.commentator).checked = true;
+    this.elements.enabled.checked = options.enabled;
+    this.elements.volume.value = options.volume;
+    this.elements.miscInterval.value = options.miscInterval;
+    this.elements.fillInterval.value = options.fillInterval;
+    this.elements.longTimeout.value = options.longTimeout;
+  }
+
+  createCommentatorOptions(commentators) {
+    const container = document.querySelector('.commentator_radio');
+
+    const createCommentatorOptionPromises = commentators.map(commentator => {
+      const url = chrome.runtime.getURL(`ogg/${commentator}/manifest.json`);
+
+      return fetch(url)
+        .then((response) => response.json())
+        .then(json => {
+          const {icon, name = 'tooltip'} = json;
+
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = 'commentator';
+          input.value = commentator;
+          input.id = `commentator_${commentator}`;
+          input.setAttribute('data-saveOn', 'click');
+      
+          const label = document.createElement('label');
+          label.setAttribute('for', `commentator_${commentator}`);
+          label.setAttribute('data-tooltip', name);
+  
+          const img = document.createElement('img');
+          img.src = `images/${icon}`;
+  
+          label.appendChild(img);
+
+          let added = false;
+
+          container.childNodes.forEach(node => {
+            if (node.type !== 'radio') { return; }
+            if (node.value < commentator) { return; }
+
+            container.insertBefore(label, node);
+            container.insertBefore(input, label);
+
+            added = true;
+          });
+
+          if (!added) {
+            container.appendChild(label);
+            container.insertBefore(input, label);
+          }
+        });
     });
+
+    return Promise.all(createCommentatorOptionPromises)
+      .then(() => this.elements.commentators = document.querySelectorAll('input[name="commentator"]'));
   }
 
   init() {
-    document.addEventListener('DOMContentLoaded', () => this.restore());
+    document.addEventListener('DOMContentLoaded', () => {
+      UserPrefs.getOptions().then(items => {
+        this.createCommentatorOptions(items.commentators).then(() => {
+          this.restore(items);
+    
+          this.elements.defaultButton.addEventListener('click', () => this.reset());
+      
+          this.elements.enabled.addEventListener('change', () => this.save(false));
+          document.querySelectorAll('[data-saveOn]').forEach(el => {
+            el.addEventListener(el.getAttribute('data-saveOn'), () => { this.save(); });
+          });
+      
+          document.querySelectorAll('.links').forEach(el => {
+            el.addEventListener('click', event => {
+              event.preventDefault();
+      
+              if (event.target.href === undefined) { return; }
+      
+              chrome.tabs.create({ url: event.target.href });
+            });
+          });
 
-    this.elements.defaultButton.addEventListener('click', () => this.reset());
-
-    this.elements.enabled.addEventListener('change', () => this.save(false));
-    document.querySelectorAll('[data-saveOn]').forEach(el => {
-      el.addEventListener(el.getAttribute('data-saveOn'), () => { this.save(); });
-    });
-
-    // Play a random commentary when a commentator is selected
-    this.elements.commentators.forEach(item => {
-      const listener = () => AudioUtils.play('misc', item.value, this.elements.volume.value);
-      item.addEventListener('click', listener);
-    });
-
-    document.querySelectorAll('.links').forEach(el => {
-      el.addEventListener('click', event => {
-        event.preventDefault();
-
-        if (event.target.href === undefined) { return; }
-
-        chrome.tabs.create({ url: event.target.href });
+          // Play a random commentary when a commentator is selected
+          // @TODO: Create commentators select elements based on manifests?
+          this.elements.commentators.forEach(item => {
+            const commentator = item.value;
+      
+            const url = chrome.runtime.getURL(`ogg/${commentator}/manifest.json`);
+            fetch(url)
+              .then((response) => response.json())
+              .then((json) => {
+                const sounds = {};
+      
+                sounds[commentator] = json.sounds;
+      
+                const listener = () => AudioUtils.play(sounds, 'misc', commentator, this.elements.volume.value);
+                item.addEventListener('click', listener);
+              });
+          });
+        });
       });
     });
   }

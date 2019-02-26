@@ -9,3 +9,6 @@ Special thanks to [amazingoid](http://twitch.tv/amazingoid/) and [yerand](http:/
 
 ## August 12th, 2017 update
 Large update to celebrate dmitlichess' 3 year anniversary with the addition of Maurice Ashley's voice, new options and soundboard pages, and plenty of bug fixes.
+
+## January 20th, 2019 update
+The voices of GM Yasser Seirawan and NM John Chernoff added
