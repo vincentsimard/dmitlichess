@@ -6,7 +6,7 @@ const defaults = {
   fillInterval: 17000,  // Every 17 seconds
   longTimeout: 3600,    // Once before the 1 hour mark (random time)
   commentator: 'dmitri',
-  commentators: ['dmitri', 'maurice', 'yasser', 'zugaddict'],
+  commentators: ['dmitri', 'maurice', 'yasser', 'zugaddict', 'kc'],
   enabled: true
 };
 

@@ -1,0 +1,10 @@
+{
+  "name": "CM Tryfon Gavriel aka Kingscrusher",
+  "icon": "kc.png",
+  "sounds": {
+    "fill": ["fill_breath.ogg"],
+    "misc": ["misc_breath.ogg"],
+    "signoff": ["signoff_comments_and_questions_on_yt_thanks_very_much.ogg", "signoff_comments_questions_likes_shares_appreciated.ogg", "signoff_comments_questions_likes.ogg", "signoff_comments_questions_on_yt_tyvm_2.ogg", "signoff_comments_questions_on_yt_tyvm.ogg", "signoff_okay_comments_questions_thanks.ogg", "signoff_okay_thanks.ogg", "signoff_thanks_very_much.ogg"],
+    "start": ["start_afternoon_all.ogg", "start_hiyo.ogg", "start_lets_see_lets_go_again.ogg", "start_morning_all_okay_lets_see_what_today_brings.ogg", "start_morning_all_okay.ogg", "start_okay_lets_go_again.ogg", "start_okay_morning_all.ogg", "start_okay.ogg", "start_welcome_to_another_very_exciting.ogg"]
+  }
+}
