@@ -60,6 +60,8 @@ class GameStateEmitter {
     this.observers = [];
     this.observers.push(this.createObserver());
 
+    // @TODO: Does not work when the .moves element hasn't been created yet
+    //        and start message is displayed. e.g.: "You play the white pieces, It's your turn!"
     const isGameStart = () => this.movesElement && this.movesElement.children.length === 0;
 
     if (isGameStart()) {
