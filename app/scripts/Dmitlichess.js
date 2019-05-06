@@ -87,7 +87,7 @@ class Dmitlichess {
 
   start() {
     // Load the sounds for the selected commentator
-    const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/manifest.json`);
+    const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/meta.json`);
 
     fetch(url)
       .then(response => response.json())

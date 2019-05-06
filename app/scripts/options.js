@@ -61,7 +61,7 @@ class OptionsCtrl {
     const container = document.querySelector('.commentator_radio');
 
     const createCommentatorOptionPromises = commentators.map(commentator => {
-      const url = chrome.runtime.getURL(`ogg/${commentator}/manifest.json`);
+      const url = chrome.runtime.getURL(`ogg/${commentator}/meta.json`);
 
       return fetch(url)
         .then((response) => response.json())
@@ -135,7 +135,7 @@ class OptionsCtrl {
           this.elements.commentators.forEach(item => {
             const commentator = item.value;
       
-            const url = chrome.runtime.getURL(`ogg/${commentator}/manifest.json`);
+            const url = chrome.runtime.getURL(`ogg/${commentator}/meta.json`);
             fetch(url)
               .then((response) => response.json())
               .then((json) => {

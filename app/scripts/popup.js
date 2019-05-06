@@ -87,7 +87,7 @@ class PopupCtrl {
 
       document.getElementById('enabled').checked = this.options.enabled;
 
-      const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/manifest.json`);
+      const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/meta.json`);
       fetch(url)
         .then((response) => response.json())
         .then(json => this.sounds[this.options.commentator] = json.sounds)
