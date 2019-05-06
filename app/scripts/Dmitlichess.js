@@ -55,7 +55,7 @@ class Dmitlichess {
 
   init() {
     UserPrefs.getOptions().then(items => {
-      const status = document.querySelector('#lichess .lichess_ground .status');
+      const status = document.querySelector('.status');
       const isGameOver = !!status;
 
       this.options = items;
@@ -125,7 +125,7 @@ class Dmitlichess {
 // Then initialize the extension
 let mutationsCount = 0;
 const observer = new MutationObserver((mutations, observerInstance) => {
-  const movesElement = document.querySelector('#lichess .moves');
+  const movesElement = document.querySelector('.moves');
 
   // Disconnect after 10 mutations
   // the move notation should one of the first element created a lichess page is loaded

@@ -22,7 +22,7 @@ class GameStateEmitter {
       'black resigned'
     ];
 
-    const status = document.querySelector('#lichess .lichess_ground .status');
+    const status = document.querySelector('.status');
     const isGameOver = !!status;
 
     if (!this.resultElementAdded(mutations)) { return; }
