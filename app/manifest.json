@@ -1,6 +1,6 @@
 {
     "name": "dmitlichess",
-    "version": "0.5.500",
+    "version": "0.5.501",
     "manifest_version": 2,
     "description": "Adds top-level grandmaster commentary to lichess.org (audio)",
     "browser_specific_settings": {
@@ -28,7 +28,6 @@
             "css": [],
             "js": [
                 "vendor/webextension-polyfill/dist/browser-polyfill.min.js",
-                "scripts/sounds.js",
                 "scripts/UserPrefs.js",
                 "scripts/AudioUtils.js",
                 "scripts/MutationUtils.js",
