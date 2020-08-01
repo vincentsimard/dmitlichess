@@ -123,15 +123,10 @@ class Dmitlichess {
 
 // Wait for the move list element to be created
 // Then initialize the extension
-let mutationsCount = 0;
+// The move notation should be one of the first element created a lichess page is loaded...
+// @TODO figure a more reliable/efficient way to disable the extension on pages without moves notation
 const observer = new MutationObserver((mutations, observerInstance) => {
   const movesElement = document.querySelector('.moves');
-
-  // Disconnect after 10 mutations
-  // the move notation should one of the first element created a lichess page is loaded
-  // @TODO figure a more efficient way to disable the extension on pages without moves notation
-  mutationsCount++;
-  if (mutationsCount > 10) { observerInstance.disconnect(); }
 
   if (!movesElement) { return; }
 
