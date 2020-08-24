@@ -126,7 +126,7 @@ class Dmitlichess {
 // The move notation should be one of the first element created a lichess page is loaded...
 // @TODO figure a more reliable/efficient way to disable the extension on pages without moves notation
 const observer = new MutationObserver((mutations, observerInstance) => {
-  const movesElement = document.querySelector('.moves');
+  const movesElement = document.querySelector('.rmoves');
 
   if (!movesElement) { return; }
 
