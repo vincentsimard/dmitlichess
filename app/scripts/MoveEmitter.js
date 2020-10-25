@@ -26,7 +26,7 @@ class MoveEmitter {
       if (!notation) { return; }
       // If the node is active, it will have $active-class which is renamed often.
       // As a workaround, just check that it has a class name set.
-      // https://github.com/ornicar/lila/blob/master/ui/round/css/_constants.scs#L12
+      // https://github.com/ornicar/lila/blob/master/ui/round/css/_constants.scss#L12
       if (added.classList.length === 0) { return; }
 
       const notationType = isCapture(notation) ? 'capture' : 'move';
