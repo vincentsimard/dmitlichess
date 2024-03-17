@@ -11,12 +11,23 @@ const defaults = {
 };
 
 class UserPrefs {
-  static getOptions(keys = defaults) {
-    return browser.storage.sync.get(keys);
+  static async getOptions(keys = defaults) {
+    try {
+      const items = await browser.storage.sync.get(keys);
+      return items;
+    } catch (error) {
+      console.error('Error retrieving options:', error);
+      throw error;
+    }
   }
 
-  static saveOptions(items) {
-    return browser.storage.sync.set(items);
+  static async saveOptions(items) {
+    try {
+      await browser.storage.sync.set(items);
+    } catch (error) {
+      console.error('Error saving options:', error);
+      throw error;
+    }
   }
 }
 

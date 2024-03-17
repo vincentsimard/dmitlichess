@@ -4,7 +4,7 @@ const throwIfMissing = () => { throw new Error('Missing parameter'); };
 
 class AudioUtils {
   static create(file = throwIfMissing, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume) {
-    const path = browser.extension.getURL('ogg/' + commentator + '/' + file);
+    const path = browser.runtime.getURL(`ogg/${commentator}/${file}`);
     const audio = new Audio(path);
     audio.volume = volume;
 
@@ -37,13 +37,12 @@ class AudioUtils {
   }
 
   static play(sounds, key, commentator = UserPrefs.defaults.commentator, volume = UserPrefs.defaults.volume, isRandom = true) {
-    let audio;
     const file = isRandom ? this.getRandom(sounds, key, commentator) : key;
 
     // No sound for the notation :(
     if (!file) { return; }
 
-    audio = this.create(file, commentator, volume / 100);
+    const audio = this.create(file, commentator, volume / 100);
     audio.play();
   }
 }

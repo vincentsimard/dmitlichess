@@ -6,22 +6,22 @@ class PopupCtrl {
     this.sounds = {};
   }
 
-  generateMiscList() {
+  generateMiscList = () => {
     const s = this.sounds[this.options.commentator];
-    const soundFiles = []
-      .concat(s.misc)
-      .concat(s.check)
-      .concat(s.checkmate)
-      .concat(s.stalemate)
-      .concat(s.draw)
-      .concat(s.resign)
-      .concat(s.start)
-      .concat(s.name)
-      .concat(s.check)
-      .concat(s.fill)
-      .concat(s.long)
-      .concat(s.signoff)
-      .filter(n => !!n); // Remove undefined entries (if sounds don't exist for one category)
+    const soundFiles = [
+      ...s.misc,
+      ...s.check,
+      ...s.checkmate,
+      ...s.stalemate,
+      ...s.draw,
+      ...s.resign,
+      ...s.start,
+      ...s.name,
+      ...s.check,
+      ...s.fill,
+      ...s.long,
+      ...s.signoff
+    ].filter(n => !!n); // Remove undefined entries (if sounds don't exist for one category)
 
     const soundboard = document.querySelector('#soundboard');
     const selectList = document.createElement('select');
@@ -40,7 +40,7 @@ class PopupCtrl {
     soundboard.appendChild(selectList);
   }
 
-  addListeners() {
+  addListeners = () => {
     let keyModifier = '';
     const {commentator, volume} = this.options;
     const squares = Array.from(document.querySelectorAll('#board .square'));
@@ -81,22 +81,22 @@ class PopupCtrl {
     });
   }
 
-  init() {
-    UserPrefs.getOptions().then(items => {
-      this.options = items;
-
+  init = async () => {
+    try {
+      this.options = await UserPrefs.getOptions();
       document.getElementById('enabled').checked = this.options.enabled;
 
       const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/meta.json`);
-      fetch(url)
-        .then((response) => response.json())
-        .then(json => this.sounds[this.options.commentator] = json.sounds)
-        .then(() => {
-          this.generateMiscList();
-          this.addListeners();
-        });
-    });
-  }
+      const response = await fetch(url);
+      const json = await response.json();
+      this.sounds[this.options.commentator] = json.sounds;
+
+      this.generateMiscList();
+      this.addListeners();
+    } catch (error) {
+      console.error('Error initializing PopupCtrl:', error);
+    }
+  };
 }
 
 window.popupCtrl = new PopupCtrl();

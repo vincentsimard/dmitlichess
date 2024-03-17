@@ -7,11 +7,11 @@ class GameStateEmitter {
     this.observers = [];
   }
   
-  resultElementAdded(mutations) {
+  resultElementAdded = (mutations) => {
     return mutations.some(mutation => MutationUtils.hasAddedNodes(mutation, 'result-wrap'));
-  }
+  };
 
-  handleMutations(mutations) {
+  handleMutations = (mutations) => {
     const states = [
       'aborted',
       'stalemate',
@@ -40,9 +40,9 @@ class GameStateEmitter {
 
     // Disconnect after the game ends to prevent triggering again on rematch
     this.disconnect();
-  }
+  };
   
-  createObserver() {
+  createObserver = () => {
     const el = this.movesElement;
     const observer = new MutationObserver(mutations => this.handleMutations(mutations));
     const config = { childList: true, subtree: false };
@@ -50,13 +50,13 @@ class GameStateEmitter {
     if (el) { observer.observe(el, config); }
 
     return observer;
-  }
+  };
 
-  disconnect() {
-    this.observers.map(o => o.disconnect());
-  }
+  disconnect = () => {
+    this.observers.forEach(o => o.disconnect());
+  };
 
-  init() {
+  init = () => {
     this.observers = [];
     this.observers.push(this.createObserver());
 
@@ -67,5 +67,5 @@ class GameStateEmitter {
     if (isGameStart()) {
       this.dispatchTarget.dispatchEvent(new CustomEvent('start'));
     }
-  }
+  };
 }

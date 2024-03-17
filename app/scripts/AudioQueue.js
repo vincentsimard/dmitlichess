@@ -5,39 +5,35 @@ class AudioQueue {
     this.options = options;
     this.dispatchTarget = dispatchTarget;
     this.sounds = sounds;
-
     this.queue = [];
   }
 
-  next() {
-    if (this.queue.length === 0) { return; }
-    
+  next = async () => {
+    if (this.queue.length === 0) return;
     const first = this.queue[0];
-
     if (typeof first.play === 'function') {
-      first.play().catch(error => {
+      try {
+        await first.play();
+      } catch (error) {
         // Chrome does not allow autoplay of sounds when a page is loaded
         // and the user has not interacted with it yet.
         // Ignore these errors.
-        if (error instanceof DOMException && error.name === 'NotAllowedError') { return; } // jshint ignore:line
-
+        if (error instanceof DOMException && error.name === 'NotAllowedError') return;
         console.error('play() error', error, first, this.queue);
-      });
+      }
     }
-  }
+  };
 
-  clear(keepFirst = false) {
+  clear = (keepFirst = false) => {
     // Keep the first audio file if its playback has not finished and the game is over
     const first = this.queue[0];
 
     this.queue = keepFirst && first && !first.ended ? [first] : [];
 
     this.dispatchTarget.dispatchEvent(new CustomEvent('queueCleared'));
-  }
+  };
 
-  createQueueAudio(file) {
-    let audio;
-
+  createQueueAudio = (file) => {
     const doEnded = () => {
       // Clear the queue if there are too many sounds queued to make sure the
       // commentator is not too far behind the game with his commentary
@@ -58,13 +54,13 @@ class AudioQueue {
       setTimeout(() => { this.clear(); }, duration * 1000); // Making sure sounds don't overlap
     }
 
-    audio = AudioUtils.create(file, this.options.commentator, this.options.volume / 100);
+    const audio = AudioUtils.create(file, this.options.commentator, this.options.volume / 100);
     audio.addEventListener('ended', doEnded, false);
 
     return audio;
-  }
+  };
 
-  push(key) {
+  push = (key) => {
     if (typeof key === 'undefined') { return; }
     
     let file = AudioUtils.getRandom(this.sounds, key, this.options.commentator) || AudioUtils.getGeneric(this.sounds, key, this.options.commentator);
@@ -84,5 +80,5 @@ class AudioQueue {
     this.queue.push(this.createQueueAudio(file));
 
     if (this.queue.length === 1) { this.next(); }
-  }
+  };
 }

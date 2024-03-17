@@ -7,7 +7,7 @@ class MoveEmitter {
     this.observers = [];
   }
 
-  handleMutations(mutations) {
+  handleMutations = (mutations) => {
     const isCapture = notation => notation.includes('x');
     const isCastle = notation => notation.includes('0-0');
     const isCheck = notation => notation.includes('+');
@@ -40,9 +40,9 @@ class MoveEmitter {
         this.dispatchTarget.dispatchEvent(new CustomEvent('check'));
       }
     });
-  }
+  };
 
-  createObserver() {
+  createObserver = () => {
     const el = this.movesElement;
     const observer = new MutationObserver(mutations => this.handleMutations(mutations));
     const config = { childList: true, subtree: true };
@@ -50,14 +50,14 @@ class MoveEmitter {
     if (el) { observer.observe(el, config); }
 
     return observer;
-  }
+  };
 
-  disconnect() {
+  disconnect = () => {
     this.observers.map(o => o.disconnect());
-  }
+  };
 
-  init() {
+  init = () => {
     this.observers = [];
     this.observers.push(this.createObserver());
-  }
+  };
 }
