@@ -1,6 +1,6 @@
 {
     "name": "dmitlichess",
-    "version": "0.5.71",
+    "version": "0.5.701",
     "manifest_version": 3,
     "description": "Adds top-level grandmaster commentary to lichess.org (audio)",
     "browser_specific_settings": {
@@ -17,7 +17,7 @@
     "action": {
         "default_icon": "images/dmitri.png",
         "default_title": "dmitlichess",
-        "default_popup": "popup.html"
+        "default_popup": "options.html"
     },
     "content_scripts": [
         {
