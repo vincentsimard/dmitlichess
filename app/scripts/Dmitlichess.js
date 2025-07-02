@@ -10,26 +10,29 @@ class Dmitlichess {
     this.sounds = {};
 
     this.intervals = {
-      misc: undefined,
-      fill: undefined,
-      long: undefined
+      misc: null,
+      fill: null,
+      long: null
     };
 
     this.emitters = {
-      moves: new MoveEmitter(this.movesElement, this.movesElement),
-      gameStates: new GameStateEmitter(this.movesElement, this.movesElement)
+      moves: new MoveEmitter(movesElement, movesElement),
+      gameStates: new GameStateEmitter(movesElement, movesElement)
     };
   }
 
   addListeners = (target) => {
+    const push = (notation) => this.audioQueue?.push?.(notation);
+
     // Moves and game events
-    target.addEventListener('move', e => this.audioQueue.push(e.detail.notation));
-    target.addEventListener('capture', e => this.audioQueue.push(e.detail.notation));
-    target.addEventListener('check', () => this.audioQueue.push('check'));
-    target.addEventListener('start', () => this.audioQueue.push('start'));
+    target.addEventListener('move', e => push(e.detail.notation));
+    target.addEventListener('capture', e => push(e.detail.notation));
+    target.addEventListener('check', () => push('check'));
+    target.addEventListener('start', () => push('start'));
+
     target.addEventListener('state', e => {
-      if (e.detail.isOver) { this.gameOver(e.detail.state); }
-      // @TODO: Handle takeback offers?
+      if (e.detail?.isOver) this.gameOver(e.detail.state);
+      // TODO: Handle takeback offers?
     });
 
     // Cleared audio queue when there is too many sounds queued
@@ -44,56 +47,64 @@ class Dmitlichess {
       this.stop();
 
       // Apply saved dmitlichess options and restart if enabled
-      const items = await UserPrefs.getOptions();
-      this.options = items;
-      this[this.options.enabled ? 'start' : 'stop']();
+      this.options = await UserPrefs.getOptions();
+      if (this.options.enabled) {
+        await this.start();
+      } else {
+        this.stop();
+      }
     });
-  }
+  };
 
   init = async () => {
-    const status = document.querySelector('.status');
-    const isGameOver = !!status;
-
+    const isGameOver = !!document.querySelector('.status');
     this.options = await UserPrefs.getOptions();
 
     this.addListeners(this.movesElement);
     
     // Start if the extension is enabled and the game is not over
-    this[this.options.enabled && !isGameOver ? 'start' : 'stop']();
-  }
+    if (this.options.enabled && !isGameOver) {
+      await this.start();
+    } else {
+      this.stop();
+    }
+  };
 
   gameOver = (state = 'resign') => {
     this.stop();
-    this.audioQueue.clear(true);
-    this.audioQueue.push(state);
-    this.audioQueue.push('signoff');
-  }
+    this.audioQueue?.clear?.(true);
+    this.audioQueue?.push?.(state);
+    this.audioQueue?.push?.('signoff');
+  };
 
   resetMiscInterval = () => {
-    if (!this.intervals.misc) { return; }
-
-    clearInterval(this.intervals.misc);
+    if (this.intervals.misc) {
+      clearInterval(this.intervals.misc);
+    }
 
     if (this.options.enabled) {
-      this.intervals.misc = setInterval(() => { this.audioQueue.push('misc'); }, this.options.miscInterval);
+      this.intervals.misc = setInterval(() => {
+        this.audioQueue?.push?.('misc');
+      }, this.options.miscInterval);
     }
-  }
+  };
 
   start = async () => {
     // Load the sounds for the selected commentator
     const url = chrome.runtime.getURL(`ogg/${this.options.commentator}/meta.json`);
-    const response = await fetch(url);
-    const json = await response.json();
+    const res = await fetch(url);
+    const { sounds } = await res.json();
 
-    this.sounds[this.options.commentator] = json.sounds;
+    this.sounds[this.options.commentator] = sounds;
     this.audioQueue = new AudioQueue(this.options, this.movesElement, this.sounds);
     this.emitters.moves.init();
     this.emitters.gameStates.init();
 
     // Play random sound bits
+    const randomTimeout = (Math.floor(Math.random() * this.options.longTimeout) + 1) * 1000;
+    this.intervals.long = setTimeout(() => { this.audioQueue.push('long'); }, randomTimeout);
     this.intervals.misc = setInterval(() => { this.audioQueue.push('misc'); }, this.options.miscInterval);
     this.intervals.fill = setInterval(() => { this.audioQueue.push('fill'); }, this.options.fillInterval);
-    this.intervals.long = setTimeout(() => { this.audioQueue.push('long'); }, (Math.floor(Math.random() * this.options.longTimeout) + 1) * 1000);
 
     this.options.enabled = true;
   }
@@ -102,12 +113,14 @@ class Dmitlichess {
     this.emitters.moves.disconnect();
     this.emitters.gameStates.disconnect();
 
-    if (this.intervals.misc) { clearInterval(this.intervals.misc); }
-    if (this.intervals.fill) { clearInterval(this.intervals.fill); }
-    if (this.intervals.long) { clearTimeout(this.intervals.long); }
+    clearInterval(this.intervals.misc);
+    clearInterval(this.intervals.fill);
+    clearTimeout(this.intervals.long);
+
+    this.intervals.misc = this.intervals.fill = this.intervals.long = null;
 
     this.options.enabled = false;
-  }
+  };
 }
 
 
