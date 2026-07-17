@@ -19,9 +19,7 @@ class MoveEmitter {
       let added = mutation.addedNodes[0];
       const notation = added.textContent;
 
-      if (added.nodeName === 'TURN') {
-        added = added.querySelector('MOVE.active');
-      }
+      if (added.nodeName !== 'Z7YX') { return; }
 
       if (!notation) { return; }
       // If the node is active, it will have $active-class which is renamed often.
