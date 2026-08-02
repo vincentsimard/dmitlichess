@@ -133,7 +133,7 @@ const observer = new MutationObserver((mutations, observerInstance) => {
   // Workaround to get $moves-tag set in
   // https://github.com/ornicar/lila/blob/master/ui/round/css/_constants.scss#L10
   // The actual element name is changed often.
-  const movesElement = document.querySelector('l4x');
+  const movesElement = document.querySelector('aPp, l4x');
 
   if (!movesElement) { return; }
 
